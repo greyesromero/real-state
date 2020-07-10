@@ -46,86 +46,16 @@ let router = new Router({
 			component: () => import( /* webpackChunkName: "about" */ './views/Register.vue'),
 			
 		},
-		{
-			path: '/tu-mejor-version',
-			name: 'tu-mejor-version',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/TuMejorVersion.vue')
-		},
-		{
-			path: '/clases-en-vivo',
-			name: 'clases-en-vivo',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/Clases.vue'),
 		
-		},
 		{
-			path: '/especialistas',
-			name: 'especialistas',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/Especialistas.vue'),
-			
-		},
-		{
-			path: '/blog',
-			name: 'blog',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/Blog.vue')
-		},
-		{
-			path: '/profile',
-			name: 'profile',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/Profile.vue'),
-			meta: { 
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/detail/:id',
+			path: '/detail',
 			name: 'detail',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/BlogDetail.vue'),
-			props: true,
+			component: () => import( /* webpackChunkName: "about" */ './views/Detail.vue'),
 			
 		},
-		{
-			path: '/payment',
-			name: 'payment',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/Payment.vue'),
-			meta: { 
-				requiresAuth: true
-			}
-			
-		},
-		{
-			path: '/confirmation',
-			name: 'confirmation',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ './views/Confirmation.vue'),
-			meta: { 
-				requiresAuth: true
-			}
-		
-			
-		}
 	]
 })
 

@@ -181,7 +181,7 @@
 			<div class="py-3"></div>
 		</section>
 		<v-divider></v-divider>
-		<section id="features">
+		<section id="features" class="grey lighten-5">
 			<div class="py-10"></div>
 			<v-container class="text-center">
 				<v-responsive

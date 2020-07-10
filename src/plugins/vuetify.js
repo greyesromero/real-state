@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
+import 'swiper/dist/css/swiper.min.css'
 
 Vue.use(Vuetify);
 
