@@ -134,8 +134,9 @@
         >
         <v-card
 							:loading="loading"
-							class="mx-5 my-12"
-							 :style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '230px'}"
+							
+							:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-12' : 'mx-5 my-12']"
+							 :style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '225px'}"
 							>
 							<v-img
 							class="white--text align-end"
