@@ -12,7 +12,9 @@
 						:value="true"
 						z-index="1">	
 						<v-container fluid grid-list-md pt-12 mt-12>
-							<div class="text-center pt-12  mt-12">
+							<div class="text-center " 						
+							:class="[$vuetify.breakpoint.smAndDown ? 'pt-1 mt-1' : 'pt-12  mt-12']"
+							>
 								<h1 class="display-2 white--text">Descubre el lugar perfecto para ti</h1>
 							</div>
 							<div class="mt-5">
@@ -120,9 +122,10 @@
 	
       <v-slide-group
         v-model="model"
-        class="pa-4"
+       
         multiple
         show-arrows
+		mobile-breakpoint
       >
         <v-slide-item
           v-for="n in 15"
@@ -132,7 +135,7 @@
         <v-card
 							:loading="loading"
 							class="mx-5 my-12"
-							max-width="274"
+							 :style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '230px'}"
 							>
 							<v-img
 							class="white--text align-end"
