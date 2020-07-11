@@ -1,5 +1,5 @@
 <template>
- <v-card :loading="loading" class="mx-auto" min-width="345" tile flat>
+ <v-card :loading="loading" class="mx-auto" tile flat>
 							
 								<v-card-text class="pb-0">
 
