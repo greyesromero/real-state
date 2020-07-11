@@ -288,7 +288,7 @@
           <!-- RIGHT SIDE -->
            <v-flex xs12 md4>
             <section>
-              <v-container grid-list-md pa-0 px-0>
+				<v-container grid-list-md pa-0 px-0>
 			    <v-tabs
 					color="primary"
 					
@@ -312,6 +312,7 @@
 			
 			 </v-tabs>
 			 </v-container>
+            
             </section>
            
           </v-flex>
@@ -542,7 +543,12 @@ export default {
 		{
 			src: '../assets/img/house5.jpg',
 		},
-		
+		{
+			src: '../assets/img/house2.jpg',
+		},
+			{
+			src: '../assets/img/house4.jpg',
+		},
 	
 		],
 	 amenities: [
