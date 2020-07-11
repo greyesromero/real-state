@@ -47,7 +47,7 @@
           cols="12"
           md="4"
         >
-          Copyright &copy; 2020 Real State
+          Copyright &copy; 2020 HS
         </v-col>
       </v-row>
     </v-container>

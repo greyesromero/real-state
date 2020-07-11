@@ -13,7 +13,7 @@
 					to="/"
 					class="d-flex align-center text-decoration-none title black--text">
 					<v-icon color="primary" large>mdi-home-city-outline</v-icon>
-					&nbsp;<span>Real Estate</span>
+					&nbsp;<span>HS</span>
 				</router-link>
 			</v-toolbar-title>		
 			
