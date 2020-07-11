@@ -298,6 +298,7 @@ export default {
 	},
 	data: () => ({
 		loading: false,
+		model: 1,
 		icons: [{
 			icon: 'mdi-facebook',
 			url:'https://www.facebook.com/choosemyfitness/'

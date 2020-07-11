@@ -288,29 +288,194 @@
           <!-- RIGHT SIDE -->
            <v-flex xs12 md4>
             <section>
-              <ScheduleForm />
+              
+			    <v-tabs
+					color="primary"
+					grow
+				>
+					<v-tab
+					
+					>
+					SOLICITAR INFORMACIÓN
+					</v-tab>
+					<v-tab
+					
+        >
+          AGENDAR VISITA
+        </v-tab>
+     
+  
+			
+				<v-tab-item>
+				<ScheduleForm />
+				</v-tab-item>
+			
+			 </v-tabs>
             </section>
            
           </v-flex>
         </v-layout>
       </section>
-	  <section class="mt-6"  >
+	  <section class=""  >
 				
 			<v-container grid-list-md :class="[$vuetify.breakpoint.smAndDown ? 'px-5' : 'px-0']">
 				<h2 class="subtitle">Ubicación</h2>
 				<h2 class="grey--text subtitle-1"><v-icon left small>mdi-map-marker</v-icon> 6A Avenida A, Ciudad de Guatemala</h2>
 
 			</v-container>
-				<v-img
-				src="https://humaan.com/wp-content/uploads/2014/11/google-maps-basic-marker.png"
-				height="250px"
-				width="100%">
-			</v-img>
+			<GmapMap :center="this.coordinates" :zoom="15" map-type-id="roadmap" style="width: auto; height: 300px">
+				<GmapMarker  color="secondary" :position="this.coordinates" />
+			</GmapMap>
 		</section>
-		 <section  class=" grey lighten-3">
+		 <section  class=" grey lighten-4">
 				
 			<v-container px-0 grid-list-md py-10>
-				<h2 class="subtitle text-center">Casas Similares</h2>
+				<h2 class="subtitle text-center mb-5">Casas Similares</h2>
+				 <v-container
+          fluid
+          grid-list-lg
+        >
+          <v-layout row wrap>
+           <v-flex xs12 md4>
+              <v-card color="white">
+                <v-layout>
+                  <v-flex xs5>
+                    <v-img
+                      src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
+                      height="125px"
+                      contain
+                    ></v-img>
+                  </v-flex>
+                  <v-flex xs7>
+                    <v-card-title primary-title>
+                      <div>
+                        <div class="headline">Casa Deluxe</div>
+                        <div class="caption">Zona 16, Ciudad de Guatemala</div>
+                        <div>$100</div>
+                      </div>
+					  <v-row
+								align="center"
+								class="mx-0"
+								>
+								<v-rating
+									:value="4.5"
+									color="amber"
+									dense
+									half-increments
+									readonly
+									size="14"
+								></v-rating>
+						
+								<div class="caption ml-4">4.5 (413)</div>
+								</v-row>
+                    </v-card-title>
+                  </v-flex>
+                </v-layout>
+                <v-divider light></v-divider>
+               <v-card-actions>
+					<v-btn
+					color="primary"
+					text
+					>
+					VER MÁS
+					</v-btn>
+				</v-card-actions>
+              </v-card>
+            </v-flex>
+			<v-flex xs12 md4>
+              <v-card color="white">
+                <v-layout>
+                  <v-flex xs5>
+                    <v-img
+                      src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
+                      height="125px"
+                      contain
+                    ></v-img>
+                  </v-flex>
+                  <v-flex xs7>
+                    <v-card-title primary-title>
+                      <div>
+                        <div class="headline">Casa Deluxe</div>
+                        <div class="caption">Zona 16, Ciudad de Guatemala</div>
+                        <div>$100</div>
+                      </div>
+					  <v-row
+								align="center"
+								class="mx-0"
+								>
+								<v-rating
+									:value="4.5"
+									color="amber"
+									dense
+									half-increments
+									readonly
+									size="14"
+								></v-rating>
+						
+								<div class="caption ml-4">4.5 (413)</div>
+								</v-row>
+                    </v-card-title>
+                  </v-flex>
+                </v-layout>
+                <v-divider light></v-divider>
+               <v-card-actions>
+					<v-btn
+					color="primary"
+					text
+					>
+					VER MÁS
+					</v-btn>
+				</v-card-actions>
+              </v-card>
+            </v-flex>
+			<v-flex xs12 md4>
+              <v-card color="white">
+                <v-layout>
+                  <v-flex xs5>
+                    <v-img
+                      src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
+                      height="125px"
+                      contain
+                    ></v-img>
+                  </v-flex>
+                  <v-flex xs7>
+                    <v-card-title primary-title>
+                      <div>
+                        <div class="headline">Casa Deluxe</div>
+                        <div class="caption">Zona 16, Ciudad de Guatemala</div>
+                        <div>$100</div>
+                      </div>
+					  <v-row
+								align="center"
+								class="mx-0"
+								>
+								<v-rating
+									:value="4.5"
+									color="amber"
+									dense
+									half-increments
+									readonly
+									size="14"
+								></v-rating>
+						
+								<div class="caption ml-4">4.5 (413)</div>
+								</v-row>
+                    </v-card-title>
+                  </v-flex>
+                </v-layout>
+                <v-divider light></v-divider>
+               <v-card-actions>
+					<v-btn
+					color="primary"
+					text
+					>
+					VER MÁS
+					</v-btn>
+				</v-card-actions>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
 
 			</v-container>
 			
@@ -359,6 +524,10 @@ export default {
 		galleryDialog: false,
 		property: null,
 		loading: false,
+		coordinates: {
+					lat: 14.6349,
+					lng: -90.5069,
+				},
 		icons: [{
 			icon: 'mdi-facebook',
 			url:'https://www.facebook.com/choosemyfitness/'
