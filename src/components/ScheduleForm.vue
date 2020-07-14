@@ -1,8 +1,14 @@
 <template>
  <v-card :loading="loading" class="mx-auto" tile flat>
-							
+							   <v-card-title
+      class="font-weight-bold"
+     
+    >Q1200<span class="ml-2 body-1 grey--text text--darken-2">/ por mes</span></v-card-title>
+   
+    <v-divider></v-divider>
 								<v-card-text class="pb-0">
 
+        <p class="grey--text text--darken-3 mb-6">Te interesa esta propiedad? Agenda una cita</p>
 									<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
 										<v-layout row wrap>
 											<v-flex xs6>
@@ -33,7 +39,7 @@
 								<v-card-actions class="align-self-center align-content-center justify-center center align-center">
 									
 									<v-btn type="submit" block color="primary" large depressed>
-										Solicitar Información
+										Agendar Cita
 									</v-btn>								
 								</v-card-actions>
 							</v-card>

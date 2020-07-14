@@ -216,27 +216,9 @@
 			  
 			<section>
 				<v-container px-0 grid-list-md>
-					 <v-layout row wrap>
-                  <v-flex xs12 md8 :class="[$vuetify.breakpoint.smAndDown ? 'text-center' : 'text-left']"
-                  
-                  >
-                   <h2 class="subtitle "  :class="[$vuetify.breakpoint.smAndDown ? 'mb-0' : 'mb-8']">Especificaciones</h2>
 				
-                  </v-flex>
-				   <v-flex xs12 md4 :class="[$vuetify.breakpoint.smAndDown ? 'text-center' : 'right']"
-                  
-                  >
-                    <v-chip		
-								x-large
-								class="ma-2 px-8"
-								label
-								
-								>
-								Q1000/MES
-							</v-chip>
-                  </v-flex>
-				
-                </v-layout>
+                                   <h2 class="subtitle "  :class="[$vuetify.breakpoint.smAndDown ? 'mb-0' : 'mb-8']">Especificaciones</h2>
+
                 <v-layout row wrap>
                   <v-flex xs12 md4
                   
@@ -283,45 +265,11 @@
               </v-container>
 			  
             </section>
-			
-		  </v-flex>
-          <!-- RIGHT SIDE -->
-           <v-flex xs12 md4>
-            <section>
-				<v-container grid-list-md pa-0 px-0>
-			    <v-tabs
-					color="primary"
-					
-				>
-					<v-tab
-					
-					>
-					 INFORMACIÓN
-					</v-tab>
-					<v-tab
-					
-					>
-					AGENDAR VISITA
-					</v-tab>
-     
-  
-			
-				<v-tab-item>
-				<ScheduleForm />
-				</v-tab-item>
-			
-			 </v-tabs>
-			 </v-container>
-            
-            </section>
-           
-          </v-flex>
-        </v-layout>
-      </section>
-	  <section class=""  >
+			<section class="mt-12 mb-12">
+              <h2 class="subtitle">Ubicación</h2>
+              <v-container mt-6 mb-6 px-0 grid-list-md>
 				
-			<v-container grid-list-md :class="[$vuetify.breakpoint.smAndDown ? 'px-5' : 'px-0']">
-				<h2 class="subtitle">Ubicación</h2>
+			
 				<h2 class="grey--text subtitle-1"><v-icon left small>mdi-map-marker</v-icon> 6A Avenida A, Ciudad de Guatemala</h2>
 
 			</v-container>
@@ -329,6 +277,20 @@
 				<GmapMarker  color="secondary" :position="this.coordinates" />
 			</GmapMap>
 		</section>
+		  </v-flex>
+          <!-- RIGHT SIDE -->
+           <v-flex xs12 md4>
+            <section>
+				<v-container grid-list-md pa-0 px-0>
+			    <ScheduleForm />
+			 </v-container>
+            
+            </section>
+           
+          </v-flex>
+        </v-layout>
+      </section>
+	 
 		 <section  class=" grey lighten-4">
 				
 			<v-container px-0 grid-list-md py-10>
@@ -341,11 +303,11 @@
            <v-flex xs12 md4>
               <v-card color="white">
                 <v-layout>
-                  <v-flex xs5>
+                  <v-flex xs5 pt-0 pb-0>
                     <v-img
                       src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
-                      height="125px"
-                      contain
+                      height="160px"
+                      cover
                     ></v-img>
                   </v-flex>
                   <v-flex xs7>
@@ -353,23 +315,13 @@
                       <div>
                         <div class="headline">Casa Deluxe</div>
                         <div class="caption">Zona 16, Ciudad de Guatemala</div>
-                        <div>$100</div>
+                        <v-layout row wrap align-end pb-6>
+						<v-flex xs12 d-flex justify-end>
+							<div>$100</div>
+						</v-flex>
+					</v-layout>
                       </div>
-					  <v-row
-								align="center"
-								class="mx-0"
-								>
-								<v-rating
-									:value="4.5"
-									color="amber"
-									dense
-									half-increments
-									readonly
-									size="14"
-								></v-rating>
-						
-								<div class="caption ml-4">4.5 (413)</div>
-								</v-row>
+					  
                     </v-card-title>
                   </v-flex>
                 </v-layout>
@@ -387,11 +339,11 @@
 			<v-flex xs12 md4>
               <v-card color="white">
                 <v-layout>
-                  <v-flex xs5>
+                  <v-flex xs5 pt-0 pb-0>
                     <v-img
                       src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
-                      height="125px"
-                      contain
+                      height="160px"
+                      cover
                     ></v-img>
                   </v-flex>
                   <v-flex xs7>
@@ -399,23 +351,13 @@
                       <div>
                         <div class="headline">Casa Deluxe</div>
                         <div class="caption">Zona 16, Ciudad de Guatemala</div>
-                        <div>$100</div>
+                        <v-layout row wrap align-end pb-6>
+						<v-flex xs12 d-flex justify-end>
+							<div>$100</div>
+						</v-flex>
+					</v-layout>
                       </div>
-					  <v-row
-								align="center"
-								class="mx-0"
-								>
-								<v-rating
-									:value="4.5"
-									color="amber"
-									dense
-									half-increments
-									readonly
-									size="14"
-								></v-rating>
-						
-								<div class="caption ml-4">4.5 (413)</div>
-								</v-row>
+					  
                     </v-card-title>
                   </v-flex>
                 </v-layout>
@@ -432,12 +374,12 @@
             </v-flex>
 			<v-flex xs12 md4>
               <v-card color="white">
-                <v-layout>
-                  <v-flex xs5>
+                 <v-layout>
+                  <v-flex xs5 pt-0 pb-0>
                     <v-img
                       src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
-                      height="125px"
-                      contain
+                      height="160px"
+                      cover
                     ></v-img>
                   </v-flex>
                   <v-flex xs7>
@@ -445,23 +387,13 @@
                       <div>
                         <div class="headline">Casa Deluxe</div>
                         <div class="caption">Zona 16, Ciudad de Guatemala</div>
-                        <div>$100</div>
+                        <v-layout row wrap align-end pb-6>
+						<v-flex xs12 d-flex justify-end>
+							<div>$100</div>
+						</v-flex>
+					</v-layout>
                       </div>
-					  <v-row
-								align="center"
-								class="mx-0"
-								>
-								<v-rating
-									:value="4.5"
-									color="amber"
-									dense
-									half-increments
-									readonly
-									size="14"
-								></v-rating>
-						
-								<div class="caption ml-4">4.5 (413)</div>
-								</v-row>
+					  
                     </v-card-title>
                   </v-flex>
                 </v-layout>
