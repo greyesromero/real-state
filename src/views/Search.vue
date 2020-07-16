@@ -38,7 +38,7 @@
           <div v-else>
 			       
           <v-layout row wrap px-5>
-            <v-flex xs12 mt-5>
+            <v-flex xs12 md12 mt-5>
               <!-- call method searchName after leaving textfield-->
                 <v-text-field
 			  prepend-inner-icon="mdi-map-marker"
@@ -50,7 +50,7 @@
 				rounded
 				></v-text-field>
             </v-flex>
-            <v-flex xs6 my-5 mx-5>
+            <v-flex xs12 md6 my-5 mx-5>
               <!-- call method searchDept after leaving textfield-->
            <v-row>
     
@@ -88,7 +88,7 @@
           </v-range-slider>
     </v-row>
             </v-flex>
-            <v-flex xs5>
+            <v-flex xs12 md5>
               <!-- call method searchCity after leaving textfield-->
               
           <v-select
@@ -136,7 +136,8 @@
           </v-layout>
             <v-layout row wrap mt-5  justify="space-around" align-center align-content-center> 
               <v-flex 
-                xs6
+                xs12
+				md6
                 :key="property.id"
                 v-for="(property,i) in properties">
                  <v-card
@@ -146,16 +147,50 @@
 					  @mouseover.capture="showMarker(property,i)"
             style="cursor:pointer;"
 							>
+							
 							<v-img
-							 class="white--text v-sheet"
+							 class="white--text"
                     gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
                    
 							height="150px"
 							:src="items[1].src"
 							>
-							<v-container class="align-end d-flex fill-height">
-                      <span class="title">Q 1000</span>
-                    </v-container>
+							
+							
+						<v-container fluid grid-list-md fill-height>
+
+					<v-layout row wrap>
+						<v-flex xs12 d-flex justify-start>
+								<v-chip
+								class="ma-2"
+								label
+								color="primary"
+								text-color="white"
+								>
+								RENT
+							</v-chip>
+							<v-chip
+								class="ma-2"
+								color="success"
+								label
+								text-color="white"
+								>
+								NEW
+							</v-chip>
+						</v-flex>
+					</v-layout>
+					<v-layout row wrap align-end>
+						<v-flex xs12 d-flex justify-end>
+							<span class="text-truncante text-right title">Q1000</span>
+							<!-- <v-btn icon color="white" class="mx-3">
+							<v-icon>mdi-share-variant</v-icon>
+							</v-btn>
+							<v-btn icon color="white">
+							<v-icon>mdi-heart-outline</v-icon>
+							</v-btn> -->
+						</v-flex>
+					</v-layout>
+				</v-container>
 							</v-img>
 						
 							  <v-card-title>
