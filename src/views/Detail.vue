@@ -344,76 +344,88 @@
             </v-card>
             </v-flex>
 			<v-flex xs12 md4>
-              <v-card color="white">
-                <v-layout>
-                  <v-flex xs5 pt-0 pb-0>
-                    <v-img
-                      src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
-                      height="160px"
-                      cover
-                    ></v-img>
-                  </v-flex>
-                  <v-flex xs7>
-                    <v-card-title primary-title>
-                      <div>
-                        <div class="headline">Casa Deluxe</div>
-                        <div class="caption">Zona 16, Ciudad de Guatemala</div>
-                        <v-layout row wrap align-end pb-6>
-						<v-flex xs12 d-flex justify-end>
-							<div>$100</div>
-						</v-flex>
-					</v-layout>
-                      </div>
-					  
-                    </v-card-title>
-                  </v-flex>
-                </v-layout>
-                <v-divider light></v-divider>
-               <v-card-actions>
-					<v-btn
-					color="primary"
-					text
-					>
-					VER MÁS
-					</v-btn>
-				</v-card-actions>
-              </v-card>
+              <v-card 
+				tile
+				
+              outlined
+			  >
+              <v-layout row wrap>
+                <v-flex xs12 sm6>
+                  <v-img
+                    class="white--text v-sheet"
+                    gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
+                    height="200px"
+                    :src="items[0].src">
+                    <v-container class="align-end fill-height">
+                      <span class="">Q 1000</span>
+                    </v-container>
+                  </v-img>
+                </v-flex>
+                <v-flex xs12 sm6 class="position-relative">
+                
+                  <v-card-title>
+                    <div class="text-truncate">Villas Antigua</div>
+                  </v-card-title>
+                  <v-card-text>
+                    2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+                    1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+                   1000 mts<sup>2</sup>
+                  </v-card-text>
+                  <v-card-actions class="card-actions-absolute my-5">
+                    <v-btn
+                      text
+                      color="primary"
+                      
+                    > 
+                      MÁS INFORMACIÓN
+                    </v-btn>
+                   
+                  </v-card-actions>
+                </v-flex>
+              </v-layout>
+            </v-card>
             </v-flex>
 			<v-flex xs12 md4>
-              <v-card color="white">
-                 <v-layout>
-                  <v-flex xs5 pt-0 pb-0>
-                    <v-img
-                      src="https://nempresa.com/wp-content/uploads/2019/01/CASA-CLUB-2.jpg"
-                      height="160px"
-                      cover
-                    ></v-img>
-                  </v-flex>
-                  <v-flex xs7>
-                    <v-card-title primary-title>
-                      <div>
-                        <div class="headline">Casa Deluxe</div>
-                        <div class="caption">Zona 16, Ciudad de Guatemala</div>
-                        <v-layout row wrap align-end pb-6>
-						<v-flex xs12 d-flex justify-end>
-							<div>$100</div>
-						</v-flex>
-					</v-layout>
-                      </div>
-					  
-                    </v-card-title>
-                  </v-flex>
-                </v-layout>
-                <v-divider light></v-divider>
-               <v-card-actions>
-					<v-btn
-					color="primary"
-					text
-					>
-					VER MÁS
-					</v-btn>
-				</v-card-actions>
-              </v-card>
+              <v-card 
+				tile
+				
+              outlined
+			  >
+              <v-layout row wrap>
+                <v-flex xs12 sm6>
+                  <v-img
+                    class="white--text v-sheet"
+                    gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
+                    height="200px"
+                    :src="items[0].src">
+                    <v-container class="align-end fill-height">
+                      <span class="">Q 1000</span>
+                    </v-container>
+                  </v-img>
+                </v-flex>
+                <v-flex xs12 sm6 class="position-relative">
+                
+                  <v-card-title>
+                    <div class="text-truncate">Villas Antigua</div>
+                  </v-card-title>
+                  <v-card-text>
+                    2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+                    1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+                   1000 mts<sup>2</sup>
+                  </v-card-text>
+                  <v-card-actions class="card-actions-absolute my-5">
+                    <v-btn
+                      text
+                      color="primary"
+                      
+                    > 
+                      MÁS INFORMACIÓN
+                    </v-btn>
+                   
+                  </v-card-actions>
+                </v-flex>
+              </v-layout>
+            </v-card>
             </v-flex>
           </v-layout>
         </v-container>
