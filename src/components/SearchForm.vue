@@ -23,11 +23,13 @@
 		
 			<v-col cols="3">
 				<v-btn
+				router to="/search"
 				depressed
 				block 
 				class="btn-xl"
 				color="primary">
 				Buscar
+				
 				</v-btn>
 			</v-col>
 		</v-row>
