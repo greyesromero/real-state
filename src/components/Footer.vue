@@ -9,7 +9,7 @@
       <v-row>
         <v-col
           cols="12"
-          md="4"
+          md="6"
         >
           <div class="d-flex flex-wrap justify-md-start justify-center justify-md-none">
             <template v-for="(s, i) in social">
@@ -32,7 +32,7 @@
             </template>
           </div>
         </v-col>
-		<v-col
+		<!--v-col
           cols="12"
           md="4"
 		  class="py-0"
@@ -40,12 +40,12 @@
           <div class="d-flex flex-wrap justify-center justify-md-none py-0">
            <v-img src="../assets/img/grafica.png" class="position-absolute" width="350px"></v-img>
           </div>
-        </v-col>
+        </v-col-->
 
         <v-col
           class="text-center text-md-right"
           cols="12"
-          md="4"
+          md="6"
         >
           Copyright &copy; 2020 HS
         </v-col>

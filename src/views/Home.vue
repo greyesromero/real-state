@@ -174,6 +174,7 @@
 								<v-btn
 								color="primary lighten-2"
 								text
+								router to = "/detail"
 								>
 								VER MÁS
 								</v-btn>

@@ -1,34 +1,25 @@
 <template>
-    <div>
-        <Loader :visible="loading" />
-        <Navbar></Navbar>
-        <v-content style="background:#ffffff !important">
-			<section style="background:#ffffff !important">
-				<div class="py-12"></div>
-				<div class="py-12"></div>
-			</section>
-    	</v-content>
-		<Footer></Footer>
-    </div>
+	<div>	
+		<section id="hero">
+		</section>
+	</div>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
 import Loader from '../components/Loader.vue'
 
 
 export default {
 	components: {
-		Navbar,
 		Loader,
-        Footer
+	
 	
 	},
 	data: () => ({
-        loading: false
+		loading: false,
+		model: 1,
 	}),
 	computed: {
 		getUser : function(){ 
@@ -47,3 +38,4 @@ export default {
 
 }
 </script>
+

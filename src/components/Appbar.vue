@@ -48,9 +48,9 @@
 						<v-list-item-title>Inicio</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
+				<v-list-item router to="/search">
 					<v-list-item-content>
-						<v-list-item-title>Rentar una casa</v-list-item-title>
+						<v-list-item-title>Buscar</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 				<v-list-item >
