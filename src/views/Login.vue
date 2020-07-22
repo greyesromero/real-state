@@ -1,17 +1,17 @@
 <template>
 <div>
-	<Navbar></Navbar>
-	<v-content class="mb-10" style="background:#ffffff !important">
-		<section style="background:#ffffff !important">
-			<div class="py-12"></div>
+
+	<v-content class="mb-10">
+		<section >
+			<div class="py-2"></div>
 			<v-container fluid>
 
 				<v-row justify="center">
 					<v-col cols="12" md="4" xs="12">
-						<v-card :loading="loading" class="mx-auto" min-width="345" tile flat>
+						<v-card :loading="loading"  class=" mx-auto gray lighten-5" min-width="345" tile flat>
 							
 							<v-card-text>
-								<h1 class="secondary--text text-center mb-5">Iniciar Sesión</h1>
+								<h1 class="primary--text text-center mb-5">Iniciar Sesión</h1>
 
 								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
 									<v-text-field v-model.trim="email" outlined color="secondary" label="Correo Electrónico"  :rules="emailRules" required></v-text-field>
@@ -89,10 +89,10 @@
 					</v-card>
 				</v-dialog>
 			</v-container>
-			<div class="py-12"></div>
+			<div class="py-2"></div>
 		</section>
 	</v-content>
-	<Footer></Footer>
+	
 	
 </div>
 </template>

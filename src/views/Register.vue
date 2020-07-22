@@ -1,17 +1,15 @@
 <template>
     <div>
         <Loader :visible="loading" />
-        <Navbar></Navbar>
 		<v-content style="background:#ffffff !important">
 			<section style="background:#ffffff !important">
-				<div class="py-12"></div>
 				<v-container fluid>	
 					<v-row justify="center">
 						<v-col cols="12" md="6" xs="12">
 							<v-card :loading="loading" class="mx-auto" min-width="345" tile flat>
 							
 								<v-card-text class="pb-0">
-									<h1 class="secondary--text text-center mb-5">Registrarse</h1>
+									<h1 class="primary--text text-center mb-5">Registrarse</h1>
 
 									<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
 										<v-text-field v-model.lazy="first_name" outlined color="secondary" label="Nombre"  :rules="[v => !!v || 'Nombre es requerido']" required></v-text-field>
@@ -23,13 +21,12 @@
 								</v-card-text>
 								<v-card-actions class="align-self-center align-content-center justify-center center align-center">
 									
-									<v-btn @click="register" tile color="secondary" class="font-weight-bold text-none pl-10 pr-10" large>Registrarse</v-btn>
+									<v-btn @click="register" tile color="primary" class="font-weight-bold text-none pl-10 pr-10" large>Registrarse</v-btn>
 								</v-card-actions>
 							</v-card>
 						</v-col>
 					</v-row>
 				</v-container>
-				<div class="py-12"></div>
 			</section>
 			<v-dialog v-model="dialog" persistent max-width="290" timeout = "2000">
 				<v-card>
@@ -42,7 +39,7 @@
 				</v-card>
 			</v-dialog>
     	</v-content>
-        <Footer></Footer>
+        
     </div>
 </template>
 

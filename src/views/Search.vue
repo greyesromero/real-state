@@ -1,288 +1,365 @@
 <template>
 	<div>	
-    
-	
-    <v-divider></v-divider>
-      <section > 
-        
-        <v-container 
-          fluid 
-          grid-list-md 
-          class="px-2 ma-0" 
-          :style="{width: $vuetify.breakpoint.lgAndUp ? '50%' : '100%'}">
-          <div v-if="loading" class="center-container">
-            <v-container fill-height>
-              <v-layout align-center justify-center>
-                <v-progress-circular
-                  :size="48"
-                  :width="4"
-                  color="primary lighten-1"
-                  indeterminate
-                ></v-progress-circular>
-              </v-layout>
-            </v-container>
-          </div>
-          <div v-if="errored" class="center-container">
-            <v-container fill-height>
-              <v-layout column align-center justify-center>
-                <h1 class="display-2">Conéctate a Internet</h1>
-                <p class="body-1 grey--text">Comprueba tu conexión y vuelve a intentarlo</p>
-                <v-btn
-                  color="primary"
-                  outlined
-                  @click="fetchProperties"
-                >Reintentar</v-btn>
-              </v-layout>
-            </v-container>
-          </div>
-          <div v-else>
-			       
-          <v-layout row wrap px-5>
-            <v-flex xs12 md12 mt-5>
-              <!-- call method searchName after leaving textfield-->
-                <v-text-field
-			  prepend-inner-icon="mdi-map-marker"
-				flat
-				label="Busca por departamento, municipio, etc"
-				hide-details
-				solo
-				outlined
-				rounded
-				></v-text-field>
-            </v-flex>
-            <v-flex xs12 md6 my-5 mx-5>
-              <!-- call method searchDept after leaving textfield-->
-           <v-row>
-    
-        <v-range-slider
-		
-            v-model="range"
-            :max="max"
-            :min="min"
-            hide-details
-			label="Precio"
-            class="align-center"
-          >
-            <template v-slot:prepend>
-              <v-text-field
-                :value="range[0]"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                type="number"
-                style="width: 60px"
-                @change="$set(range, 0, $event)"
-              ></v-text-field>
-            </template>
-            <template v-slot:append>
-              <v-text-field
-                :value="range[1]"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                type="number"
-                style="width: 60px"
-                @change="$set(range, 1, $event)"
-              ></v-text-field>
-            </template>
-          </v-range-slider>
-    </v-row>
-            </v-flex>
-            <v-flex xs12 md5>
-              <!-- call method searchCity after leaving textfield-->
-              
-          <v-select
-            
-            :items="items_select"
-            attach
-            chips
-            label="Filtros"
-            multiple
-			hide-details
-          ></v-select>
-		    	
-            </v-flex>
-			<!--v-flex xs12>
-				<v-row justify="space-around">
-                      <v-checkbox
-						class="mx-1"
-				v-model="value_select"
-				label="primary"
-				color="primary"
-				value="foo"
-				hide-details
-				></v-checkbox>
-				<v-checkbox
-				class="mx-1"
-				v-model="value_select"
-				label="primary"
-				color="primary"
-				value="bar"
-				hide-details
-				
-				></v-checkbox>
-				<v-checkbox
-				class="mx-1"
-				v-model="value_select"
-				label="primary"
-				color="primary"
-				value="fizz"
-				hide-details
-				
-				></v-checkbox>
-				</v-row>
-				
-			 </v-flex-->
-          </v-layout>
-            <v-layout row wrap mt-5  justify="space-around" align-center align-content-center> 
-              <v-flex 
-                xs12
-				md6
-                :key="property.id"
-                v-for="(property,i) in properties">
-                 <v-card
-							:loading="loading"
-							
-							:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-1' : 'mx-1 my-1']"
-					  @mouseover.capture="showMarker(property,i)"
-            style="cursor:pointer;"
-							>
-							
-							<v-img
-							 class="white--text"
-                    gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
-                   
-							height="150px"
-							:src="items[1].src"
-							>
-							
-							
-						<v-container fluid grid-list-md fill-height>
-
-					<v-layout row wrap>
-						<v-flex xs12 d-flex justify-start>
-								<v-chip
-								class="ma-2"
-								label
-								color="primary"
-								text-color="white"
-								>
-								RENT
-							</v-chip>
-							<v-chip
-								class="ma-2"
-								color="success"
-								label
-								text-color="white"
-								>
-								NEW
-							</v-chip>
-						</v-flex>
-					</v-layout>
-					<v-layout row wrap align-end>
-						<v-flex xs12 d-flex justify-end>
-							<span class="text-truncante text-right title">Q1000</span>
-							<!-- <v-btn icon color="white" class="mx-3">
-							<v-icon>mdi-share-variant</v-icon>
-							</v-btn>
-							<v-btn icon color="white">
-							<v-icon>mdi-heart-outline</v-icon>
-							</v-btn> -->
-						</v-flex>
+		<v-divider></v-divider>
+		<section > 
+			
+			<v-container 
+			fluid 
+			grid-list-md 
+			class="px-2 ma-0" 
+			:style="{width: $vuetify.breakpoint.lgAndUp ? '50%' : '100%'}">
+				<div v-if="loading" class="center-container">
+				<v-container fill-height>
+					<v-layout align-center justify-center>
+					<v-progress-circular
+						:size="48"
+						:width="4"
+						color="primary lighten-1"
+						indeterminate
+					></v-progress-circular>
 					</v-layout>
 				</v-container>
-							</v-img>
-						
-							  <v-card-title>
-                    <div class="text-truncate">Villas Antigua</div>
-                  </v-card-title>
-							 <v-card-text>
-                    2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                    1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                   1000 mts<sup>2</sup>
-                  </v-card-text>
-						
-							<v-divider class="mx-4"></v-divider>
-						
-							
-						
-							<v-card-actions>
-								<v-btn
-								color="primary lighten-2"
-								text
-								router to = "/detail"
-								>
-								MÁS INFORMACIÓN
+			</div>
+				<div v-if="errored" class="center-container">
+					<v-container fill-height>
+					<v-layout column align-center justify-center>
+						<h1 class="display-2">Conéctate a Internet</h1>
+						<p class="body-1 grey--text">Comprueba tu conexión y vuelve a intentarlo</p>
+						<v-btn
+						color="primary"
+						outlined
+						@click="fetchProperties"
+						>Reintentar</v-btn>
+					</v-layout>
+					</v-container>
+				</div>
+				<div v-else>
+					<v-container fluid grid-list-md fill-height>
+						<v-layout row wrap align-end>
+							<v-flex xs12 d-flex justify-end>
+								<v-btn text v-on:click="dialog=true" style="float:right;">
+									<v-icon>mdi-cog</v-icon>	FILTROS
 								</v-btn>
-							</v-card-actions>
-						</v-card>
-              </v-flex>
-            </v-layout>
-          </div>
+							</v-flex>
+						</v-layout>
+					</v-container>
+					  <v-dialog v-model="dialog" persistent max-width="600px">
+								<v-card>
+									<v-card-title>
+									<span class="headline">Filtros de Búsqueda</span>
+									<v-spacer></v-spacer>
+									<v-btn icon v-on:click="dialog=false">
+										<v-icon>mdi-close</v-icon>
+									</v-btn>
+									
+ 
+									</v-card-title>
+									<v-card-text>
+										<v-subheader class="title">Ubicación</v-subheader>
+										<v-container fluid>
+											<v-flex xs12>
+												<v-text-field
+												prepend-inner-icon="mdi-map-marker"
+												flat
+												label="Busca por departamento, municipio, etc"
+												hide-details
+												solo
+												outlined
+												rounded
+												></v-text-field>
+											</v-flex>
+										</v-container>
+										<v-subheader class="title">Precio</v-subheader>
+										<v-container fluid>
+											<v-layout>
+													Q{{ range[0] }} 
+												<v-flex>
+												<v-range-slider
+												v-model="range"
+												:max="max"
+												:min="min"
+												height="50"
+												thumb-label
+												>
+												</v-range-slider>
+												</v-flex>
+												Q{{ range[1] }}
+											</v-layout>
+										</v-container>
+										<v-divider class="mx-5 mb-5"></v-divider>
+										<v-subheader class="title">Habitaciones y baños</v-subheader>
+										<v-container fluid grid-list-md fill-height px-5>
+										
+											<v-layout row wrap>
+												<v-flex xs10 d-flex justify-start>
+													<span>Habitaciones</span>
+												</v-flex>
+												<v-flex xs2 d-flex justify-end>
+													<v-text-field 
+													v-model.number="foo" 
+													append-outer-icon="mdi-plus-circle-outline" 
+													@click:append-outer="increment" 
+													prepend-icon="mdi-minus-circle-outline" 
+													@click:prepend="decrement">
+													</v-text-field>
+												</v-flex>
+												<v-flex xs10 d-flex justify-start>
+													<span>Baños</span>
+												</v-flex>
+												<v-flex xs2 d-flex justify-end>
+													<v-text-field 
+													v-model.number="foo" 
+													append-outer-icon="mdi-plus-circle-outline" 
+													@click:append-outer="increment" 
+													prepend-icon="mdi-minus-circle-outline" 
+													@click:prepend="decrement">
+													</v-text-field>
+												</v-flex>
+											</v-layout>
+										</v-container>
+										<v-divider class="mx-5 mb-5"></v-divider>
+										<v-subheader class="title">Comodidades</v-subheader>
+									
+										<v-container fluid>
+											 <v-row>
+												<v-col cols="12" sm="4" md="4">
+													<v-checkbox
+													v-model="ex4"
+													label="A/C"
+													color="primary"
+													value="red"
+													hide-details
+													></v-checkbox>
+													<v-checkbox
+													v-model="ex4"
+													label="Secadora"
+													color="primary darken-3"
+													value="red darken-3"
+													hide-details
+													></v-checkbox>
+												</v-col>
+												<v-col cols="12" sm="4" md="4">
+													<v-checkbox
+													v-model="ex4"
+													label="Pet Friendly"
+													color="primary"
+													value="indigo"
+													hide-details
+													></v-checkbox>
+													<v-checkbox
+													v-model="ex4"
+													label="Extracción Basura"
+													color="primary darken-3"
+													value="indigo darken-3"
+													hide-details
+													></v-checkbox>
+												</v-col>
+												<v-col cols="12" sm="4" md="4">
+													<v-checkbox
+													v-model="ex4"
+													label="Calefacción"
+													color="primary"
+													value="orange"
+													hide-details
+													></v-checkbox>
+													<v-checkbox
+													v-model="ex4"
+													label="Lavadora"
+													color="primary darken-3"
+													value="orange darken-3"
+													hide-details
+													></v-checkbox>
+												</v-col>
+												</v-row>
+
+										</v-container>
+											<v-divider class="mx-5"></v-divider>
+									</v-card-text>
+									<v-card-actions>
+									<v-spacer></v-spacer>
+									<v-btn color="primary darken-1" text @click="dialog = false">Quitar todos</v-btn>
+									<v-btn color="secondary darken-1" text @click="dialog = false">Aplicar</v-btn>
+									</v-card-actions>
+								</v-card>
+							</v-dialog>
+           			<v-layout row wrap  justify="space-around" align-center align-content-center> 
+						<v-flex 
+							xs12
+							md6
+							:key="property.id"
+							v-for="(property,i) in properties">
+							<v-card
+								:loading="loading"
+								:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-1' : 'mx-1 my-1']"
+								
+								style="cursor:pointer;"
+								>
+									
+									<v-carousel hide-delimiters
+									class="white--text align-end"
+									height="175px">
+										<v-carousel-item
+										v-for="(item,i) in items"
+										:key="i"
+										:src="item.src"
+										reverse-transition="fade-transition"
+										transition="fade-transition"
+										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
+					
+											<v-container fluid grid-list-md fill-height>
+												<v-layout row wrap>
+													<v-flex xs12 d-flex justify-start>
+															<v-chip
+															class="ma-2"
+															label
+															color="primary"
+															text-color="white"
+															>
+															RENT
+														</v-chip>
+														<v-chip
+															class="ma-2"
+															color="success"
+															label
+															text-color="white"
+															>
+															NEW
+														</v-chip>
+													</v-flex>
+												</v-layout>
+												<v-layout row wrap align-end>
+													<v-flex xs12 d-flex justify-end>
+														<span class="text-truncante text-right title">Q1000</span>
+														<!-- <v-btn icon color="white" class="mx-3">
+														<v-icon>mdi-share-variant</v-icon>
+														</v-btn>
+														<v-btn icon color="white">
+														<v-icon>mdi-heart-outline</v-icon>
+														</v-btn> -->
+													</v-flex>
+												</v-layout>
+											</v-container>
+										</v-carousel-item>
+									</v-carousel>
+						
+									<v-card-title>
+										<div class="text-truncate">Villas Antigua</div>
+									</v-card-title>
+									<v-card-text>
+										2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1000 mts<sup>2</sup>
+										<div>
+											<v-chip-group
+											
+											column
+											>
+												<v-chip   small>WIFI</v-chip>
+												<v-chip   small>Mascotas</v-chip>
+												<v-chip   small>Limpieza</v-chip>
+												<v-chip   small>A/C</v-chip>
+											</v-chip-group>
+										</div>
+										
+									</v-card-text>
+						
+									<v-divider class="mx-4"></v-divider>
+									<v-card-actions>
+										<v-btn
+										color="primary lighten-2"
+										text
+										router to = "/detail"
+										>
+										MÁS INFORMACIÓN
+										</v-btn>
+									</v-card-actions>
+							</v-card>
+						</v-flex>
+            		</v-layout>
+          		</div>
         </v-container>
         <div class="search-map-container grey lighten-2 hidden-sm-and-down">
            <gmap-map :center="center" :zoom="12" class="w-100 h-100">
-      <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-             <v-card
+				<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
+						<v-card
 							:loading="loading"
 							flat
 							:class="[$vuetify.breakpoint.smAndDown ? 'mx-0 my-0' : 'mx-0 my-0']"
-							 :style="[{'max-width': $vuetify.breakpoint.smAndUp ? '200px' : '125px'}]"
+							 :style="[{'max-width': $vuetify.breakpoint.smAndUp ? '250px' : '125px'}]"
 							>
-							<v-carousel hide-delimiters
-								class="white--text align-end"
-							height="100px">
-									<v-carousel-item
-									 v-for="(item,i) in items"
-        :key="i"
-        :src="item.src"
-        reverse-transition="fade-transition"
-        transition="fade-transition"
+							
+							<v-img
+									class="white--text"
+									height="150px"
 									
-									></v-carousel-item>
-								</v-carousel>
-							
-							 <v-card-title class="justify-center">
-          <span class="body-1 font-weight-bold">Villas Antigua</span>
-        </v-card-title>
-							<v-divider class="mx-0 my-1"></v-divider>
-							<v-card-text class="pt-0">
-							
-								<div >
-
-                                  	<v-layout row wrap>
-										<v-flex sm6 d-flex justify-start>
-											<span class="subtitle-2 font-weight-bold mt-2">Q1000/mes</span>
-										</v-flex>
-										<v-flex sm6 d-flex justify-end>
-													<v-btn
-													color="primary"
-													icon
-													router to="/detail"
-													
-													>
-													<v-icon>mdi-alert-circle-outline</v-icon>
-													</v-btn>
-										</v-flex>
-                                  	</v-layout>
-                                </div>
-
+									:src="items[1].src"
+									gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
+					
+											<v-container fluid grid-list-md fill-height>
+												<v-layout row wrap>
+													<v-flex xs12 d-flex justify-start>
+															<v-chip
+															class="ma-2"
+															label
+															color="primary"
+															text-color="white"
+															x-small
+															>
+															RENT
+														</v-chip>
+														<v-chip
+															class="ma-2"
+															color="success"
+															label
+															text-color="white"
+															x-small
+															>
+															NEW
+														</v-chip>
+													</v-flex>
+												</v-layout>
+												<v-layout row wrap align-end>
+													<v-flex xs12 d-flex justify-end>
+														<span class="text-truncante text-right title">Q1000</span>
+														<!-- <v-btn icon color="white" class="mx-3">
+														<v-icon>mdi-share-variant</v-icon>
+														</v-btn>
+														<v-btn icon color="white">
+														<v-icon>mdi-heart-outline</v-icon>
+														</v-btn> -->
+													</v-flex>
+												</v-layout>
+											</v-container>
+									</v-img>
+							<v-card-title class="justify-left">
+								<span class="title">Villas Antigua</span>
 								
-						
-							</v-card-text>
-						
+							</v-card-title>
+							<v-card-text>
+										
+										2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1000 mts<sup>2</sup>
+										
+									</v-card-text>
 							
-						
-							
-						
+							<v-divider class="mx-4"></v-divider>
+									<v-card-actions>
+										<v-btn
+										color="primary lighten-2"
+										text
+										router to = "/detail"
+										>
+										MÁS INFORMACIÓN
+										</v-btn>
+									</v-card-actions>
 						</v-card>
-      </gmap-info-window>
+      				</gmap-info-window>
 
-      <gmap-marker :key="i" v-for="(m,i) in markers" :position="m.position" :clickable="true" @click="toggleInfoWindow(m,i)"></gmap-marker>
-    </gmap-map>
+				<gmap-marker :key="i" v-for="(m,i) in markers" :position="m.position" :clickable="true" @click="toggleInfoWindow(m,i)"></gmap-marker>
+			</gmap-map>
         </div>
       </section>
-        
    </div>
 </template>
 
@@ -292,14 +369,16 @@ export default {
   data() {
     return {
 		 items_select: ['foo', 'bar', 'fizz', 'buzz'],
-      value_select: ['foo', 'bar', 'fizz', 'buzz'],
+	  value_select: ['foo', 'bar', 'fizz', 'buzz'],
+	          ex4: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],
+
 		min: 100,
       max: 9000,
       slider: 5000,
 	  range: [200, 5000],
 	  value: 10,
         value2: [20, 40],
- 
+	dialog: false,
       loading: false,
       errored: false,
       properties: [],
@@ -318,6 +397,7 @@ export default {
                 currentMidx: null,
                 //optional: offset infowindow so it visually sits nicely on top of our marker
                 infoOptions: {
+					
                     pixelOffset: {
                     width: 0,
                     height: -35
@@ -366,13 +446,20 @@ export default {
 			{
 			src: '../assets/img/house4.jpg',
 		},
-      ],
+	  ],
+	  foo: 0,
     }
   },
   mounted() {
     this.fetchProperties()
   },
   methods: {
+	  increment () {
+      this.foo = parseInt(this.foo,10) + 1
+    },
+    decrement () {
+      this.foo = parseInt(this.foo,10) - 1
+    },
     toggleInfoWindow: function(marker, idx) {
             this.infoWindowPos = marker.position;
             this.infoContent = marker.infoText;
@@ -440,4 +527,17 @@ export default {
   }
 }
 </script>
+<style>
+.gm-style .gm-style-iw-d{
+	overflow: hidden!important;
+	
+}
 
+.gm-style .gm-style-iw-c{
+padding: 0px!important;
+}
+
+.gm-ui-hover-effect{
+	display: none!important;
+}
+</style>

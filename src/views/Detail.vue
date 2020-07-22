@@ -3,6 +3,18 @@
     
     <div>
 		<section id="title" >
+			<div v-if="loading" class="center-container">
+				<v-container fill-height>
+					<v-layout align-center justify-center>
+					<v-progress-circular
+						:size="48"
+						:width="4"
+						color="primary lighten-1"
+						indeterminate
+					></v-progress-circular>
+					</v-layout>
+				</v-container>
+			</div>
 			<v-container fill-height fluid px-8>
 				<v-row >
 					<v-col cols="12" md="8">
@@ -433,7 +445,7 @@
 			</v-container>
 			
 		</section>
-     
+     	<NewRecord v-if="isLoggedIn"></NewRecord>
      
      
       <v-overlay 
@@ -457,20 +469,18 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
 import Loader from '../components/Loader.vue'
 import SearchForm from '../components/SearchForm.vue'
 import DetailGallery from '../components/DetailGallery.vue'
 import ScheduleForm from  '../components/ScheduleForm.vue'
-
+import NewRecord from '../components/NewRecord.vue'
 export default {
 	components: {
-		Navbar,
 		Loader,
 		DetailGallery,
 		SearchForm,
-		ScheduleForm
+		ScheduleForm,
+		NewRecord
 	
 	},
 	data: () => ({
@@ -538,6 +548,9 @@ export default {
 		getUser : function(){ 
 			return this.$store.getters.getUser
 		},
+		isLoggedIn : function(){ 
+			return this.$store.getters.isLoggedIn
+			},
 	},
 	methods: {
 		 buildAmenityIcon(amenityName) {
