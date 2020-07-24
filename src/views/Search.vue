@@ -7,7 +7,7 @@
 			fluid 
 			grid-list-md 
 			class="px-2 ma-0" 
-			:style="{width: $vuetify.breakpoint.lgAndUp ? '50%' : '100%'}">
+			:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
 				<div v-if="loading" class="center-container">
 				<v-container fill-height>
 					<v-layout align-center justify-center>
@@ -35,15 +35,24 @@
 				</div>
 				<div v-else>
 					<v-container fluid grid-list-md fill-height>
+						
 						<v-layout row wrap align-end>
-							<v-flex xs12 d-flex justify-end>
-								<v-btn text v-on:click="dialog=true" style="float:right;">
-									<v-icon>mdi-cog</v-icon>	FILTROS
+							<v-flex xs6 md8 d-flex justify-start>
+							<span class="body-2">6 propiedades</span>
+								</v-flex>
+								<v-flex xs6 md4 d-flex justify-end>
+								<v-btn text v-on:click="dialog=true" style="float:right;" color="secondary">
+									<v-icon >mdi-cog</v-icon>	FILTROS
 								</v-btn>
 							</v-flex>
+							<v-flex xs12 md12 d-flex justify-start>
+								
+								<h3>Propiedades en Antigua Guatemala</h3>
+							</v-flex>
+							
 						</v-layout>
 					</v-container>
-					  <v-dialog v-model="dialog" persistent max-width="600px">
+					<v-dialog v-model="dialog" persistent max-width="600px">
 								<v-card>
 									<v-card-title>
 									<span class="headline">Filtros de Búsqueda</span>
@@ -91,10 +100,10 @@
 										<v-container fluid grid-list-md fill-height px-5>
 										
 											<v-layout row wrap>
-												<v-flex xs10 d-flex justify-start>
+												<v-flex xs6 md10 d-flex justify-start>
 													<span>Habitaciones</span>
 												</v-flex>
-												<v-flex xs2 d-flex justify-end>
+												<v-flex xs6 md2 d-flex justify-end>
 													<v-text-field 
 													v-model.number="foo" 
 													append-outer-icon="mdi-plus-circle-outline" 
@@ -103,10 +112,10 @@
 													@click:prepend="decrement">
 													</v-text-field>
 												</v-flex>
-												<v-flex xs10 d-flex justify-start>
+												<v-flex xs6 md10 d-flex justify-start>
 													<span>Baños</span>
 												</v-flex>
-												<v-flex xs2 d-flex justify-end>
+												<v-flex xs6 md2 d-flex justify-end>
 													<v-text-field 
 													v-model.number="foo" 
 													append-outer-icon="mdi-plus-circle-outline" 
@@ -212,14 +221,14 @@
 															<v-chip
 															class="ma-2"
 															label
-															color="primary"
+															color="secondary"
 															text-color="white"
 															>
 															RENT
 														</v-chip>
 														<v-chip
 															class="ma-2"
-															color="success"
+															color="primary"
 															label
 															text-color="white"
 															>
@@ -266,7 +275,7 @@
 									<v-divider class="mx-4"></v-divider>
 									<v-card-actions>
 										<v-btn
-										color="primary lighten-2"
+										color="secondary"
 										text
 										router to = "/detail"
 										>
@@ -301,7 +310,7 @@
 															<v-chip
 															class="ma-2"
 															label
-															color="primary"
+															color="secondary"
 															text-color="white"
 															x-small
 															>
@@ -309,7 +318,7 @@
 														</v-chip>
 														<v-chip
 															class="ma-2"
-															color="success"
+															color="primary"
 															label
 															text-color="white"
 															x-small
@@ -346,7 +355,7 @@
 							<v-divider class="mx-4"></v-divider>
 									<v-card-actions>
 										<v-btn
-										color="primary lighten-2"
+										color="secondary"
 										text
 										router to = "/detail"
 										>

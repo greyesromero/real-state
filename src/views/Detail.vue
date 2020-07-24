@@ -58,7 +58,7 @@
 						</v-card>
 					</v-flex>
 				</v-layout>
-				</v-container>
+			</v-container>
 			<v-container
 				fluid
 				grid-list-md
@@ -102,14 +102,14 @@
 								<v-chip
 								class="ma-2"
 								label
-								color="primary"
+								color="secondary"
 								text-color="white"
 								>
 								RENT
 							</v-chip>
 							<v-chip
 								class="ma-2"
-								color="success"
+								color="primary"
 								label
 								text-color="white"
 								>
@@ -119,7 +119,7 @@
 					</v-layout>
 					<v-layout row wrap align-end mx-5>
 						<v-flex xs12 d-flex justify-end>
-							<v-btn color="primary" class="white--text"  @click="toggleGallery">
+							<v-btn color="secondary" class="white--text"  @click="toggleGallery">
 							<v-icon small lef t>mdi-folder-multiple-image</v-icon>
 							Ver Galería
 							</v-btn>
@@ -155,13 +155,13 @@
 								class="ma-2"
 								label
 								text-color="white"
-								color="primary"
+								color="secondary"
 								>
 								RENT
 							</v-chip>
 							<v-chip
 								class="ma-2"
-								color="success"
+								color="primary"
 								label
 								text-color="white"
 								>
@@ -171,7 +171,7 @@
 					</v-layout>
 					<v-layout row wrap align-end pb-6>
 					<v-flex xs12 d-flex justify-end>
-						<v-btn color="primary" class="white--text">
+						<v-btn color="secondary" class="white--text">
 						<v-icon small left>mdi-folder-multiple-image</v-icon>
 						Ver Galería
 						</v-btn>
@@ -202,13 +202,13 @@
 										class="ma-2"
 										label
 										text-color="white"
-										color="primary"
+										color="secondary"
 										>
 										RENT
 									</v-chip>
 									<v-chip
 										class="ma-2"
-										color="success"
+										color="primary"
 										label
 										text-color="white"
 										>
@@ -344,7 +344,7 @@
                   <v-card-actions class="card-actions-absolute my-5">
                     <v-btn
                       text
-                      color="primary"
+                      color="secondary"
                       
                     > 
                       MÁS INFORMACIÓN
@@ -386,7 +386,7 @@
                   <v-card-actions class="card-actions-absolute my-5">
                     <v-btn
                       text
-                      color="primary"
+                      color="secondary"
                       
                     > 
                       MÁS INFORMACIÓN
@@ -428,7 +428,7 @@
                   <v-card-actions class="card-actions-absolute my-5">
                     <v-btn
                       text
-                      color="primary"
+                      color="secondary"
                       
                     > 
                       MÁS INFORMACIÓN

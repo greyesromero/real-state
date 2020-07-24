@@ -3,20 +3,20 @@
 	<v-speed-dial fixed bottom right >
 		<template v-slot:activator>
 			<v-btn color="primary " dark fab>
-				<v-icon>mdi-plus</v-icon>
+				<v-icon>mdi-tools</v-icon>
 			</v-btn>
 		</template>
 		<v-tooltip left color="black">
 			<template v-slot:activator="{ on }">
-				<v-btn color="secondary" v-on="on"  fab dark>
-			<v-icon>mdi-home-group</v-icon>
+				<v-btn color="primary" v-on="on"  fab dark>
+			<v-icon>mdi-trash-can-outline</v-icon>
 		</v-btn>
 			</template>
-			<span>Nueva Propiedad</span>
+			<span>Eliminar Propiedad</span>
 		</v-tooltip>
 		<v-tooltip color="black" left>
 			<template v-slot:activator="{ on }">
-				<v-btn color="secondary" v-on="on"  fab dark>
+				<v-btn color="primary" v-on="on"  fab dark>
 			<v-icon>mdi-square-edit-outline</v-icon>
 		</v-btn>
 			</template>
@@ -24,7 +24,7 @@
 		</v-tooltip>
 		<v-tooltip left color="black">
 			<template v-slot:activator="{ on }">
-				<v-btn color="secondary" v-on="on"  fab dark>
+				<v-btn color="primary" v-on="on"  fab dark>
 			<v-icon>mdi-image-multiple-outline</v-icon>
 		</v-btn>
 			</template>
