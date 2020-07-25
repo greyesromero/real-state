@@ -143,136 +143,8 @@
 
 	<v-row justify="center">
     <v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
-     
-      <v-card>
-        <v-toolbar dark color="primary">
-          <v-btn icon dark @click="dialog_fullscreen = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Nueva Propiedad</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn dark text @click="dialog_fullscreen = false">Guardar</v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-		<v-stepper v-model="e1" class="elevation-0">
-      <v-stepper-header class="elevation-0">
-        <v-stepper-step step="1" :complete="e1 > 1">Estado de la cita 1</v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step step="2" :complete="e1 > 2">Segundo estado de la cita</v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step step="3">Tercer estado</v-stepper-step>
-      </v-stepper-header>
-      <v-stepper-items >
-        <v-stepper-content step="1">
-          <v-card color="lighten-1" class="mb-5" height="200px" flat>
-            <ul>
-              <li>evento estado 1</li>
-              <li>evento estado 1</li>
-              <li>evento estado 1</li>
-              <li>evento estado 1</li>
-            </ul>
-          </v-card>
-          <v-container fluid grid-list-md fill-height>
-									
-							<v-layout row wrap align-end>
-								<v-flex xs6 d-flex justify-start>
-								
-									<v-btn
-									v-if="e1!=1"
-									color="primary"
-									@click="previewStep(e1)"
-									>
-									Anterior
-									</v-btn>
-								</v-flex>
-								<v-flex xs6 d-flex justify-end>
-									<v-btn
-										color="primary"
-										@click="nextStep(e1)"
-										>
-										Siguiente
-										</v-btn>
-									
-								</v-flex>
-								
-							</v-layout>
-						</v-container>
-        </v-stepper-content>
-        <v-stepper-content step="2">
-          <v-card color="lighten-1" class="mb-5" height="200px" flat>
-            <ul>
-              <li>evento estado 2</li>
-              <li>evento estado 2</li>
-              <li>evento estado 2</li>
-              <li>evento estado 2</li>
-            </ul>
-          </v-card>
-          <v-container fluid grid-list-md fill-height>
-									
-							<v-layout row wrap align-end>
-								<v-flex xs6 d-flex justify-start>
-								
-									<v-btn
-									v-if="e1!=1"
-									color="primary"
-									@click="previewStep(e1)"
-									>
-									Anterior
-									</v-btn>
-								</v-flex>
-								<v-flex xs6 d-flex justify-end>
-									<v-btn
-										color="primary"
-										@click="nextStep(e1)"
-										>
-										Siguiente
-										</v-btn>
-									
-								</v-flex>
-								
-							</v-layout>
-						</v-container>
-        </v-stepper-content>
-        <v-stepper-content step="3">
-          <v-card color="lighten-1" class="mb-5" height="200px" flat>
-            <ul>
-              <li>evento estado 3</li>
-              <li>evento estado 3</li>
-              <li>evento estado 3</li>
-              <li>evento estado 3</li>
-            </ul>
-          </v-card>
-          <v-container fluid grid-list-md fill-height>
-									
-							<v-layout row wrap align-end>
-								<v-flex xs6 d-flex justify-start>
-								
-									<v-btn
-									v-if="e1!=1"
-									color="primary"
-									@click="previewStep(e1)"
-									>
-									Anterior
-									</v-btn>
-								</v-flex>
-								<v-flex xs6 d-flex justify-end>
-									<v-btn
-										color="primary"
-										@click="nextStep(e1)"
-										>
-										Siguiente
-										</v-btn>
-									
-								</v-flex>
-								
-							</v-layout>
-						</v-container>
-        </v-stepper-content>
-      </v-stepper-items>
-    </v-stepper>
-	
-      </v-card>
+     <NewProperty v-on:closeDialog="closeDialog($event)"></NewProperty>
+      
     </v-dialog>
   </v-row>
 	
@@ -280,18 +152,18 @@
 </template>
 
 <script>
-
+import NewProperty from '../components/NewProperty.vue'
 	export default {
 		components: {
+			NewProperty
 		},
 		data: () => ({
 			drawer: false,
 			dialog_fullscreen:false,
-			e1: 1,
-			steps: 5,
 			vertical: false,
 			altLabels: false,
 			editable: true,
+		
 		
 		}),
 		computed : {
@@ -307,19 +179,8 @@
 		},
 		
 		methods: {
-			nextStep (n) {
-        		if (n === this.steps) {
-				this.e1 = 1
-				} else {
-				this.e1 = n + 1
-				}
-			},
-			previewStep (n) {
-        		if (n === this.steps) {
-				this.e1 = 1
-				} else {
-				this.e1 = n - 1
-				}
+			closeDialog(){
+				this.dialog_fullscreen = false
 			},
 			logout: function () {
 			this.$store.dispatch('logout')
@@ -337,7 +198,6 @@
 			}
 		},
 		mounted(){
-			console.log(this.getUser)
 		}
 	}
 </script>

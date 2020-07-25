@@ -222,9 +222,7 @@ export default {
 }
 
 
-.v-dialog--fullscreen{
-	height:330px!important;
-}
+
 
 .border-top{
 

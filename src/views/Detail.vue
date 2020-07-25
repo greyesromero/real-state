@@ -186,7 +186,7 @@
 				</v-container>
 				</v-img>
 			</v-container>
-      </section>
+      	</section>
 	  	<section id="slider_gallery"  class="d-flex d-sm-none">
 			<v-container>
 				<v-carousel hide-delimiters>
@@ -221,246 +221,231 @@
 				</v-carousel>
 			</v-container>
     	</section>
-	  <section class="container pt-12 grid-list-lg">
-        <v-layout row wrap :class="[$vuetify.breakpoint.smAndDown ? 'px-5' : '']">
-          <!-- LEFT SIDE -->
-          <v-flex xs12 md8>
-			  
-			<section>
-				<v-container px-0 grid-list-md>
-				
-                                   <h2 class="subtitle "  :class="[$vuetify.breakpoint.smAndDown ? 'mb-0' : 'mb-8']">Especificaciones</h2>
+		<section class="container pt-12 grid-list-lg">
+			<v-layout row wrap :class="[$vuetify.breakpoint.smAndDown ? 'px-5' : '']">
+				<!-- LEFT SIDE -->
+				<v-flex xs12 md8>
+					<section>
+						<v-container px-0 grid-list-md>
+						
+							<h2 class="subtitle "  :class="[$vuetify.breakpoint.smAndDown ? 'mb-0' : 'mb-8']">Especificaciones</h2>
 
-                <v-layout row wrap>
-                  <v-flex xs12 md4
-                  
-                  >
-                    <span class="font-weight-bold">
-                      <v-icon small left>mdi-bed</v-icon>
-                      2 Habitaciones
-                    </span>
-                  </v-flex>
-				   <v-flex xs12 md4
-                  
-                  >
-                    <span class="font-weight-bold">
-                      <v-icon small left>mdi-shower</v-icon>
-                      2 Baños
-                    </span>
-                  </v-flex>
-				   <v-flex xs12 md4
-                  
-                  >
-                    <span class="font-weight-bold">
-                      <v-icon small left>mdi-resize</v-icon>
-                      1200 m²
-                    </span>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-				<p class="body-1 letter-spacing-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore, tempora vitae ipsam optio rem excepturi reiciendis repellat assumenda deleniti, veritatis dicta dolor provident inventore accusamus repellendus aspernatur quaerat odit perspiciatis.</p> 
-		  	 </section>
-			   <section class="mt-12">
-              <h2 class="subtitle">Servicios</h2>
-              <v-container mt-6 px-0 grid-list-md>
-                <v-layout row wrap>
-                  <v-flex xs12 md6
-                    v-for="amenity in amenities"
-                    :key="amenity.id"
-                  >
-                    <span class="grey--text text--darken-1">
-                      <v-icon small left>mdi-{{buildAmenityIcon(amenity.amenity)}}</v-icon>
-                      {{ amenity.amenity }}
-                    </span>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-			  
-            </section>
-			<section class="mt-12 mb-12">
-              <h2 class="subtitle">Ubicación</h2>
-              <v-container mt-6 mb-6 px-0 grid-list-md>
-				
+							<v-layout row wrap>
+								<v-flex xs12 md4>
+									<span class="font-weight-bold">
+									<v-icon small left>mdi-bed</v-icon>
+									2 Habitaciones
+									</span>
+								</v-flex>
+								<v-flex xs12 md4>
+									<span class="font-weight-bold">
+										<v-icon small left>mdi-shower</v-icon>
+										2 Baños
+									</span>
+								</v-flex>
+								<v-flex xs12 md4>
+									<span class="font-weight-bold">
+									<v-icon small left>mdi-resize</v-icon>
+									1200 m²
+									</span>
+								</v-flex>
+							</v-layout>
+						</v-container>
+						<p class="body-1 letter-spacing-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore, tempora vitae ipsam optio rem excepturi reiciendis repellat assumenda deleniti, veritatis dicta dolor provident inventore accusamus repellendus aspernatur quaerat odit perspiciatis.</p> 
+					</section>
+					<section class="mt-12">
+					<h2 class="subtitle">Servicios</h2>
+						<v-container mt-6 px-0 grid-list-md>
+							<v-layout row wrap>
+								<v-flex xs12 md6
+									v-for="amenity in amenities"
+									:key="amenity.id"
+								>
+									<span class="grey--text text--darken-1">
+									<v-icon small left>mdi-{{buildAmenityIcon(amenity.amenity)}}</v-icon>
+									{{ amenity.amenity }}
+									</span>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					
+					</section>
+					<section class="mt-12 mb-12">
+						<h2 class="subtitle">Ubicación</h2>
+						<v-container mt-6 mb-6 px-0 grid-list-md>
+							<h2 class="grey--text subtitle-1"><v-icon left small>mdi-map-marker</v-icon> 6A Avenida A, Ciudad de Guatemala</h2>
+						</v-container>
+						<GmapMap :center="this.coordinates" :zoom="15" map-type-id="roadmap" style="width: auto; height: 300px">
+							<GmapMarker  color="secondary" :position="this.coordinates" />
+						</GmapMap>
+					</section>
+				</v-flex>
+				<!-- RIGHT SIDE -->
+				<v-flex xs12 md4>
+					<section>
+						<v-container grid-list-md pa-0 px-0>
+							<ScheduleForm />
+						</v-container>
+					</section>
 			
-				<h2 class="grey--text subtitle-1"><v-icon left small>mdi-map-marker</v-icon> 6A Avenida A, Ciudad de Guatemala</h2>
-
-			</v-container>
-			<GmapMap :center="this.coordinates" :zoom="15" map-type-id="roadmap" style="width: auto; height: 300px">
-				<GmapMarker  color="secondary" :position="this.coordinates" />
-			</GmapMap>
+				</v-flex>
+			</v-layout>
 		</section>
-		  </v-flex>
-          <!-- RIGHT SIDE -->
-           <v-flex xs12 md4>
-            <section>
-				<v-container grid-list-md pa-0 px-0>
-			    <ScheduleForm />
-			 </v-container>
-            
-            </section>
-           
-          </v-flex>
-        </v-layout>
-      </section>
-	 
-		 <section  class=" grey lighten-4">
+		
+		<section id="featured_properties" class=" grey lighten-4">
 				
 			<v-container px-0 grid-list-md py-10>
 				<h2 class="subtitle text-center mb-5">Casas Similares</h2>
-				 <v-container
-          fluid
-          grid-list-lg
-        >
-		
-          <v-layout row wrap>
-           <v-flex xs12 md4>
-             <v-card 
-				tile
-				
-              outlined
-			  >
-              <v-layout row wrap>
-                <v-flex xs12 sm6>
-                  <v-img
-                    class="white--text v-sheet"
-                    gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
-                    height="200px"
-                    :src="items[0].src">
-                    <v-container class="align-end fill-height">
-                      <span class="">Q 1000</span>
-                    </v-container>
-                  </v-img>
-                </v-flex>
-                <v-flex xs12 sm6 class="position-relative">
-                
-                  <v-card-title>
-                    <div class="text-truncate">Villas Antigua</div>
-                  </v-card-title>
-                  <v-card-text>
-                    2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                    1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                   1000 mts<sup>2</sup>
-                  </v-card-text>
-                  <v-card-actions class="card-actions-absolute my-5">
-                    <v-btn
-                      text
-                      color="secondary"
-                      
-                    > 
-                      MÁS INFORMACIÓN
-                    </v-btn>
-                   
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-            </v-card>
-            </v-flex>
-			<v-flex xs12 md4>
-              <v-card 
-				tile
-				
-              outlined
-			  >
-              <v-layout row wrap>
-                <v-flex xs12 sm6>
-                  <v-img
-                    class="white--text v-sheet"
-                    gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
-                    height="200px"
-                    :src="items[0].src">
-                    <v-container class="align-end fill-height">
-                      <span class="">Q 1000</span>
-                    </v-container>
-                  </v-img>
-                </v-flex>
-                <v-flex xs12 sm6 class="position-relative">
-                
-                  <v-card-title>
-                    <div class="text-truncate">Villas Antigua</div>
-                  </v-card-title>
-                  <v-card-text>
-                    2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                    1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                   1000 mts<sup>2</sup>
-                  </v-card-text>
-                  <v-card-actions class="card-actions-absolute my-5">
-                    <v-btn
-                      text
-                      color="secondary"
-                      
-                    > 
-                      MÁS INFORMACIÓN
-                    </v-btn>
-                   
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-            </v-card>
-            </v-flex>
-			<v-flex xs12 md4>
-              <v-card 
-				tile
-				
-              outlined
-			  >
-              <v-layout row wrap>
-                <v-flex xs12 sm6>
-                  <v-img
-                    class="white--text v-sheet"
-                    gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
-                    height="200px"
-                    :src="items[0].src">
-                    <v-container class="align-end fill-height">
-                      <span class="">Q 1000</span>
-                    </v-container>
-                  </v-img>
-                </v-flex>
-                <v-flex xs12 sm6 class="position-relative">
-                
-                  <v-card-title>
-                    <div class="text-truncate">Villas Antigua</div>
-                  </v-card-title>
-                  <v-card-text>
-                    2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                    1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-                   1000 mts<sup>2</sup>
-                  </v-card-text>
-                  <v-card-actions class="card-actions-absolute my-5">
-                    <v-btn
-                      text
-                      color="secondary"
-                      
-                    > 
-                      MÁS INFORMACIÓN
-                    </v-btn>
-                   
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-            </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-
+				<v-container
+					fluid
+					grid-list-lg
+					>
+          			<v-layout row wrap>
+						<v-flex xs12 md4>
+							<v-card 
+								tile
+								
+							outlined
+							>
+              					<v-layout row wrap>
+									<v-flex xs12 sm6>
+										<v-img
+											class="white--text v-sheet"
+											gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
+											height="200px"
+											:src="items[0].src">
+											<v-container class="align-end fill-height">
+											<span class="">Q 1000</span>
+											</v-container>
+										</v-img>
+									</v-flex>
+									<v-flex xs12 sm6 class="position-relative">
+								
+										<v-card-title>
+											<div class="text-truncate">Villas Antigua</div>
+										</v-card-title>
+										<v-card-text>
+											2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+											1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1000 mts<sup>2</sup>
+										</v-card-text>
+										<v-card-actions class="card-actions-absolute my-5">
+											<v-btn
+											text
+											color="secondary"
+											
+											> 
+											MÁS INFORMACIÓN
+											</v-btn>
+										
+										</v-card-actions>
+									</v-flex>
+								</v-layout>
+							</v-card>
+						</v-flex>
+						<v-flex xs12 md4>
+							<v-card 
+								tile
+								
+							outlined
+							>
+              					<v-layout row wrap>
+									<v-flex xs12 sm6>
+										<v-img
+											class="white--text v-sheet"
+											gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
+											height="200px"
+											:src="items[0].src">
+											<v-container class="align-end fill-height">
+											<span class="">Q 1000</span>
+											</v-container>
+										</v-img>
+									</v-flex>
+									<v-flex xs12 sm6 class="position-relative">
+								
+										<v-card-title>
+											<div class="text-truncate">Villas Antigua</div>
+										</v-card-title>
+										<v-card-text>
+											2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+											1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1000 mts<sup>2</sup>
+										</v-card-text>
+										<v-card-actions class="card-actions-absolute my-5">
+											<v-btn
+											text
+											color="secondary"
+											
+											> 
+											MÁS INFORMACIÓN
+											</v-btn>
+										
+										</v-card-actions>
+									</v-flex>
+								</v-layout>
+							</v-card>
+						</v-flex>
+						<v-flex xs12 md4>
+							<v-card 
+								tile
+								
+							outlined
+							>
+              					<v-layout row wrap>
+									<v-flex xs12 sm6>
+										<v-img
+											class="white--text v-sheet"
+											gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)"
+											height="200px"
+											:src="items[0].src">
+											<v-container class="align-end fill-height">
+											<span class="">Q 1000</span>
+											</v-container>
+										</v-img>
+									</v-flex>
+									<v-flex xs12 sm6 class="position-relative">
+								
+										<v-card-title>
+											<div class="text-truncate">Villas Antigua</div>
+										</v-card-title>
+										<v-card-text>
+											2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+											1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										1000 mts<sup>2</sup>
+										</v-card-text>
+										<v-card-actions class="card-actions-absolute my-5">
+											<v-btn
+											text
+											color="secondary"
+											
+											> 
+											MÁS INFORMACIÓN
+											</v-btn>
+										
+										</v-card-actions>
+									</v-flex>
+								</v-layout>
+							</v-card>
+						</v-flex>
+					</v-layout>
+       			</v-container>
 			</v-container>
 			
 		</section>
      	<NewRecord v-if="isLoggedIn"></NewRecord>
-     
-     
-      <v-overlay 
-        :value="galleryDialog"
-        color="white"
-        :dark="false"
-        opacity="0.9"
-        class="h-100"
-      >
-        <DetailGallery 
-          v-if="galleryDialog"
-          :property="property"
-          @close-gallery="toggleGallery"
-        />
-      </v-overlay>
+		<v-overlay 
+			:value="galleryDialog"
+			color="white"
+			:dark="false"
+			opacity="0.9"
+			class="h-100"
+		>
+			<DetailGallery 
+			v-if="galleryDialog"
+			:property="property"
+			@close-gallery="toggleGallery"
+			/>
+		</v-overlay>
       
     </div>
  
@@ -480,8 +465,7 @@ export default {
 		DetailGallery,
 		SearchForm,
 		ScheduleForm,
-		NewRecord
-	
+		NewRecord	
 	},
 	data: () => ({
 		galleryDialog: false,
@@ -491,58 +475,33 @@ export default {
 					lat: 14.6349,
 					lng: -90.5069,
 				},
-		icons: [{
-			icon: 'mdi-facebook',
-			url:'https://www.facebook.com/choosemyfitness/'
-		},
-		{
-			icon: 'mdi-instagram',
-			url:'https://www.instagram.com/choosemyfitness/'
-		}],
-	toggle_exclusive: 0,
-	items: [
-		{
-			src: '../assets/img/house5.jpg',
-		},
-		{
-			src: '../assets/img/house2.jpg',
-		},
+		toggle_exclusive: 0,
+		items: [
 			{
-			src: '../assets/img/house4.jpg',
-		},
-	
+				src: '../assets/img/house5.jpg',
+			},
+			{
+				src: '../assets/img/house2.jpg',
+			},
+				{
+				src: '../assets/img/house4.jpg',
+			},
+		
 		],
-	 amenities: [
-          {
-            id: 1,
-            amenity: 'Aire acondicionado'
-          },
-          {
-            id: 2,
-            amenity: 'Televisión'
-          },
-          {
-            id: 3,
-            amenity: 'Lavamanos'
-          }
+		amenities: [
+			{
+				id: 1,
+				amenity: 'Aire acondicionado'
+			},
+			{
+				id: 2,
+				amenity: 'Televisión'
+			},
+			{
+				id: 3,
+				amenity: 'Lavamanos'
+			}
         ],
-		features: [
-		{
-			icon: 'mdi-map-marker-radius',
-			title: 'Encuentra una casa',
-			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
-		},
-		{
-			icon: 'mdi-calendar-clock',
-			title: 'Agenda una cita',
-			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
-		},
-		{
-			icon: 'mdi-home-city-outline',
-			title: 'Conoce el barrio',
-			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
-		},
-		],
 	}),
 	computed: {
 		getUser : function(){ 
@@ -550,24 +509,24 @@ export default {
 		},
 		isLoggedIn : function(){ 
 			return this.$store.getters.isLoggedIn
-			},
+		},
 	},
 	methods: {
 		 buildAmenityIcon(amenityName) {
-      switch (amenityName) {
-        case 'Aire acondicionado':
-          return 'air-conditioner'
-        case 'Televisión':
-          return 'television'
-        case 'Lavamanos':
-          return 'hand'
-        case 'Estufa':
-          return 'stove'
-        case 'Tina':
-          return 'hot-tub'
-      }
-    },
-		 toggleGallery() {
+			switch (amenityName) {
+				case 'Aire acondicionado':
+				return 'air-conditioner'
+				case 'Televisión':
+				return 'television'
+				case 'Lavamanos':
+				return 'hand'
+				case 'Estufa':
+				return 'stove'
+				case 'Tina':
+				return 'hot-tub'
+			}
+		},
+		toggleGallery() {
 			const $html = document.body.parentElement;
 
 			if (this.galleryDialog) {
