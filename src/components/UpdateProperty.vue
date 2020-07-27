@@ -5,7 +5,7 @@
 			<v-btn icon dark @click="closeDialog()">
 				<v-icon>mdi-close</v-icon>
 			</v-btn>
-			<v-toolbar-title>Nueva Propiedad</v-toolbar-title>
+			<v-toolbar-title>Editar Propiedad</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
 				<v-btn dark text @click="closeDialog()">Guardar</v-btn>
@@ -13,8 +13,7 @@
 			</v-toolbar>
 			<v-stepper v-model="e1" class="elevation-0">
 		<v-stepper-header class="elevation-0">
-				<v-stepper-step step="1" :complete="e1 > 1">Nueva Propiedad</v-stepper-step>
-				<v-divider></v-divider>
+				
 				<v-stepper-step step="2" :complete="e1 > 2">Ubicación</v-stepper-step>
 				<v-divider></v-divider>
 				<v-stepper-step step="3" :complete="e1 > 3">Servicios</v-stepper-step>
@@ -618,8 +617,8 @@
 		data: () => ({
 			        ex4: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],
 
-			 rules: [v => v.length <= 50 || 'Max 50 caracteres'],
-			e1: 1,
+			 rules_update: [v => v.length <= 50 || 'Max 50 caracteres'],
+			e1: 2,
 			steps: 9,
 			 foo: 0,
 			vertical: false,
@@ -691,7 +690,7 @@
       this.foo = parseInt(this.foo,10) - 1
     },
 			closeDialog(){
-				this.e1 = 1
+				this.e1 = 2
 				this.$emit('closeDialog')
 			},
 			updateCenter(latLng) {

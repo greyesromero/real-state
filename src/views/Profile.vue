@@ -1,10 +1,9 @@
 <template>
 <div>
 	<Loader :visible="loading" />
-<Navbar></Navbar>
- <v-content>
-			<section id="about-me" style="background:#fff !important">
-				<div class="py-12"></div>
+
+ <section id="about-me" style="background:#fff !important">
+				<div class="py-6"></div>
 				<v-container class="text-center">
 					<h1 class="headline secondary--text font-weight-bold bold mt-3 mb-3">Mi Perfil</h1>
 					<v-row>
@@ -34,7 +33,6 @@
 									</v-avatar>
 									<v-card-text class="text-xs-center" v-if="this.getUser">
 									<h3 class="card-title mb-3 "> {{this.getUser.first_name}} {{this.getUser.last_name}}</h3>
-									<h4 class="text-gray mb-3  font-weight-light" v-if="this.getUser.active"><v-icon  color="yellow">mdi-star</v-icon>Membresía Activa</h4>
 
 									<!-- Profile Picture -->
 									<v-dialog v-model="image_dialog" max-width="500" persistent>
@@ -124,7 +122,6 @@
 
 				<div class="py-12"></div>
 			</section>
-    	</v-content>
 
 </div>
 </template>

@@ -65,6 +65,42 @@ let router = new Router({
 			component: () => import( /* webpackChunkName: "about" */ './views/Search.vue'),
 			
 		},
+		{
+			path: '/my-properties',
+			name: 'my-properties',
+			// route level code-splitting
+			// this generates a separate chunk (about.[hash].js) for this route
+			// which is lazy-loaded when the route is visited.
+			component: () => import( /* webpackChunkName: "about" */ './views/MyProperties.vue'),
+			meta: { 
+				requiresAuth: true
+			}
+			
+		},
+		{
+			path: '/my-appointments',
+			name: 'my-appointments',
+			// route level code-splitting
+			// this generates a separate chunk (about.[hash].js) for this route
+			// which is lazy-loaded when the route is visited.
+			component: () => import( /* webpackChunkName: "about" */ './views/MyAppointments.vue'),
+			meta: { 
+				requiresAuth: true
+			}
+			
+		},
+		{
+			path: '/profile',
+			name: 'profile',
+			// route level code-splitting
+			// this generates a separate chunk (about.[hash].js) for this route
+			// which is lazy-loaded when the route is visited.
+			component: () => import( /* webpackChunkName: "about" */ './views/Profile.vue'),
+			meta: { 
+				requiresAuth: true
+			}
+			
+		},
 	]
 })
 

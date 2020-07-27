@@ -377,6 +377,8 @@ export default {
   name: 'search-page',
   data() {
     return {
+		        ex4: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],
+
 		 items_select: ['foo', 'bar', 'fizz', 'buzz'],
 	  value_select: ['foo', 'bar', 'fizz', 'buzz'],
 	          ex4: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],

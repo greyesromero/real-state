@@ -60,14 +60,14 @@
 						</v-list-item-icon>
 					<v-list-item-title>Mi Perfil</v-list-item-title>
 					</v-list-item>
-					<v-list-item to="/">
+					<v-list-item to="/my-properties">
 						<v-list-item-icon>
 							<v-icon>mdi-home-group</v-icon>
 						</v-list-item-icon>
 					<v-list-item-title>Mis Propiedades</v-list-item-title>
 					</v-list-item>
 				
-					<v-list-item to="/">
+					<v-list-item to="/my-appointments">
 						<v-list-item-icon>
 							<v-icon>mdi-calendar</v-icon>
 						</v-list-item-icon>
