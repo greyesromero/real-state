@@ -1,15 +1,50 @@
 <template>
 	<div>
-		<Loader :visible="loading" />
-		<section id="appointments" v-if="properties" >
 		
-			<v-container fill-height fluid px-8>
+		<section id="appointments" >
+			<v-container 
+				v-if="loading"
+				fluid 
+				grid-list-md 
+				class="px-2 ma-0" 
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				<div  class="center-container">
+					<v-container fill-height>
+						<v-layout align-center justify-center>
+						<v-progress-circular
+							:size="48"
+							:width="4"
+							color="primary lighten-1"
+							indeterminate
+						></v-progress-circular>
+						</v-layout>
+					</v-container>
+				</div>
+			</v-container>
+			<v-container  v-if="properties" fill-height px-8>
 				
 				<v-row>
 						<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
 								<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: 1</h2>
 										
-									<v-spacer></v-spacer>
+								<v-spacer></v-spacer>
+								<span>
+									<v-menu bottom right >
+										<template v-slot:activator="{ on }">
+											<v-btn outlined v-on="on">
+												
+												<span >{{ filters[selected_filter]['value']}}</span>
+												<v-icon right>mdi-menu-down</v-icon>
+											</v-btn>
+										</template>
+										
+										<v-list>
+											<v-list-item  v-for="(filter, index) in filters" :key="index"  @click.native="selectFilter(index)">
+												<v-list-item-title>{{ filter['value'] }}</v-list-item-title>
+											</v-list-item>
+										</v-list>
+									</v-menu>
+								</span>
 								
 									
 									
@@ -43,10 +78,8 @@
 <script>
 import axios from 'axios'
 import Appointment from '../components/Appointment.vue'
-import Loader from '../components/Loader.vue'
 export default {
 	components: {
-		Loader,
 		Appointment
 	},
 	data: () => ({
@@ -54,7 +87,20 @@ export default {
 		selected_gym:0,
 		search: '',
 		array_providers:[],
-		loading: false
+		selected_filter: 0,
+		loading: false,
+		filters:[{
+			id: 1,
+			value: 'Todos'
+		},
+		{
+			id: 2,
+			value: 'Pasadas'
+		},
+		{
+			id: 3,
+			value: 'Pendientes'
+		}]
 	
 	}),
 	computed: {
@@ -83,6 +129,11 @@ export default {
 		},
 		updateStatus(data){
 			this.array_providers[data.index].active = data.state
+		},
+		selectFilter(index) {
+			this.selected_filter = index;	
+		
+		
 		},
 	},
 	created() {

@@ -32,9 +32,7 @@
 										<v-btn>
 											Venta
 										</v-btn>
-										<v-btn>
-											Compra
-										</v-btn>
+										
 											
 									</v-btn-toggle>
 								</v-row>
@@ -132,54 +130,91 @@
           :key="n"
           v-slot:default="{ active, toggle }"
         >
-        <v-card
-							:loading="loading"
+			<v-card
+				:loading="loading"
+				:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-12' : 'mx-5 my-12']"
+				:style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '225px'}"
+				
+				>
+					
+					<v-carousel hide-delimiters
+					class="white--text align-end"
+					height="175px">
+						<v-carousel-item
+						v-for="(item,i) in items"
+						:key="i"
+						:src="item.src"
+						
+						gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
+	
+							<v-container fluid grid-list-md fill-height>
+								<v-layout row wrap>
+									<v-flex xs12 d-flex justify-start>
+											<v-chip
+											class="ma-2"
+											label
+											color="secondary"
+											text-color="white"
+											>
+											RENT
+										</v-chip>
+										<v-chip
+											class="ma-2"
+											color="primary"
+											label
+											text-color="white"
+											>
+											NEW
+										</v-chip>
+									</v-flex>
+								</v-layout>
+								<v-layout row wrap align-end>
+									<v-flex xs12 d-flex justify-end>
+										<span class="text-truncante text-right title">Q1000</span>
+										<!-- <v-btn icon color="white" class="mx-3">
+										<v-icon>mdi-share-variant</v-icon>
+										</v-btn>
+										<v-btn icon color="white">
+										<v-icon>mdi-heart-outline</v-icon>
+										</v-btn> -->
+									</v-flex>
+								</v-layout>
+							</v-container>
+						</v-carousel-item>
+					</v-carousel>
+		
+					<v-card-title>
+						<div class="text-truncate">Villas Antigua</div>
+					</v-card-title>
+					<v-card-text>
+						2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+						1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+						1000 mts<sup>2</sup>
+						<div>
+							<v-chip-group
 							
-							:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-12' : 'mx-5 my-12']"
-							 :style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '225px'}"
+							column
 							>
-							<v-img
-							class="white--text align-end"
-							height="200px"
-							src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-							>
-							<v-card-title>Antigua Guatemala</v-card-title>
-							</v-img>
+								<v-chip   small>WIFI</v-chip>
+								<v-chip   small>Mascotas</v-chip>
+								<v-chip   small>Limpieza</v-chip>
+								<v-chip   small>A/C</v-chip>
+							</v-chip-group>
+						</div>
 						
-							<v-card-text>
-								<v-row
-								align="center"
-								class="mx-0"
-								>
-								<v-rating
-									:value="4.5"
-									color="amber"
-									dense
-									half-increments
-									readonly
-									size="14"
-								></v-rating>
-						
-								<div class="grey--text ml-4">4.5 (413)</div>
-								</v-row>
-						
-								<div class="mt-2">Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
-							</v-card-text>
-						
-							<v-divider class="mx-4"></v-divider>
-						
-							
-						
-							<v-card-actions>
-								<v-btn
-								color="primary lighten-2"
-								text
-								router to = "/detail"
-								>
-								VER MÁS
-								</v-btn>
-							</v-card-actions>
-						</v-card>
+					</v-card-text>
+		
+					<v-divider class="mx-4"></v-divider>
+					<v-card-actions>
+						<v-btn
+						color="secondary"
+						text
+						router to = "/detail"
+						>
+						MÁS INFORMACIÓN
+						</v-btn>
+					</v-card-actions>
+			</v-card>
         </v-slide-item>
       </v-slide-group>
 			</v-container>
@@ -310,19 +345,15 @@ export default {
 		}],
 	toggle_exclusive: 0,
 	items: [
-		{
-			src: '../assets/Galeria/3x/g1@3x.png',
+        {
+			src: '../assets/img/house5.jpg',
 		},
 		{
-			src: '../assets/Galeria/3x/g2@3x.png',
+			src: '../assets/img/house2.jpg',
 		},
-		{
-			src: '../assets/Galeria/3x/g3@3x.png',
-		},
-		{
-			src: '../assets/Galeria/3x/g4@3x.png',
-		},
-		],
+			{
+			src: '../assets/img/house4.jpg',
+		}],
 		stats: [{
 			name:'yoga',
 			image:'yoga'

@@ -19,7 +19,7 @@
 									<!--v-text-field type="password" v-model.lazy="password" outlined color="cyan darken-3" label="Contraseña"></v-text-field-->
 								</v-form>
 								<div class="mb-2">
-									<a href="#" class="primary--text">¿Olvidaste tu contraseña?</a>
+									<a href="#" @click="visible = true, login_button= true, token_button = false" class="primary--text">Ya tengo token</a>
 								</div>
 								
 							</v-card-text>
@@ -30,14 +30,7 @@
 								<v-btn tile color="secondary" @click="register" class="font-weight-bold text-none pl-5 pr-5">Registrarse</v-btn>
 						
 							</v-card-actions>
-							<v-card-actions class="align-self-center align-content-center justify-center center align-center">
-
-								<template>
-
-										<v-btn text @click="visible = true, login_button= true, token_button = false">Ya tengo token</v-btn>
-									</template>
 							
-							</v-card-actions>
 						</v-card>
 					</v-col>
 				</v-row>

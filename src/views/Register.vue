@@ -5,7 +5,7 @@
 			<section style="background:#ffffff !important">
 				<v-container fluid>	
 					<v-row justify="center">
-						<v-col cols="12" md="6" xs="12">
+						<v-col cols="12" md="4" xs="12">
 							<v-card :loading="loading" class="mx-auto" min-width="345" tile flat>
 							
 								<v-card-text class="pb-0">
@@ -20,8 +20,8 @@
 									
 								</v-card-text>
 								<v-card-actions class="align-self-center align-content-center justify-center center align-center">
-									
-									<v-btn @click="register" tile color="primary" class="font-weight-bold text-none pl-10 pr-10" large>Registrarse</v-btn>
+									<v-btn tile color="secondary" @click="register" class="font-weight-bold text-none pl-5 pr-5">Registrarse</v-btn>
+
 								</v-card-actions>
 							</v-card>
 						</v-col>

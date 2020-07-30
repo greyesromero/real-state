@@ -1,9 +1,26 @@
 <template>
 	<div>
-		<Loader :visible="loading" />
-		<section id="properties" v-if="properties" >
-		
-			<v-container fill-height fluid px-8>
+		<section id="properties">
+		<v-container 
+				v-if="loading"
+				fluid 
+				grid-list-md 
+				class="px-2 ma-0" 
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				<div  class="center-container">
+					<v-container fill-height>
+						<v-layout align-center justify-center>
+						<v-progress-circular
+							:size="48"
+							:width="4"
+							color="primary lighten-1"
+							indeterminate
+						></v-progress-circular>
+						</v-layout>
+					</v-container>
+				</div>
+			</v-container>
+			<v-container v-if="properties" fill-height px-8>
 				
 				<v-row>
 						<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
@@ -44,10 +61,8 @@
 <script>
 import axios from 'axios'
 import PropertyList from '../components/PropertyList.vue'
-import Loader from '../components/Loader.vue'
 export default {
 	components: {
-		Loader,
 		PropertyList
 	},
 	data: () => ({
