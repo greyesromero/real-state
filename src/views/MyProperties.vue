@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<section id="properties">
-		<v-container 
+			<v-container 
 				v-if="loading"
 				fluid 
 				grid-list-md 
@@ -21,16 +21,11 @@
 				</div>
 			</v-container>
 			<v-container v-if="properties" fill-height px-8>
-				
 				<v-row>
-						<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
-								<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: 1</h2>
-										
-									<v-spacer></v-spacer>
-								
-									
-									
-								</v-toolbar>
+					<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+						<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{filteredProperties.length}} </h2>
+						<v-spacer></v-spacer>
+					</v-toolbar>
 					<!-- Info General -->
 					<v-col cols="12">
 						<v-toolbar class="mb-3">
@@ -45,17 +40,17 @@
 						</v-toolbar>
 						<v-layout >
 							<v-container fluid grid-list-xl class="pa-0">
-							
-									<PropertyList  v-on:updateStatus="updateStatus($event)">
+								<v-layout v-if="filteredProperties.length>0" row wrap>
+									<PropertyList v-for="(property, index) in filteredProperties" :property="property" :index="index"  v-on:createPayment="createPayment($event)">
 									</PropertyList>
-							
+								</v-layout>
 							</v-container>
 						</v-layout>
 					</v-col>
 				</v-row>
 			</v-container>
 		</section>
-</div>
+	</div>
 </template>
 
 <script>
@@ -69,17 +64,18 @@ export default {
 		properties: true,
 		selected_gym:0,
 		search: '',
-		array_providers:[],
-		loading: false
+		properties:[],
+		loading: false,
+		payment: []
 	
 	}),
 	computed: {
 
-		filteredProviders: function() {
-			let filtered = this.array_providers;
+		filteredProperties: function() {
+			let filtered = this.properties;
 			if (this.search) {
-				filtered = this.array_providers.filter(
-				m => m.name.toLowerCase().indexOf(this.search) > -1
+				filtered = this.properties.filter(
+				m => m.title.toLowerCase().indexOf(this.search) > -1
 				);
 			}
 
@@ -91,14 +87,70 @@ export default {
 	methods: {
 		
 		sortBy(prop) {
-			this.array_providers.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
-		},
-		createProvider(data) {
-			this.array_providers.push(data);
-			
+			this.properties.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
 		},
 		updateStatus(data){
-			this.array_providers[data.index].active = data.state
+			this.properties[data.index].active = data.state
+		},
+		//PAYMENT METHODS
+		createPayment(data) {
+			this.payment.push({
+				card_holder: data.card_holder,
+				credit_card_token: data.credit_card_token.substring(15,19),
+				cvv: data.cvv,
+				type: data.type,
+				card_date: data.card_date,
+				tin: '',
+				address: '',
+				invoice_name: ''
+			})
+			
+			this.$store.dispatch('updatePayment', this.payment)
+			
+			/*this.$store.commit('changeLoadingState', true)
+			axios.patch('https://gudker-api.herokuapp.com/api/staff/'+this.doctor_id+'/',{
+				tin: data.tin,
+				credit_card_token:  data.credit_card_token.substring(15,19),
+				address: data.address
+			})
+			.then(response => {
+				this.payment.push({
+					card_holder: data.card_holder,
+					card_number: data.credit_card_token.substring(15,19),
+					cvv: data.cvv,
+					type: data.type,
+					card_date: data.card_date,
+					tin: data.tin,
+					address: data.address
+				});
+				
+				this.$store.commit('changeLoadingState', false)
+			})
+			.catch(error => {
+				this.$store.commit('changeLoadingState', false)
+				console.log(error);
+			})*/
+			
+			
+		},
+		deletePayment(index) {
+		this.payment.splice(index, 1);
+			/*this.$store.commit('changeLoadingState', true)
+			axios.patch('https://gudker-api.herokuapp.com/api/staff/'+this.doctor_id+'/',{
+				tin: null,
+				credit_card_token:  null,
+				address: null
+			})
+			.then(response => {
+				this.payment.splice(index, 1);
+				
+				this.$store.commit('changeLoadingState', false)
+			})
+			.catch(error => {
+				this.$store.commit('changeLoadingState', false)
+				console.log(error);
+			})*/
+			
 		},
 	},
 	created() {
@@ -106,7 +158,12 @@ export default {
 
 	},
 	mounted () {
-		
+		this.properties.push({
+			image: '../assets/img/house4.jpg',
+			title: ' Casa Deluxe en Antigua Guatemala',
+			date: '2020-08-05',
+			status: false
+		})
 	}
 }
 </script>

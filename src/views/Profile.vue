@@ -116,8 +116,8 @@
 							<!-- Métodos de Pago -->
 								<v-tab-item  class="mb-10">
 									<!--  Métodos de Pago -->
-									<EmptyPayment v-if="this.payment.length == 0" v-on:createPayment="createPayment($event)"></EmptyPayment>
-									<Payment v-for="(payment, index) in this.payment" v-if="payment['credit_card_token'] != '' || payment['credit_card_token'] != null" :payment="payment" :index="index" v-on:deletePayment="deletePayment($event)"></Payment>
+									<EmptyPayment v-on:createPayment="createPayment($event)"></EmptyPayment>"
+									<Payment v-for="(payment, index) in payment_options" v-if="payment_options.length>0" :payment="payment" :index="index" v-on:deletePayment="deletePayment($event)"></Payment>
 									<!--  Factura -->
 									
 
@@ -176,7 +176,9 @@ export default {
 		load: false,
 		valid: true,
 		lazy:false,
-		suscribed: false
+		suscribed: false,
+		payment_options: [],
+		counter: 2
 		
 		
 	}),
@@ -253,15 +255,20 @@ export default {
 		},
 		//PAYMENT METHODS
 		createPayment(data) {
-			this.payment.push({
+			this.payment_options.push({
+				id: this.counter++,
 				card_holder: data.card_holder,
 				credit_card_token: data.credit_card_token.substring(15,19),
 				cvv: data.cvv,
 				type: data.type,
 				card_date: data.card_date,
 				tin: data.tin,
-				address: data.address
+				address: data.address,
+				invoice_name: ''
 			})
+			
+			this.$store.dispatch('updatePayment', this.payment_options)
+			
 			/*this.$store.commit('changeLoadingState', true)
 			axios.patch('https://gudker-api.herokuapp.com/api/staff/'+this.doctor_id+'/',{
 				tin: data.tin,
@@ -289,7 +296,7 @@ export default {
 			
 		},
 		deletePayment(index) {
-		this.payment.splice(index, 1);
+		this.payment_options.splice(index, 1);
 			/*this.$store.commit('changeLoadingState', true)
 			axios.patch('https://gudker-api.herokuapp.com/api/staff/'+this.doctor_id+'/',{
 				tin: null,
@@ -315,6 +322,7 @@ export default {
 		this.subscription = this.getUser.active
 		this.gender = this.getUser.gender
 		this.email = this.getUser.email
+		this.payment_options = this.getUser.payment_options
 			
 	}
 }

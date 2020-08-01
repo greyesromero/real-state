@@ -1,76 +1,187 @@
 <template>
-<v-card class="mb-3">
+	<v-flex xs12  py-2>
+		<v-card>
 	 
-	<!-- APPOINTMENT -->
-	<v-list-item class="colored_border">
-		<v-list-item-avatar color="primary">
-				<img class="profile-picture" :src="'../assets/img/house4.jpg'" alt="alt" lazy-src="../assets/logo.png">
-		</v-list-item-avatar>
-		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular"> Casa Deluxe en Antigua Guatemala </v-list-item-title>
-			<v-list-item-subtitle  class="font-weight-regular">Disponible a partir de {{moment().locale('es').format("D [de] MMMM [de] YYYY")}}</v-list-item-subtitle>
+			<!-- APPOINTMENT -->
+			<v-list-item class="colored_border">
+				<v-list-item-avatar color="primary">
+						<img class="profile-picture" :src="property.image" alt="alt" lazy-src="../assets/logo.png">
+				</v-list-item-avatar>
+				<v-list-item-content>
+					<v-list-item-title class="title font-weight-regular"> {{property.title}}</v-list-item-title>
+					<v-list-item-subtitle  class="font-weight-regular">Disponible a partir de {{moment(property.date).locale('es').format("D [de] MMMM [de] YYYY")}}</v-list-item-subtitle>
 
-		</v-list-item-content>
-		
-		
-		
-		<v-list-item-icon class="justify-center align-self-center">
-			<v-btn color="cyan darken-4" icon :to="`/detail/`">
-					<v-icon>mdi-square-edit-outline</v-icon>
-				</v-btn>
-
-			<!-- Delete -->
-				<v-dialog v-model="delete_dialog" max-width="500" persistent>
-					<template v-slot:activator="{on}">
-						<v-btn color="primary" icon v-on="on">
-							<v-icon>mdi-trash-can</v-icon>
-						</v-btn>
-					</template>
-					<v-card :loading="loading">
-						<v-card-title class="headline" primary-title>
-							¿Seguro que deseas borrar el registro?
-						</v-card-title>
-						<v-card-text>
-							Esta acción es permanente.
-						</v-card-text>
-						<v-card-actions>
-							<div class="flex-grow-1"></div>
-							<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
-							<v-btn  @click="delete_dialog = false" color="primary" dark>
-								<v-icon left>mdi-trash-can</v-icon>
-								Borrar
+				</v-list-item-content>
+				
+				
+				
+				<v-list-item-icon class="justify-center align-self-center">
+					<!-- Publish -->
+					<v-dialog v-model="publish_dialog" max-width="500" persistent>
+						<template v-slot:activator="{on}">
+							<v-btn color="primary" icon v-on="on">
+								<v-icon>mdi-bell-plus</v-icon>
 							</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-dialog>
-		</v-list-item-icon>
-		<!-- ACTIONS -->
-		
-		
+						</template>
+						<v-card :loading="loading">
+							 <v-toolbar style="box-shadow:none!important;">
 
-		
-	</v-list-item>
+							<v-toolbar-title class="headline" primary-title>Publicar Propiedad</v-toolbar-title>
 
-</v-card>
+							<v-spacer></v-spacer>
+
+							<EmptyCard class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
+							
+					 </v-toolbar>
+				
+
+					<v-card-text>
+						<div class="mb-2">
+							Selecciona un método de pago y duración de anuncio para publicar la proppiedad
+						</div>
+
+						<v-form v-if="payment_options.length>0" v-model="valid" :lazy-validation="lazy"  ref="form">
+							<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card_token" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
+								<template slot='selection' slot-scope='{ item }'>
+									{{ item.credit_card_token }} 
+								</template>
+								<template slot='item' slot-scope='{ item }'>
+									{{ item.credit_card_token }} 
+								</template>
+							</v-select>	
+							<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
+							</v-text-field>						
+						</v-form>
+							</v-card-text>
+							
+							<v-card-actions>
+								<div class="flex-grow-1"></div>
+								<v-btn @click="resetPayment()" text>Cancelar</v-btn>
+								<v-btn  outlined color="primary" class="white--text">
+									Crear
+								</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
+					<!-- Update -->
+					<v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
+						<template v-slot:activator="{on}">
+							<v-btn color="primary" icon v-on="on">
+								<v-icon>mdi-square-edit-outline</v-icon>
+							</v-btn>
+						</template>
+						<UpdateProperty v-on:closeDialog="closeDialog($event)"></UpdateProperty>
+					</v-dialog>
+
+					<!-- Delete -->
+					<v-dialog v-model="delete_dialog" max-width="500" persistent>
+						<template v-slot:activator="{on}">
+							<v-btn color="primary" icon v-on="on">
+								<v-icon>mdi-trash-can</v-icon>
+							</v-btn>
+						</template>
+						<v-card :loading="loading">
+							<v-card-title class="headline" primary-title>
+								¿Seguro que deseas borrar el registro?
+							</v-card-title>
+							<v-card-text>
+								Esta acción es permanente.
+							</v-card-text>
+							<v-card-actions>
+								<div class="flex-grow-1"></div>
+								<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
+								<v-btn  @click="delete_dialog = false" color="primary" dark>
+									<v-icon left>mdi-trash-can</v-icon>
+									Borrar
+								</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
+				</v-list-item-icon>
+				<!-- ACTIONS -->
+				
+				
+
+				
+			</v-list-item>
+
+		</v-card>
+	</v-flex>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
-export default {
-  props: ['news', 'index', 'view'],
+import UpdateProperty from '../components/UpdateProperty.vue'
+import EmptyCard from '../components/EmptyCard.vue'
 
-  data: () => ({
+import { mask } from 'vue-the-mask'
+export default {
+	directives: {
+      mask,
+	},
+  	props: ['property', 'index', 'view'],
+	components: {
+		UpdateProperty,
+		EmptyCard
+	},
+  	data: () => ({
+		dias: 0,
+		payment: null,
+		payment_options: [],
+		
+		publish_dialog: false,
 		edit_dialog: false,
 		delete_dialog: false,
 		update_blog_dialog: false,
+		card: null,
 		loading: false,
 		load: false,
 		resultado: null,
 		status: null,
 		upload_image: [],
+		dialog_fullscreen: false,
+		valid: true,
+		valid_payment: true,
+		lazy:false,
+		lazy_payment: false,
+		duration: null,
+		
+		
 	}),
+	computed: {
+		getUser : function(){ 
+			return this.$store.getters.getUser
+		},
+	},
   	methods: {
+		  closeDialog(){
+			this.dialog_fullscreen = false
+		},
+	
+		confirmPublish(){
+			this.publish_dialog=false
+		
+		},
+		resetPublish(){
+			this.publish_dialog=false
+			this.days = 0
+		},
+		selectCard(data){
+			this.payment_options.push(data);
+			this.payment = data
+			this.$store.dispatch('updatePayment', this.payment_options)
+			console.log(this.payment_options)
+			
+		},
+		resetPayment(){
+			this.publish_dialog = false
+		}
+	},
+	mounted(){
+		this.payment_options = this.getUser.payment_options
+		console.log(this.payment_options)
+	
 	}
 
 }

@@ -63,6 +63,9 @@ export default new Vuex.Store({
 		UPDATE_USER_IMAGE: (state, image) => {
 			state.user.image = image
 		},
+		UPDATE_USER_PAYMENTS: (state, payment) => {
+			state.user.payment_options = payment
+		},
 	
 	},
 	actions: {
@@ -84,11 +87,32 @@ export default new Vuex.Store({
 		login({commit}, credentials){
 			return new Promise((resolve, reject) => {
 			  commit('auth_request')
+			  const token = 1234
+			  const user = 	  {
+				"id": 1,
+				"email": "gaby12reyes@gmail.com",
+				"first_name": "Gabriela",
+				"last_name": "Reyes",
+				"image": null,
+				"birth_date": null,
+				"gender": null,
+				"credit_card": "",
+				"payment_options": [],
+				"influencer": false,
+				"subscription": 0,
+				"active": false,
+				"timestamp": "2020-06-19T20:42:53.167986Z"
+			}
+			commit('auth_success', token, user)
+				commit('SET_USER', user);
+				resolve()
+		
 			 
-				axios({url: baseURL + 'users/login/', data: credentials, method: 'POST' })
+			/*	axios({url: baseURL + 'users/login/', data: credentials, method: 'POST' })
 			  .then(response => {
 				const token = response.data.jwt
 				const user = response.data.user
+				
 				localStorage.setItem('token', user.id)
 				localStorage.setItem('user', JSON.stringify(user))
 				axios.defaults.headers.common['Authorization'] = user.id
@@ -100,7 +124,7 @@ export default new Vuex.Store({
 				commit('auth_error')
 				localStorage.removeItem('token')
 				reject(err)
-			  })
+			  })*/
 			})
 		},
 		token({commit}, email){
@@ -157,6 +181,15 @@ export default new Vuex.Store({
 					commit('changeLoadingState', false)
 					reject(err)
 				})
+			})
+		},
+		updatePayment({commit}, userData){
+			return new Promise((resolve, reject) => {
+			
+					commit('UPDATE_USER_PAYMENTS', userData);
+					//localStorage.setItem('user', JSON.stringify(response.data))
+					resolve()
+				
 			})
 		},
 	},
