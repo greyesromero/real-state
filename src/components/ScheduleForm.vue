@@ -196,7 +196,7 @@ export default {
 	methods: {
 		requestAppointment(){
 			if (this.$refs.form.validate()) {
-				console.log(this.isLoggedIn)
+				
 				if(!this.isLoggedIn){
 					this.message = ``;
 					 
@@ -204,10 +204,13 @@ export default {
 					this.dialog_registro = false
 					this.dialog = true
 				}else{
+				
 					this.dialog_login = false
 					this.dialog_registro = false
 					this.dialog = true
-					this.success_register = true
+					this.success_appointment = true
+				
+
 					
 				}
 			}
@@ -316,7 +319,7 @@ export default {
 }
 
 
-$green:     #4cc93f;
+$green:     #479f85;
 $icon-base-size: 20px;
 
 .success-icon {

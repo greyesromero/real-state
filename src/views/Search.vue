@@ -7,7 +7,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
 				<div  class="center-container">
 					<v-container fill-height>
 						<v-layout align-center justify-center>
@@ -301,7 +301,7 @@
 					</v-layout>
 				</div>
         	</v-container>
-			<div v-if="!loading" class="search-map-container grey lighten-2 hidden-sm-and-down">
+			<div class="search-map-container grey lighten-2 hidden-sm-and-down">
 				<gmap-map :center="center" :zoom="12" class="w-100 h-100">
 					<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
 							<v-card

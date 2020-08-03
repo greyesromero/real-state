@@ -37,11 +37,11 @@
 								</v-col>
 							</v-row>
 							
-							<v-subheader class="title">Datos de Facturación</v-subheader>
+							<!--v-subheader class="title">Datos de Facturación</v-subheader>
 							<v-text-field color="secondary" name="invoice_name" label="Nombre Factura" outlined v-model.lazy="invoice_name" required :rules="[v => !!v || 'Nombre para facturación es requerido']"></v-text-field>
 
 							<v-text-field color="secondary" name="tin" label="NIT" outlined v-model.lazy="tin" v-mask="mask_tin" required :rules="[v => !!v || 'NIT es requerido']"></v-text-field>
-							<v-textarea color="secondary" name="address" label="Dirección" outlined v-model.lazy="address" required :rules="[v => !!v || 'Dirección es requerida']"></v-textarea>
+							<v-textarea color="secondary" name="address" label="Dirección" outlined v-model.lazy="address" required :rules="[v => !!v || 'Dirección es requerida']"></v-textarea-->
 
 						</v-form>
 					</v-card-text>

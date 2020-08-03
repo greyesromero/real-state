@@ -9,7 +9,8 @@
 				</v-list-item-avatar>
 				<v-list-item-content>
 					<v-list-item-title class="title font-weight-regular"> {{property.title}}</v-list-item-title>
-					<v-list-item-subtitle  class="font-weight-regular">Disponible a partir de {{moment(property.date).locale('es').format("D [de] MMMM [de] YYYY")}}</v-list-item-subtitle>
+					<v-list-item-subtitle v-if="property.status == false"  class="font-weight-regular"><v-icon small>mdi-bell</v-icon>&nbsp;Sin Publicar</v-list-item-subtitle>
+					<v-list-item-subtitle v-if="property.status == true" class="font-weight-regular"><v-icon small color="secondary">mdi-bell</v-icon>&nbsp;Publicado: {{duration}} días</v-list-item-subtitle>
 
 				</v-list-item-content>
 				
@@ -18,51 +19,55 @@
 				<v-list-item-icon class="justify-center align-self-center">
 					<!-- Publish -->
 					<v-dialog v-model="publish_dialog" max-width="500" persistent>
-						<template v-slot:activator="{on}">
-							<v-btn color="primary" icon v-on="on">
-								<v-icon>mdi-bell-plus</v-icon>
-							</v-btn>
-						</template>
-						<v-card :loading="loading">
-							 <v-toolbar style="box-shadow:none!important;">
+							<template v-slot:activator="{on}">
+								<v-btn color="primary" icon v-on="on">
+									<v-icon>mdi-bell-plus</v-icon>
+								</v-btn>
+							</template>
+							<v-card :loading="loading">
+								<v-toolbar style="box-shadow:none!important;">
 
-							<v-toolbar-title class="headline" primary-title>Publicar Propiedad</v-toolbar-title>
+										<v-toolbar-title><span class="primary--text text-center title">Publicar Propiedad</span></v-toolbar-title>
 
-							<v-spacer></v-spacer>
+										<v-spacer></v-spacer>
 
-							<EmptyCard class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
-							
-					 </v-toolbar>
-				
+										<EmptyCard class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
+										
+								</v-toolbar>
+					
 
-					<v-card-text>
-						<div class="mb-2">
-							Selecciona un método de pago y duración de anuncio para publicar la proppiedad
-						</div>
+							<v-card-text>
+								<div class="mb-2">
+									Selecciona un método de pago y duración de anuncio para publicar la proppiedad
+								</div>
 
-						<v-form v-if="payment_options.length>0" v-model="valid" :lazy-validation="lazy"  ref="form">
-							<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card_token" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
-								<template slot='selection' slot-scope='{ item }'>
-									{{ item.credit_card_token }} 
-								</template>
-								<template slot='item' slot-scope='{ item }'>
-									{{ item.credit_card_token }} 
-								</template>
-							</v-select>	
-							<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
-							</v-text-field>						
-						</v-form>
+								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
+									<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card_token" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
+										<template slot='selection' slot-scope='{ item }'>
+											**** **** **** {{ item.credit_card_token }} 
+										</template>
+										<template slot='item' slot-scope='{ item }'>
+											**** **** **** {{ item.credit_card_token }} 
+										</template>
+									</v-select>	
+									<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
+									</v-text-field>						
+								</v-form>
 							</v-card-text>
 							
 							<v-card-actions>
 								<div class="flex-grow-1"></div>
 								<v-btn @click="resetPayment()" text>Cancelar</v-btn>
-								<v-btn  outlined color="primary" class="white--text">
+								<v-btn @click="confirmPublish()" color="secondary" class="white--text">
 									Crear
 								</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
+					<!-- Consulta -->
+					<v-btn color="primary" icon router to="/detail">
+						<v-icon>mdi-eye</v-icon>
+					</v-btn>
 					<!-- Update -->
 					<v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
 						<template v-slot:activator="{on}">
@@ -160,9 +165,14 @@ export default {
 		},
 	
 		confirmPublish(){
-			this.publish_dialog=false
+			if (this.$refs.form.validate()){
+				this.property.status = true
+				this.publish_dialog=false
+			}
+			
 		
 		},
+		
 		resetPublish(){
 			this.publish_dialog=false
 			this.days = 0
@@ -175,12 +185,12 @@ export default {
 			
 		},
 		resetPayment(){
+			this.$refs.form.reset()
 			this.publish_dialog = false
 		}
 	},
 	mounted(){
 		this.payment_options = this.getUser.payment_options
-		console.log(this.payment_options)
 	
 	}
 

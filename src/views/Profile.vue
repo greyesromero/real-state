@@ -312,6 +312,7 @@ export default {
 				this.$store.commit('changeLoadingState', false)
 				console.log(error);
 			})*/
+			this.$store.dispatch('updatePayment', this.payment_options)
 			
 		},
 	},

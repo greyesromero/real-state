@@ -45,7 +45,7 @@
 		</v-list-item-icon>
 	</v-list-item>
 
-	<v-expansion-panels>
+	<!--v-expansion-panels>
 		<v-expansion-panel>
 			<v-expansion-panel-header>Datos de Facturación</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -76,7 +76,7 @@
 			</v-list>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
-	</v-expansion-panels>
+	</v-expansion-panels-->
 </v-card>
 </div>
 </template>

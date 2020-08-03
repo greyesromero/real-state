@@ -7,7 +7,8 @@
 	<v-dialog v-model="new_patient_dialog" width="500">
 		<v-card>
 			<v-card-title>
-				Crear Método de Pago
+				
+				<span class="primary--text text-center">Crear Método de Pago</span>
 			</v-card-title>
 			<v-card-text class="mb-0">
 				<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
@@ -45,7 +46,7 @@
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn text v-on:click="resetPatient()">Cancelar</v-btn>
-				<v-btn outlined v-on:click="createPatient()">Guardar</v-btn>
+				<v-btn color="secondary" v-on:click="createPatient()">Guardar</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -122,7 +123,7 @@ export default {
 				this.$emit('selectCard', {
 					id: this.counter++,
 					card_holder: this.card_holder,
-					credit_card_token: this.credit_card_token,
+					credit_card_token: this.credit_card_token.substring(15,19),
 					cvv: this.cvv,
 					type: this.type,
 					card_date: this.card_date,
