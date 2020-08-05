@@ -41,7 +41,7 @@
 			>
 				<v-toolbar dense>
 
-				<v-toolbar-title>Ali Connors</v-toolbar-title>
+				<v-toolbar-title>{{items[selected_chat].title}} </v-toolbar-title>
 
 				<v-spacer></v-spacer>
 

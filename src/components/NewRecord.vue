@@ -76,7 +76,7 @@
 
 						<v-spacer></v-spacer>
 
-						<EmptyCard class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
+						<EmptyCard v-if="payment_options.length == 0" class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
 						
 				</v-toolbar>
 	

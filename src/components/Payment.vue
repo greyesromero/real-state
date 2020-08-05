@@ -7,11 +7,11 @@
 			<span class="white--text display-1"><v-icon class="white--text font-weight-bold">mdi-credit-card</v-icon></span>
 		</v-list-item-avatar>
 		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular">{{this.payment.card_holder}}</v-list-item-title>
-			<v-list-item-subtitle>**** **** **** {{this.payment.credit_card_token}}</v-list-item-subtitle>
+			<v-list-item-title class="title font-weight-regular left-align">{{this.payment.card_holder}}</v-list-item-title>
+			<v-list-item-subtitle>Fecha de Vencimiento: {{this.payment.card_date}}</v-list-item-subtitle>
 		</v-list-item-content>
 		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular">{{this.payment.card_date}}</v-list-item-title>
+			<v-list-item-title class="title font-weight-regular">**** **** **** {{this.payment.credit_card_token}}</v-list-item-title>
 		</v-list-item-content>
 		
 		

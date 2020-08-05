@@ -116,7 +116,7 @@
 							<!-- Métodos de Pago -->
 								<v-tab-item  class="mb-10">
 									<!--  Métodos de Pago -->
-									<EmptyPayment v-on:createPayment="createPayment($event)"></EmptyPayment>"
+									<EmptyPayment v-if="payment_options.length == 0" v-on:createPayment="createPayment($event)"></EmptyPayment>
 									<Payment v-for="(payment, index) in payment_options" v-if="payment_options.length>0" :payment="payment" :index="index" v-on:deletePayment="deletePayment($event)"></Payment>
 									<!--  Factura -->
 									

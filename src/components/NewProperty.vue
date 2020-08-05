@@ -496,13 +496,23 @@
 
 									</p>
 									<v-container grid-list-lg>
+
 										<v-layout row wrap>
+											<v-flex xs6 md6>
+												<v-switch color="secondary" class="my-1" v-model="switch_venta" label="Se vende?" ></v-switch>
+
+											</v-flex>
+											<v-flex xs6 md6>
+												<v-switch color="secondary" class="my-1" v-model="switch_renta" label="Se renta?" ></v-switch>
+
+											</v-flex>
 											<v-flex xs12 md6>
 											<v-text-field
 												label="Precio de venta"
 												v-model="createForm.purchasePrice"
 												type="number"
 												outlined
+												:disabled="switch_venta ? false : true"
 											></v-text-field>
 											</v-flex>
 											<v-flex xs12 md6>
@@ -511,14 +521,16 @@
 												v-model="createForm.rentPrice"
 												type="number"
 												outlined
+												:disabled="switch_renta ? false : true"
 											></v-text-field>
 											</v-flex>
-											<v-flex v-if="+createForm.rentPrice > 0" xs12 md6>
+											<v-flex xs12 md6>
 											<v-text-field
 												label="Longitud del Contrato"
 												v-model="createForm.minimumContractLength"
 												type="number"
 												outlined
+												:disabled="switch_renta ? false : true"
 											></v-text-field>
 											</v-flex>
 											
@@ -533,33 +545,35 @@
 												>
 													<template v-slot:activator="{ on }">
 													<v-text-field
-														
+														  v-model="formatDate"
 														label="Fecha de Disponibilidad"
 														outlined
 														readonly
 														hide-details
 														v-on="on"
+														color="primary"
 													></v-text-field>
 													</template>
-													<v-date-picker :min="new Date().toISOString().substr(0, 10)" v-model="createForm.date" scrollable>
+													<v-date-picker color="primary" :min="new Date().toISOString().substr(0, 10)" v-model="createForm.date" scrollable>
 													<v-spacer></v-spacer>
 														<v-btn text color="primary" @click="createForm.modalDate = false">Cancel</v-btn>
 														<v-btn text color="primary" @click="$refs.dialogDate.save(createForm.date)">OK</v-btn>
 													</v-date-picker>
 												</v-dialog>
 											</v-flex>
+											
 											<v-flex xs12 md6>
 											<v-checkbox
 												v-model="createForm.priceNegotiable"
 												label="Precio negociable?"
-												color="primary"
+												color="secondary"
 											></v-checkbox>
 											</v-flex>
 											<v-flex xs12 md6>
 											<v-checkbox
 												v-model="createForm.dateNegotiable"
 												label="Fecha negociable?"
-												color="primary"
+												color="secondary"
 											></v-checkbox>
 											</v-flex>
 										</v-layout>
@@ -583,6 +597,7 @@
 <script>
 	import vue2Dropzone from 'vue2-dropzone'
 	import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+	import moment from 'moment'
 	export default {
 		components: {
 			vueDropzone: vue2Dropzone
@@ -592,6 +607,10 @@
 
 			rules: [v => v.length <= 50 || 'Max 50 caracteres'],
 			e1: 1,
+			switch_venta: false,
+			switch_renta: false,
+			disabled_venta: false,
+			disabled_renta: false,
 			steps: 9,
 			 foo: 0,
 			 loading: false,
@@ -637,6 +656,7 @@
 					minimumContractLength: null,
 					priceNegotiable: false,
 					modalDate: false,
+					fecha: null,
 					date: new Date().toISOString().substr(0, 10),
 					dateNegotiable: false,
 					commission: 0,
@@ -651,6 +671,9 @@
 			getUser : function(){ 
 			return this.$store.getters.getUser
 			},
+			formatDate() {
+				return this.createForm.date ? moment(this.createForm.date).format('DD/MM/Y') : ''
+			}
 			/*getNotificationsByDoctor : function(){ 
 			return this.$store.getters.getNotificationsByDoctor(this.getUser.id)
 			},*/
