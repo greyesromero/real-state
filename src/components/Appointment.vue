@@ -7,28 +7,25 @@
 			<v-icon color="white">mdi-calendar</v-icon>
 		</v-list-item-avatar>
 		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular">{{moment().locale('es').format("D [de] MMMM [de] YYYY [a las] hh:mm a")}} </v-list-item-title>
-			<v-list-item-subtitle  class="font-weight-regular">Cliente: Gabriela Reyes</v-list-item-subtitle>
+			<v-list-item-title class="title font-weight-regular " style="cursor:pointer;text-decoration: underline!important;" @click="toDetail"> Propiedad: Casa Deluxe en Antigua Guatemala </v-list-item-title>
+			<v-list-item-subtitle  class="font-weight-regular">{{moment().locale('es').format("D [de] MMMM [de] YYYY [a las] hh:mm a")}}</v-list-item-subtitle>
 
 		</v-list-item-content>
 		
 		
 		
-		<!--v-list-item-icon class="justify-center align-self-center">
-			<v-btn color="cyan darken-4" icon :to="`/detail/`">
-					<v-icon>mdi-square-edit-outline</v-icon>
-				</v-btn>
-
+		<v-list-item-icon class="justify-center align-self-center">
+	
 		
 				<v-dialog v-model="delete_dialog" max-width="500" persistent>
 					<template v-slot:activator="{on}">
 						<v-btn color="primary" icon v-on="on">
-							<v-icon>mdi-trash-can</v-icon>
+							<v-icon>mdi-close-circle-outline</v-icon>
 						</v-btn>
 					</template>
 					<v-card :loading="loading">
 						<v-card-title class="headline" primary-title>
-							¿Seguro que deseas borrar el registro?
+							¿Seguro que deseas cancelar esta cita?
 						</v-card-title>
 						<v-card-text>
 							Esta acción es permanente.
@@ -37,20 +34,20 @@
 							<div class="flex-grow-1"></div>
 							<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
 							<v-btn  @click="delete_dialog = false" color="primary" dark>
-								<v-icon left>mdi-trash-can</v-icon>
-								Borrar
+								<v-icon left>mdi-close-circle</v-icon>
+								Confirmar
 							</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
-		</v-list-item-icon-->
+		</v-list-item-icon>
 		<!-- ACTIONS -->
 		
 		
 
 		
 	</v-list-item>
-	<v-expansion-panels>
+	<!--v-expansion-panels>
 		<v-expansion-panel>
 			<v-expansion-panel-header>Más Información</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -62,7 +59,7 @@
 				</div>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
-	</v-expansion-panels>
+	</v-expansion-panels-->
 
 </v-card>
 </template>
@@ -84,6 +81,9 @@ export default {
 		upload_image: [],
 	}),
   	methods: {
+		  toDetail(){
+			  this.$router.push('/detail')
+		  }
 	}
 
 }
