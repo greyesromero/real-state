@@ -73,8 +73,8 @@
 								<!--v-text-field type="password" v-model.lazy="password" outlined color="cyan darken-3" label="Contraseña"></v-text-field-->
 							</v-form>
 							<div class="mb-2">
-								<v-btn text  @click="visible = true, login_button= true, token_button = false" class="primary--text">Ya tengo token</v-btn>
-							</div>
+									<a href="#" @click="visible = true, login_button= true, token_button = false" class="primary--text">Ya tengo token</a>
+								</div>
 							
 						</v-card-text>
 						<v-card-actions class="align-self-center align-content-center justify-center center align-center">

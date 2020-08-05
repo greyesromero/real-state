@@ -8,40 +8,30 @@
 					style="height:100%!important;"
 				>
 				
-					<v-list three-line>
-					<template v-for="(item, index) in items">
-						<v-subheader
-						v-if="item.header"
-						:key="item.header"
-						v-text="item.header"
-						></v-subheader>
-
-						<v-divider
-						v-else-if="item.divider"
-						:key="index"
-						:inset="item.inset"
-						></v-divider>
-
+					 <v-list three-line>
+						<template v-for="(item, index) in items">
+						
 						<v-list-item
-						v-else
-						:key="item.title"
-						@click=""
+							
+							:key="item.title"
+							@click="selectChat(index)"
 						>
-						<v-list-item-avatar>
+							<v-list-item-avatar>
 							<v-img :src="item.avatar"></v-img>
-						</v-list-item-avatar>
-
-						<v-list-item-content>
+							</v-list-item-avatar>
+				
+							<v-list-item-content>
 							<v-list-item-title v-html="item.title"></v-list-item-title>
 							<v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
-						</v-list-item-content>
+							</v-list-item-content>
 						</v-list-item>
-					</template>
+						<v-divider></v-divider>
+						</template>
 					</v-list>
 				</v-card>
          
       </v-flex>
-      <v-flex class="contenido  hidden-sm-and-down" >
+      <v-flex class="contenido " >
          <v-layout column justify-space-between fill-height>
 			  <v-card
 				color="grey lighten-4"
@@ -61,120 +51,34 @@
 				</v-btn>
 				</v-toolbar>
 			</v-card>
-            <v-card flat style="overflow-x:hidden!important;overflow-y:scroll!important;height:100%!important;">
-              	<section class="discussion py-12 px-2" style="margin-bottom:30px;">
-	
-					<div class="bubble sender first">Hello</div>
-					<div class="bubble sender last">This is a CSS demo of the Messenger chat bubbles, that merge when stacked together.</div>
-					
-					<div class="bubble recipient first">Oh that's cool!</div>
-					<div class="bubble recipient last">Did you use JavaScript to perform that kind of effect?</div>
-					
-					<div class="bubble sender first">No, that's full CSS3!</div>
-					<div class="bubble sender middle">(Take a look to the 'JS' section of this Pen... it's empty! 😃</div>
-					<div class="bubble sender last">And it's also really lightweight!</div>
-					
-					<div class="bubble recipient">Dope!</div>
-					
-					<div class="bubble sender first">Yeah, but I still didn't succeed to get rid of these stupid .first and .last classes.</div>
-					<div class="bubble sender middle">The only solution I see is using JS, or a &lt;div&gt; to group elements together, but I don't want to ...</div>
-					<div class="bubble sender last">I think it's more transparent and easier to group .bubble elements in the same parent.</div>
-					
+            <v-card id="chat" flat style="overflow-x:hidden!important;overflow-y:scroll!important;height:100%!important;">
+              	<section  class="discussion px-5 py-5">
+					 	<template  v-for="(msg, index) in items[selected_chat].messages">
+					  		<div :class="'bubble last '+msg.type">{{ msg.msg}} </div>
+					  </template>
 				</section>
             </v-card>
             <v-card class="white px-5">
-               <v-text-field
-							flat
-							label="Escribe un mensaje ..."
-							hide-details
-							solo
-							outlined
-							rounded
-							color="secondary"
-							class=""
-							
-							></v-text-field>
+                <v-text-field
+						
+						v-model="message"
+						:append-outer-icon=" 'mdi-send'"
+						:prepend-icon="icon"
+						filled
+						clear-icon="mdi-close-circle"
+						clearable
+						label="Escribe un mensaje ..."
+						type="text"
+						@click:append="toggleMarker"
+						@click:append-outer="sendMessage"
+						@click:prepend="changeIcon"
+						@click:clear="clearMessage"
+          ></v-text-field>
             </v-card>
          </v-layout>
       </v-flex>
    </v-layout>
-		<!--div class = "contenedor">
-			<div class = "side">
-				<v-card
-				
-					class="mx-auto"
-				>
-				
-					<v-list three-line>
-					<template v-for="(item, index) in items">
-						<v-subheader
-						v-if="item.header"
-						:key="item.header"
-						v-text="item.header"
-						></v-subheader>
-
-						<v-divider
-						v-else-if="item.divider"
-						:key="index"
-						:inset="item.inset"
-						></v-divider>
-
-						<v-list-item
-						v-else
-						:key="item.title"
-						@click=""
-						>
-						<v-list-item-avatar>
-							<v-img :src="item.avatar"></v-img>
-						</v-list-item-avatar>
-
-						<v-list-item-content>
-							<v-list-item-title v-html="item.title"></v-list-item-title>
-							<v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
-						</v-list-item-content>
-						</v-list-item>
-					</template>
-					</v-list>
-				</v-card>
-			</div>
-			<div class ="contenido position-relative">
-			
-				<section class="discussion py-12" style="margin-bottom:30px;">
 	
-					<div class="bubble sender first">Hello</div>
-					<div class="bubble sender last">This is a CSS demo of the Messenger chat bubbles, that merge when stacked together.</div>
-					
-					<div class="bubble recipient first">Oh that's cool!</div>
-					<div class="bubble recipient last">Did you use JavaScript to perform that kind of effect?</div>
-					
-					<div class="bubble sender first">No, that's full CSS3!</div>
-					<div class="bubble sender middle">(Take a look to the 'JS' section of this Pen... it's empty! 😃</div>
-					<div class="bubble sender last">And it's also really lightweight!</div>
-					
-					<div class="bubble recipient">Dope!</div>
-					
-					<div class="bubble sender first">Yeah, but I still didn't succeed to get rid of these stupid .first and .last classes.</div>
-					<div class="bubble sender middle">The only solution I see is using JS, or a &lt;div&gt; to group elements together, but I don't want to ...</div>
-					<div class="bubble sender last">I think it's more transparent and easier to group .bubble elements in the same parent.</div>
-					<div class="px-12 position-relative">
-						<v-text-field
-							flat
-							label="Escribe un mensaje ..."
-							hide-details
-							solo
-							outlined
-							rounded
-							color="secondary"
-							class="prueba position-absolute"
-							
-							></v-text-field>
-					</div>
-				</section>
-				
-				
-			
-			</div>
-		</div-->
 	</section>	
 </template>
 
@@ -188,65 +92,110 @@ export default {
 	data: () => ({
 		properties: true,
 		selected_gym:0,
+		selected_chat: 0,
 		search: '',
 		properties:[],
 		loading: false,
 		payment: [],
+		password: 'Password',
+      show: false,
+      message: 'Hey!',
+      marker: true,
+      iconIndex: 0,
+      icons: [
+        'mdi-emoticon',
+        'mdi-emoticon-cool',
+        'mdi-emoticon-dead',
+        'mdi-emoticon-excited',
+        'mdi-emoticon-happy',
+        'mdi-emoticon-neutral',
+        'mdi-emoticon-sad',
+        'mdi-emoticon-tongue',
+      ],
 		items: [
-        { header: 'Today' },
+       
         {
+		  id: 1,
           avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
           title: 'Ali Connors',
           subtitle: " &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-        },
-        { divider: true, inset: true },
+		  messages:[{
+			  msg:'Hello',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'This is a CSS demo of the Messenger chat bubbles, that merge when stacked together.',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'Oh thats cool!',
+			  type:'sender'
+		  },
+		  {
+			  msg:'Did you use JavaScript to perform that kind of effect?',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'The only solution I see is using JS, or a &lt;div&gt; to group elements together, but I dont want to ...',
+			  type:'sender'
+		  },
+		  {
+			  msg:'This is a CSS demo of the Messenger chat bubbles, that merge when stacked together.',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'Oh thats cool!',
+			  type:'sender'
+		  },
+		  {
+			  msg:'I think its more transparent and easier to group .bubble elements in the same parent.',
+			  type:'sender'
+		  }]
+		},
+     
         {
+		  id: 2,
           avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
           title: 'Alex, Scott, Jennifer',
-          subtitle: " &mdash; Wish I could come, but I'm out of town this weekend.",
+		  subtitle: " &mdash; Wish I could come, but I'm out of town this weekend.",
+		  messages: [{
+			  msg:'Hello',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'How are you?.',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'Fine Thanks',
+			  type:'sender'
+		  },
+		  {
+			  msg:'What are you doing?',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'Nothing',
+			  type:'sender'
+		  },
+		  {
+			  msg:'Ok bye.',
+			  type:'recipient'
+		  },
+		  {
+			  msg:'Oh thats cool!',
+			  type:'sender'
+		  }]
         },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Sandra Adams',
-          subtitle: "&mdash; Do you have Paris recommendations? Have you ever been?",
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Trevor Hansen',
-          subtitle: " &mdash; Have any ideas about what we should get Heidi for her birthday?",
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Britta Holt',
-          subtitle: " &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-		},
-		{ divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Britta Holt',
-          subtitle: " &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-		},
-		{ divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Britta Holt',
-          subtitle: "&mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-		},
-		{ divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Britta Holt',
-          subtitle: "&mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-        },
+       
       ],
    
 	
 	}),
 	computed: {
-
+		icon () {
+				return this.icons[this.iconIndex]
+			},
 		filteredProperties: function() {
 			let filtered = this.properties;
 			if (this.search) {
@@ -261,7 +210,34 @@ export default {
 		}
 	},
 	methods: {
-		
+		selectChat(index){
+			this.selected_chat = index
+		},
+		toggleMarker () {
+			this.marker = !this.marker
+		},
+		sendMessage () {
+			this.items[this.selected_chat].messages.push({
+				msg: this.message,
+				type: 'recipient'
+			})
+			this.resetIcon()
+			this.clearMessage()
+			var container = this.$el.querySelector("#chat");
+			container.scrollTop = container.scrollHeight;
+			
+		},
+		clearMessage () {
+			this.message = ''
+		},
+		resetIcon () {
+			this.iconIndex = 0
+		},
+		changeIcon () {
+			this.iconIndex === this.icons.length - 1
+			? this.iconIndex = 0
+			: this.iconIndex++
+		},
 		sortBy(prop) {
 			this.properties.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
 		},
@@ -328,6 +304,10 @@ export default {
 			})*/
 			
 		},
+		scrollToEnd: function () {
+            // scroll to the start of the last message
+            this.$el.scrollTop = this.$el.lastElementChild.offsetTop;
+        }
 	},
 	created() {
 	
@@ -340,6 +320,8 @@ export default {
 			date: '2020-08-05',
 			status: false
 		})
+
+		console.log(this.items[this.selected_chat].messages)
 	}
 }
 </script>
@@ -405,7 +387,7 @@ export default {
 
 .discussion > .bubble.sender {
 	align-self: flex-start;
-	background-color: cornflowerblue;
+	background-color: #479f85;
 	color: #fff;
 }
 .discussion > .bubble.recipient {
@@ -429,68 +411,6 @@ export default {
 
 
 
-/**/ 
-
-.messages--sent .message:first-child {
-    border-top-right-radius: 15px;
-}
-
-.messages--sent .message {
-    float: right;
-    background-color: #1998e6;
-    color: #fff;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.message {
-    display: inline-block;
-    margin-bottom: 2px;
-    clear: both;
-    padding: 7px 13px;
-    font-size: 12px;
-    border-radius: 15px;
-    line-height: 1.4;
-}
-
-.messages--received .message:last-child {
-    border-bottom-left-radius: 15px;
-}
-
-.messages--received .message {
-    float: left;
-    background-color: #ddd;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-}
-
-.prueba{
-	
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    width: auto;
-    height: 50px;
-    z-index: 999;
-    background: #fafafa;
-    border: none;
-    outline: none;
-    padding-left: 55px;
-    padding-right: 55px;
-    color: #666;
-    font-weight: 400;
-
-}
-.fixed-item {
-  background: yellow;
-  border: 2px solid red;
-  height: 500px;
-  left: 30px;
-  top: 35px;
-  position: fixed;
-  width: 100px;
-  z-index: 999;
-}
 
 
 </style>

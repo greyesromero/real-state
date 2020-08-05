@@ -28,10 +28,10 @@
 					<v-row >
 						<v-col cols="12" md="8">
 							<span
-										:class="[$vuetify.breakpoint.smAndDown ? 'text-center' : 'text-left']"
-										>
-											<h1 class="display-1 ">Casa deluxe en Antigua Guatemala</h1>
-										</span>
+							:class="[$vuetify.breakpoint.smAndDown ? 'text-center' : 'text-left']"
+							>
+								<h1 class="display-1 ">Casa deluxe en Antigua Guatemala</h1>
+							</span>
 						</v-col>
 						<v-col cols="12" md="4">
 							<v-flex :class="[$vuetify.breakpoint.smAndDown ? ' text-center' : ' text-right']">
@@ -333,7 +333,7 @@
 											
 											gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 						
-												<v-container fluid grid-list-md fill-height>
+												<!--v-container fluid grid-list-md fill-height>
 													<v-layout row wrap>
 														<v-flex xs12 d-flex justify-start>
 																<v-chip
@@ -357,15 +357,41 @@
 													<v-layout row wrap align-end>
 														<v-flex xs12 d-flex justify-end>
 															<span class="text-truncante text-right title">Q1000</span>
-															<!-- <v-btn icon color="white" class="mx-3">
-															<v-icon>mdi-share-variant</v-icon>
-															</v-btn>
-															<v-btn icon color="white">
-															<v-icon>mdi-heart-outline</v-icon>
-															</v-btn> -->
+														
 														</v-flex>
 													</v-layout>
-												</v-container>
+												</v-container-->
+												<v-layout column justify-space-between fill-height px-5 py-5>
+													<v-layout row wrap>
+														<v-flex xs12 d-flex justify-start>
+																<v-chip
+																class="mx-1"
+																label
+																color="secondary"
+																text-color="white"
+																>
+																RENT
+															</v-chip>
+															<v-chip
+																class="mx-1"
+																color="primary"
+																label
+																text-color="white"
+																>
+																NEW
+															</v-chip>
+														</v-flex>
+														
+														
+													</v-layout>
+													<v-layout row wrap align-end>
+														
+														<v-flex xs12 d-flex justify-end>
+															<span class="text-truncante text-right title">Q1000</span>
+															
+														</v-flex>
+													</v-layout>
+												</v-layout>
 											</v-carousel-item>
 										</v-carousel>
 							
@@ -399,6 +425,13 @@
 											>
 											MÁS INFORMACIÓN
 											</v-btn>
+											<v-spacer></v-spacer>
+												<v-btn icon>
+													<v-icon>mdi-heart</v-icon>
+												</v-btn>
+												<v-btn icon>
+													<v-icon>mdi-share-variant</v-icon>
+												</v-btn>
 										</v-card-actions>
 								</v-card>
 							</v-slide-item>
