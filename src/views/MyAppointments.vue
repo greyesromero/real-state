@@ -21,7 +21,7 @@
 					</v-container>
 				</div>
 			</v-container>
-			<v-container  v-if="properties" fill-height px-8>
+			<v-container  v-if="properties" px-8>
 				
 				<v-row>
 						<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">

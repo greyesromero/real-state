@@ -45,16 +45,17 @@
 					<v-container fluid grid-list-md fill-height>
 						
 						<v-layout row wrap align-end>
-							<v-flex xs6 md6 d-flex justify-start>
-							<span class="body-2">{{visiblePages.length}} propiedades</span>
-								</v-flex>
-								<v-flex xs6 md6 d-flex justify-end>
+							
+								<v-flex xs12 md12 d-flex justify-end>
 								<v-switch color="secondary" class="my-1" v-model="favorites" @change="infoWinOpen = false" label="Mis Favoritos" ></v-switch>
 
 								<v-btn text v-on:click="dialog=true" style="float:right;" color="secondary">
 									<v-icon >mdi-cog</v-icon>	FILTROS
 								</v-btn>
 							</v-flex>
+							<v-flex xs12 md12 d-flex justify-start>
+							<span class="body-2">{{visiblePages.length}} propiedades</span>
+								</v-flex>
 							<v-flex xs12 md12 d-flex justify-start>
 								
 								<h3>Propiedades en Antigua Guatemala</h3>

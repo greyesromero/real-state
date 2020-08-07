@@ -39,11 +39,7 @@
     </v-dialog>
 	 <!-- Delete -->
 	<v-dialog v-model="delete_dialog" max-width="500" persistent>
-		<template v-slot:activator="{on}">
-			<v-btn color="primary" icon v-on="on">
-				<v-icon>mdi-trash-can</v-icon>
-			</v-btn>
-		</template>
+	
 		<v-card :loading="loading">
 			<v-card-title class="headline" primary-title>
 				¿Seguro que deseas borrar el registro?
@@ -64,11 +60,7 @@
 
 	<!-- Publish -->
 	<v-dialog v-model="publish_dialog" max-width="500" persistent>
-			<template v-slot:activator="{on}">
-				<v-btn color="primary" icon v-on="on">
-					<v-icon>mdi-bell-plus</v-icon>
-				</v-btn>
-			</template>
+		
 			<v-card :loading="loading">
 				<v-toolbar style="box-shadow:none!important;">
 

@@ -20,7 +20,7 @@
 					</v-container>
 				</div>
 			</v-container>
-			<v-container v-if="properties" fill-height px-8>
+			<v-container v-if="properties" px-8>
 				<v-row>
 					<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
 						<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{filteredProperties.length}} </h2>

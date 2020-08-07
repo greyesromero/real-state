@@ -1,7 +1,7 @@
 <template>
 	<section id="contact" class="grey lighten-3">
 		 <v-layout wrap >
-      <v-flex xs4 class="side">
+      <v-flex md4 xs12 class="side" v-if="mobile_bar">
            <v-card
 				
 					class="mx-auto"
@@ -31,7 +31,7 @@
 				</v-card>
          
       </v-flex>
-      <v-flex class="contenido " >
+      <v-flex xs12 md8 class="contenido" v-if="!mobile" >
          <v-layout column justify-space-between fill-height>
 			  <v-card
 				color="grey lighten-4"
@@ -40,7 +40,9 @@
 				tile
 			>
 				<v-toolbar dense>
-
+				<v-btn icon @click="mobile = true, mobile_bar = true" class="d-md-none d-lg-flex">
+					<v-icon>mdi-arrow-left-circle</v-icon>
+				</v-btn>
 				<v-toolbar-title>{{items[selected_chat].title}} </v-toolbar-title>
 
 				<v-spacer></v-spacer>
@@ -90,6 +92,8 @@ export default {
 		PropertyList
 	},
 	data: () => ({
+		mobile: false,
+		mobile_bar: true,
 		properties: true,
 		selected_gym:0,
 		selected_chat: 0,
@@ -193,9 +197,13 @@ export default {
 	
 	}),
 	computed: {
+		size () {
+			const size = {xs:'x-small',sm:'small',lg:'large',xl:'x-large'}[this.$vuetify.breakpoint.name];
+			return size
+		},
 		icon () {
-				return this.icons[this.iconIndex]
-			},
+			return this.icons[this.iconIndex]
+		},
 		filteredProperties: function() {
 			let filtered = this.properties;
 			if (this.search) {
@@ -212,6 +220,10 @@ export default {
 	methods: {
 		selectChat(index){
 			this.selected_chat = index
+			if(this.size == 'x-small' || this.size == 'small'){
+				this.mobile = false
+				this.mobile_bar = false
+			}
 		},
 		toggleMarker () {
 			this.marker = !this.marker
@@ -321,7 +333,11 @@ export default {
 			status: false
 		})
 
-		console.log(this.items[this.selected_chat].messages)
+		if(this.size == 'x-small' || this.size == 'small'){
+			this.mobile = true
+		}
+
+		
 	}
 }
 </script>

@@ -34,9 +34,10 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center>
 									<span class="display-2">¡Te damos la bienvenida! Tu viaje en el mundo de bienes raíces empieza aquí.</span>
 									<p class="headline mt-8">
@@ -97,9 +98,9 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
 									<span class="display-1">¿Está el marcador en la ubicación correcta?</span>
 									<p class="heading-4 mt-3 my-0">
@@ -111,7 +112,7 @@
 										<v-layout row wrap>
 
 										
-											<v-flex xs4 class="mt-3">
+											<v-flex xs12 md4 class="mt-3">
 												<p>Solo los clientes confirmados podrán tener acceso a ella para saber cómo llegar a su propiedad.</p>
 											<v-text-field
 												label="Dirección"
@@ -121,7 +122,7 @@
 												outlined
 											></v-text-field>
 											</v-flex>
-											<v-flex xs8>
+											<v-flex xs12 md8>
 												<GmapMap @center_changed="updateCenter" :options="this.map_options" :center="this.map_center" :zoom="15" map-type-id="roadmap" style="width: auto; height: 250px">
 													<GmapMarker  color="secondary" :position="this.coordinates" />
 												</GmapMap>
@@ -168,9 +169,9 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
 									<span class="display-1">Describe la propiedad</span>
 									<p class="heading-4 mt-3">
@@ -236,9 +237,9 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
 									<span class="display-1">Especificaciones</span>
 									<p class="heading-4 mt-5">
@@ -339,9 +340,9 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
 									<span class="display-1">¿Qué servicios ofrece la propiedad?</span>
 									<p class="heading-4 mt-5">
@@ -436,16 +437,16 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
 									<span class="display-1">Agrega fotos</span>
 									<p class="heading-4 mt-5">
 										Las fotos ayudan a que los clientes se imaginen cómo es vivir en tu propiedad. Puedes empezar con una y agregar más después de publicar.
 
 									</p>
-									<v-container fluid px-12 py-0>
+									<v-container fluid :class="[$vuetify.breakpoint.smAndDown ? 'px-5' : 'px-12']" py-0>
 										<vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
 									</v-container>	
 								</v-flex>
@@ -487,9 +488,9 @@
 						<v-container
 							fluid
 							grid-list-lg
-							px-10
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
 							>
-							<v-layout row wrap justify-center px-10>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
 									<span class="display-1">Precio y disponibilidad</span>
 									<p class="heading-4 mt-5">
