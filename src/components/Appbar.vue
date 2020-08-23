@@ -19,6 +19,10 @@
 				</v-toolbar-title>		
 				
 				<v-spacer></v-spacer>
+				<v-btn color="primary" dark  rounded router @click="searchProperty()" class="mr-3">
+				<v-icon left dark>mdi-magnify</v-icon>
+				Buscar Propiedad
+				</v-btn>
 				<v-btn color="secondary" dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()">
 				<v-icon left dark>mdi-home-plus-outline</v-icon>
 				Nueva Propiedad
@@ -264,6 +268,10 @@ import NewProperty from '../components/NewProperty.vue'
 			},
 			profile(){
 				this.$router.push('/profile') 
+
+			},
+			searchProperty(){
+				this.$router.push('/search') 
 
 			},
 			newProperty(){

@@ -407,10 +407,18 @@
 												
 												column
 												>
-													<v-chip   small>WIFI</v-chip>
-													<v-chip   small>Mascotas</v-chip>
-													<v-chip   small>Limpieza</v-chip>
-													<v-chip   small>A/C</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-wifi</v-icon>
+													WIFI</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-paw</v-icon>
+													Mascotas</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-spray-bottle</v-icon>
+													Limpieza</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-air-conditioner</v-icon>
+													A/C</v-chip>
 												</v-chip-group>
 											</div>
 											

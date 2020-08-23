@@ -148,50 +148,56 @@
 								
 									<v-container fluid>
 											<v-row>
-											<v-col cols="12" sm="4" md="4">
-												<v-checkbox
-												v-model="ex4"
-												label="A/C"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-												<v-checkbox
-												v-model="ex4"
-												label="Secadora"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-											</v-col>
-											<v-col cols="12" sm="4" md="4">
-												<v-checkbox
-												v-model="ex4"
-												label="Pet Friendly"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-												<v-checkbox
-												v-model="ex4"
-												label="Extracción Basura"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-											</v-col>
-											<v-col cols="12" sm="4" md="4">
-												<v-checkbox
-												v-model="ex4"
-												label="Calefacción"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-												<v-checkbox
-												v-model="ex4"
-												label="Lavadora"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-											</v-col>
+													<v-col cols="12" sm="4" md="4">
+														<v-checkbox
+														v-model="ex4"
+														label="A/C"
+														color="primary"
+														append-icon="mdi-air-conditioner"
+														
+														hide-details
+														></v-checkbox>
+														<v-checkbox
+														v-model="ex4"
+														label="Secadora"
+														color="primary"
+														append-icon="mdi-tumble-dryer"											hide-details
+														></v-checkbox>
+													</v-col>
+													<v-col cols="12" sm="4" md="4">
+														<v-checkbox
+														v-model="ex4"
+														label="Pet Friendly"
+														color="primary"
+														hide-details
+														append-icon="mdi-paw"
+														></v-checkbox>
+														<v-checkbox
+														v-model="ex4"
+														label="Extracción Basura"
+														color="primary"
+														append-icon="mdi-delete-empty"
+														hide-details
+														></v-checkbox>
+													</v-col>
+													<v-col cols="12" sm="4" md="4">
+														<v-checkbox
+														v-model="ex4"
+														label="Calefacción"
+														color="primary"
+															append-icon="mdi-hvac"
+														
+														hide-details
+														></v-checkbox>
+														<v-checkbox
+														v-model="ex4"
+														label="Lavadora"
+														color="primary"
+														hide-details
+															append-icon="mdi-dishwasher"
+														></v-checkbox>
+													</v-col>
 											</v-row>
-
 									</v-container>
 									<v-divider class="mx-5"></v-divider>
 								</v-form>
@@ -308,10 +314,18 @@
 											
 											column
 											>
-												<v-chip   small>WIFI</v-chip>
-												<v-chip   small>Mascotas</v-chip>
-												<v-chip   small>Limpieza</v-chip>
-												<v-chip   small>A/C</v-chip>
+												<v-chip   small>
+													<v-icon left small>mdi-wifi</v-icon>
+												WIFI</v-chip>
+												<v-chip   small>
+													<v-icon left small>mdi-paw</v-icon>
+												Mascotas</v-chip>
+												<v-chip   small>
+													<v-icon left small>mdi-spray-bottle</v-icon>
+												Limpieza</v-chip>
+												<v-chip   small>
+													<v-icon left small>mdi-air-conditioner</v-icon>
+												A/C</v-chip>
 											</v-chip-group>
 										</div>
 										
@@ -613,48 +627,55 @@
 								
 									<v-container fluid>
 											<v-row>
-											<v-col cols="12" sm="4" md="4">
-												<v-checkbox
-												v-model="ex4"
-												label="A/C"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-												<v-checkbox
-												v-model="ex4"
-												label="Secadora"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-											</v-col>
-											<v-col cols="12" sm="4" md="4">
-												<v-checkbox
-												v-model="ex4"
-												label="Pet Friendly"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-												<v-checkbox
-												v-model="ex4"
-												label="Extracción Basura"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-											</v-col>
-											<v-col cols="12" sm="4" md="4">
-												<v-checkbox
-												v-model="ex4"
-												label="Calefacción"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-												<v-checkbox
-												v-model="ex4"
-												label="Lavadora"
-												color="secondary"
-												hide-details
-												></v-checkbox>
-											</v-col>
+													<v-col cols="12" sm="4" md="4">
+														<v-checkbox
+														v-model="ex4"
+														label="A/C"
+														color="primary"
+														append-icon="mdi-air-conditioner"
+														
+														hide-details
+														></v-checkbox>
+														<v-checkbox
+														v-model="ex4"
+														label="Secadora"
+														color="primary"
+														append-icon="mdi-tumble-dryer"											hide-details
+														></v-checkbox>
+													</v-col>
+													<v-col cols="12" sm="4" md="4">
+														<v-checkbox
+														v-model="ex4"
+														label="Pet Friendly"
+														color="primary"
+														hide-details
+														append-icon="mdi-paw"
+														></v-checkbox>
+														<v-checkbox
+														v-model="ex4"
+														label="Extracción Basura"
+														color="primary"
+														append-icon="mdi-delete-empty"
+														hide-details
+														></v-checkbox>
+													</v-col>
+													<v-col cols="12" sm="4" md="4">
+														<v-checkbox
+														v-model="ex4"
+														label="Calefacción"
+														color="primary"
+															append-icon="mdi-hvac"
+														
+														hide-details
+														></v-checkbox>
+														<v-checkbox
+														v-model="ex4"
+														label="Lavadora"
+														color="primary"
+														hide-details
+															append-icon="mdi-dishwasher"
+														></v-checkbox>
+													</v-col>
 											</v-row>
 
 									</v-container>
@@ -737,10 +758,18 @@
 											
 											column
 											>
-												<v-chip   small>WIFI</v-chip>
-												<v-chip   small>Mascotas</v-chip>
-												<v-chip   small>Limpieza</v-chip>
-												<v-chip   small>A/C</v-chip>
+												<v-chip   small>
+														<v-icon left small>mdi-wifi</v-icon>
+													WIFI</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-paw</v-icon>
+													Mascotas</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-spray-bottle</v-icon>
+													Limpieza</v-chip>
+													<v-chip   small>
+														<v-icon left small>mdi-air-conditioner</v-icon>
+													A/C</v-chip>
 											</v-chip-group>
 										</div>
 										

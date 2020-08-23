@@ -2,13 +2,19 @@
 	<div>	
 		<section id="hero">
 			<v-row no-gutters>
-				<v-img
-					:height="'450px'"
-					src="../assets/img/neighborhood.jpg">
-					<v-overlay
-						class="position-relative touch-action-auto w-100 h-100"
+				 <v-carousel hide-delimiters cycle interval="3500"
+				 :height="'500px'">
+					<v-carousel-item
+					v-for="(item,i) in items"
+					:key="i"
+					:src="item.src"
+					>
+					
+					</v-carousel-item>
+						<v-overlay
+						class="position-absolute touch-action-auto w-100 h-100"
 						:dark="false"
-						opacity="0.5"
+						opacity="0.3"
 						:value="true"
 						z-index="1">	
 						<v-container fluid grid-list-md pt-12 mt-12>
@@ -23,7 +29,7 @@
 									justify="center">
 									<v-btn-toggle
 									v-model="toggle_exclusive"
-									color="primary"
+									color="primary lighten-5"
 									outlined
 									>
 										<v-btn>
@@ -42,7 +48,8 @@
 							</div>
 						</v-container>
 					</v-overlay>
-				</v-img>
+				</v-carousel>
+				
 			</v-row>
 		</section>
 		<section id="explora" style="background:#fff !important">
@@ -193,10 +200,18 @@
 							
 							column
 							>
-								<v-chip   small>WIFI</v-chip>
-								<v-chip   small>Mascotas</v-chip>
-								<v-chip   small>Limpieza</v-chip>
-								<v-chip   small>A/C</v-chip>
+								<v-chip   small>
+									<v-icon left small>mdi-wifi</v-icon>
+								WIFI</v-chip>
+								<v-chip   small>
+									<v-icon left small>mdi-paw</v-icon>
+								Mascotas</v-chip>
+								<v-chip   small>
+									<v-icon left small>mdi-spray-bottle</v-icon>
+								Limpieza</v-chip>
+								<v-chip   small>
+									<v-icon left small>mdi-air-conditioner</v-icon>
+								A/C</v-chip>
 							</v-chip-group>
 						</div>
 						

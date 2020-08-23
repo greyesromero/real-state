@@ -18,6 +18,7 @@
 				label="Busca por departamento, municipio, etc"
 				hide-details
 				solo
+				
 				></v-text-field>
 			</v-col>
 		

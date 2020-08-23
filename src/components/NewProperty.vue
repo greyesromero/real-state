@@ -8,7 +8,7 @@
 			<v-toolbar-title>Nueva Propiedad</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<v-btn dark text @click="closeDialog()" v-if="e1==7">Confirmar Propiedad</v-btn>
+				<v-btn color="secondary" @click="closeDialog()" v-if="e1==8">Confirmar Propiedad</v-btn>
 			</v-toolbar-items>
 			</v-toolbar>
 			<v-stepper v-model="e1" class="elevation-0">
@@ -26,6 +26,8 @@
 				<v-stepper-step step="6" :complete="e1 > 6">Fotos</v-stepper-step>
 				<v-divider></v-divider>
 				<v-stepper-step step="7" :complete="e1 > 7">Precio y disponibilidad</v-stepper-step>
+				<v-divider></v-divider>
+				<v-stepper-step step="8" :complete="e1 > 8">Restricciones</v-stepper-step>
 			</v-stepper-header>
 				
 			<v-stepper-items >
@@ -241,7 +243,14 @@
 							>
 							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
-									<span class="display-1">Especificaciones</span>
+									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+										<span class="display-1">Especificaciones</span>
+											
+										<v-spacer></v-spacer>
+									<v-switch class="mt-2" v-model="house_type" label="La propiedad es una finca"></v-switch>
+
+									</v-toolbar>
+									
 									<p class="heading-4 mt-5">
 									Estos son los servicios que los clientes esperan encontrar normalmente, pero puedes añadir aún más después de publicar la propiedad.
 
@@ -286,10 +295,10 @@
 													
 													<v-layout row wrap>
 														<v-flex xs12 md4 d-flex justify-start>
-															<span>Tamaño</span>
+															<span>Área de Construcción</span>
 														</v-flex>
 														<v-flex xs12 md8 d-flex justify-end>
-														<v-text-field color="secondary" name="size" label="" suffix="m²" outlined>
+														<v-text-field color="secondary" name="size" label="" :suffix="house_type ? 'v²' : 'm²'" outlined>
 														</v-text-field>
 														</v-flex>
 														<v-flex xs12 md4 d-flex justify-start>
@@ -358,6 +367,7 @@
 														v-model="ex4"
 														label="A/C"
 														color="primary"
+														append-icon="mdi-air-conditioner"
 														
 														hide-details
 														></v-checkbox>
@@ -365,7 +375,7 @@
 														v-model="ex4"
 														label="Secadora"
 														color="primary"
-																												hide-details
+														append-icon="mdi-tumble-dryer"											hide-details
 														></v-checkbox>
 													</v-col>
 													<v-col cols="12" sm="4" md="4">
@@ -374,11 +384,13 @@
 														label="Pet Friendly"
 														color="primary"
 														hide-details
+														append-icon="mdi-paw"
 														></v-checkbox>
 														<v-checkbox
 														v-model="ex4"
 														label="Extracción Basura"
 														color="primary"
+														append-icon="mdi-delete-empty"
 														hide-details
 														></v-checkbox>
 													</v-col>
@@ -387,6 +399,8 @@
 														v-model="ex4"
 														label="Calefacción"
 														color="primary"
+															append-icon="mdi-hvac"
+														
 														hide-details
 														></v-checkbox>
 														<v-checkbox
@@ -394,6 +408,7 @@
 														label="Lavadora"
 														color="primary"
 														hide-details
+															append-icon="mdi-dishwasher"
 														></v-checkbox>
 													</v-col>
 													</v-row>
@@ -441,7 +456,13 @@
 							>
 							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
 								<v-flex xs12 md12 align-self-center text-center>
-									<span class="display-1">Agrega fotos</span>
+										<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+										<span class="display-1">Agrega Fotos</span>
+											
+										<v-spacer></v-spacer>
+									<v-switch class="mt-2" v-model="photos" label="Fotos Profesionales"></v-switch>
+
+									</v-toolbar>
 									<p class="heading-4 mt-5">
 										Las fotos ayudan a que los clientes se imaginen cómo es vivir en tu propiedad. Puedes empezar con una y agregar más después de publicar.
 
@@ -473,7 +494,7 @@
 							</v-flex>
 							<v-flex xs6 d-flex justify-end>
 								<v-btn
-									v-if="e1!=7"
+							
 									color="primary"
 									@click="nextStep(e1)"
 									>
@@ -587,6 +608,55 @@
 					</v-card>
 					
 				</v-stepper-content>
+				<v-stepper-content step="8">
+					<v-container fluid grid-list-md fill-height>
+						<v-layout row wrap align-end>
+							<v-flex xs6 d-flex justify-start>
+							
+								<v-btn
+								v-if="e1!=1"
+								color="primary"
+								@click="previewStep(e1)"
+								>
+								Anterior
+								</v-btn>
+							</v-flex>
+							<v-flex xs6 d-flex justify-end>
+								<v-btn
+									v-if="e1!=8"
+									color="primary"
+									@click="nextStep(e1)"
+									>
+									Siguiente
+									</v-btn>
+								
+							</v-flex>
+							
+						</v-layout>
+					</v-container>
+					<v-card color="lighten-1" class="mb-5" flat>
+						<v-container
+							fluid
+							grid-list-lg
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
+							>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
+								<v-flex xs12 md12 align-self-center text-center>
+									<span class="display-1">Restricciones</span>
+									<p class="heading-4 mt-5">
+
+									</p>
+									<v-container grid-list-lg>
+
+										</v-container>	
+								</v-flex>
+								
+								
+							</v-layout>
+						</v-container>
+					</v-card>
+					
+				</v-stepper-content>
 			</v-stepper-items>
 				
 		</v-stepper>
@@ -608,6 +678,7 @@
 
 			rules: [v => v.length <= 50 || 'Max 50 caracteres'],
 			e1: 1,
+			house_type: false,
 			switch_venta: false,
 			switch_renta: false,
 			disabled_venta: false,
@@ -618,6 +689,7 @@
 			vertical: false,
 			altLabels: false,
 			editable: true,
+			photos: false,
 			coordinates: {
 					lat: 14.6349,
 					lng: -90.5069,
