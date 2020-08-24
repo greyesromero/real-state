@@ -76,7 +76,13 @@
 							</v-card-title>
 							<v-card-text>
 								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-									<v-subheader class="title">Ubicación</v-subheader>
+									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+										<v-subheader class="title" style="padding-left:0px!important;">Ubicación</v-subheader>
+											
+										<v-spacer></v-spacer>
+									<v-switch color="secondary" class="mt-5" label="Trato directo con dueño"></v-switch>
+
+									</v-toolbar>
 									<v-container fluid>
 										<v-flex xs12>
 											<v-text-field
@@ -92,6 +98,18 @@
 											></v-text-field>
 										</v-flex>
 									</v-container>
+									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+										<v-subheader class="title" style="padding-left:0px!important;">Tipo</v-subheader>
+											
+										<v-spacer></v-spacer>
+										 <v-row justify="space-around" class="mt-8">
+												<v-checkbox class="mx-2" label="Renta" color="secondary"></v-checkbox>
+												<v-checkbox class="mx-2" label="Venta" color="secondary"></v-checkbox>
+											</v-row>
+
+									</v-toolbar>
+								
+									<v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Precio</v-subheader>
 									<v-container fluid>
 										<v-layout>
@@ -110,7 +128,7 @@
 											Q{{ range[1] }}
 										</v-layout>
 									</v-container>
-									<v-divider class="mx-5 mb-5"></v-divider>
+									<!--v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Habitaciones y baños</v-subheader>
 									<v-container fluid grid-list-md fill-height px-5>
 									
@@ -142,7 +160,7 @@
 												</v-text-field>
 											</v-flex>
 										</v-layout>
-									</v-container>
+									</v-container-->
 									<v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Comodidades</v-subheader>
 								
@@ -555,7 +573,14 @@
 							</v-card-title>
 							<v-card-text>
 								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-									<v-subheader class="title">Ubicación</v-subheader>
+									
+									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+										<v-subheader class="title"  style="padding-left:0px!important;">Ubicación</v-subheader>
+											
+										<v-spacer></v-spacer>
+									<v-switch color="secondary" class="mt-5" label="Trato directo con dueño"></v-switch>
+
+									</v-toolbar>
 									<v-container fluid>
 										<v-flex xs12>
 											<v-text-field
@@ -571,6 +596,17 @@
 											></v-text-field>
 										</v-flex>
 									</v-container>
+											<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
+										<v-subheader class="title" style="padding-left:0px!important;">Tipo</v-subheader>
+											
+										<v-spacer></v-spacer>
+										 <v-row justify="space-around" class="mt-8">
+												<v-checkbox class="mx-2" label="Renta" color="secondary"></v-checkbox>
+												<v-checkbox class="mx-2" label="Venta" color="secondary"></v-checkbox>
+											</v-row>
+
+									</v-toolbar>
+									<v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Precio</v-subheader>
 									<v-container fluid>
 										<v-layout>
@@ -589,7 +625,7 @@
 											Q{{ range[1] }}
 										</v-layout>
 									</v-container>
-									<v-divider class="mx-5 mb-5"></v-divider>
+									<!--v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Habitaciones y baños</v-subheader>
 									<v-container fluid grid-list-md fill-height px-5>
 									
@@ -621,7 +657,7 @@
 												</v-text-field>
 											</v-flex>
 										</v-layout>
-									</v-container>
+									</v-container-->
 									<v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Comodidades</v-subheader>
 								
