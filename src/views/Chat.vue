@@ -40,7 +40,7 @@
 				tile
 			>
 				<v-toolbar dense>
-				<v-btn icon @click="mobile = true, mobile_bar = true" class="d-md-none d-lg-flex">
+				<v-btn icon @click="mobile = true, mobile_bar = true" class=" hidden-sm-and-up">
 					<v-icon>mdi-arrow-left-circle</v-icon>
 				</v-btn>
 				<v-toolbar-title>{{items[selected_chat].title}} </v-toolbar-title>
@@ -326,6 +326,8 @@ export default {
 
 	},
 	mounted () {
+
+		
 		this.properties.push({
 			image: '../assets/img/house4.jpg',
 			title: ' Casa Deluxe en Antigua Guatemala',
@@ -343,9 +345,7 @@ export default {
 </script>
 <style>
 
-#home-footer{
-	
-}
+
 .contenedor{
   display: flex;
   

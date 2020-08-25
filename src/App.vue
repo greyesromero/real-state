@@ -5,7 +5,7 @@
 		<router-view></router-View>
 		
 	</v-content>
-	<Footer/>
+	<Footer v-if="!$route.meta.hideNavigation"/>
 </v-app>
 </template>
 

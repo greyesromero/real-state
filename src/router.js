@@ -63,6 +63,9 @@ let router = new Router({
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
 			component: () => import( /* webpackChunkName: "about" */ './views/Search.vue'),
+			meta: { 
+				hideNavigation: true
+			}
 			
 		},
 		{
@@ -109,7 +112,8 @@ let router = new Router({
 			// which is lazy-loaded when the route is visited.
 			component: () => import( /* webpackChunkName: "about" */ './views/Chat.vue'),
 			meta: { 
-				requiresAuth: true
+				requiresAuth: true,
+				hideNavigation: true
 			}
 			
 		},

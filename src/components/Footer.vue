@@ -92,7 +92,7 @@ export default {
 		goTo(url){
 			 window.open(url, '_blank');
 		}
-	}
+	},
 };
 </script>
 <style>
