@@ -19,7 +19,7 @@
 				</v-toolbar-title>		
 				
 				<v-spacer></v-spacer>
-				<v-btn color="primary" dark  rounded router @click="searchProperty()" class="mr-3">
+				<v-btn color="primary" dark outlined rounded router @click="searchProperty()" class="mr-3">
 				<v-icon left dark>mdi-magnify</v-icon>
 				Buscar Propiedad
 				</v-btn>
