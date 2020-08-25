@@ -344,7 +344,7 @@ export default {
 <style>
 
 #home-footer{
-	display:none!important;
+	
 }
 .contenedor{
   display: flex;
