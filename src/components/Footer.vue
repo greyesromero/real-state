@@ -8,19 +8,7 @@
   
     <v-container>
       <v-row>
-        <v-col cols="12" class=" py-0">
-           <v-row align="center" justify="center" >
-            <v-img
-                class="white--text py-0"
-                height="150px"
-                max-width="auto"
-                
-                src="../assets/img/grafica.png"
-                >
-              
-                </v-img>
-               </v-row>
-        </v-col>
+    
           
         <v-col
           cols="12"
