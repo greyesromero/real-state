@@ -65,7 +65,8 @@ let router = new Router({
 			component: () => import( /* webpackChunkName: "about" */ './views/Search.vue'),
 			meta: { 
 				hideNavigation: true
-			}
+			},
+			props: true,
 			
 		},
 		{

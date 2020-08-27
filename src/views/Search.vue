@@ -1,7 +1,7 @@
 <template>
 	<div>	
 		<v-divider></v-divider>
-		<section v-if="!favorites"> 
+		<section> 
 			<v-container 
 				v-if="loading"
 				fluid 
@@ -47,18 +47,18 @@
 						<v-layout row wrap align-end>
 							
 								<v-flex xs12 md12 d-flex justify-end>
-								<v-switch color="secondary" class="my-1" v-model="favorites" @change="infoWinOpen = false" label="Mis Favoritos" ></v-switch>
+								<v-switch color="secondary" class="my-1" v-model="favorites" @change="infoWinOpen = false, changeArray()" label="Mis Favoritos" ></v-switch>
 
 								<v-btn text v-on:click="dialog=true" style="float:right;" color="secondary">
 									<v-icon >mdi-cog</v-icon>	FILTROS
 								</v-btn>
 							</v-flex>
-							<v-flex xs12 md12 d-flex justify-start>
-							<span class="body-2">{{visiblePages.length}} propiedades</span>
+							<v-flex xs12 md12 d-flex justify-start v-if="location">
+							<span class="body-2">{{selected_properties.length}} propiedades en</span>
 								</v-flex>
-							<v-flex xs12 md12 d-flex justify-start>
+							<v-flex xs12 md12 d-flex justify-start v-if="location">
 								
-								<h3>Propiedades en Antigua Guatemala</h3>
+								<h3>{{location}}</h3>
 							</v-flex>
 							
 						</v-layout>
@@ -80,22 +80,65 @@
 										<v-subheader class="title" style="padding-left:0px!important;">Ubicación</v-subheader>
 											
 										<v-spacer></v-spacer>
-									<v-switch color="secondary" class="mt-5" label="Trato directo con dueño"></v-switch>
+									<v-switch color="secondary" class="mt-5" v-model="owner" label="Trato directo con dueño"></v-switch>
 
 									</v-toolbar>
 									<v-container fluid>
 										<v-flex xs12>
-											<v-text-field
-											prepend-inner-icon="mdi-map-marker"
-											flat
-											label="Busca por departamento, municipio, etc"
-											hide-details
-											solo
-											outlined
-											rounded
-											color="secondary"
-											v-model="city"
-											></v-text-field>
+											<v-autocomplete
+												v-model="model"
+												:items="itemsLocation"
+												:loading="isLoading"
+												:search-input.sync="busqueda"
+												chips
+												flat
+												clearable
+												hide-details
+												hide-selected
+												outlined
+												rounded
+												color="secondary"
+												
+												item-text="name"
+												item-value="name"
+												label="Selecciona un lugar"
+												solo
+												>
+												<template v-slot:no-data>
+													<v-list-item>
+													<v-list-item-title>
+														Busca tu lugar  
+														<strong>favorito</strong>
+													</v-list-item-title>
+													</v-list-item>
+												</template>
+												<template v-slot:selection="{ attr, on, item, selected }">
+													<v-chip
+													v-bind="attr"
+													:input-value="selected"
+													color="secondary"
+													class="white--text"
+													v-on="on"
+													>
+													<v-icon left>mdi-map-marker</v-icon>
+													<span v-text="item.name"></span>
+													</v-chip>
+												</template>
+												<template v-slot:item="{ item }">
+													<v-list-item-avatar
+													color="secondary"
+													class="headline font-weight-light white--text"
+													>
+													{{ item.name.charAt(0) }}
+													</v-list-item-avatar>
+													<v-list-item-content>
+													<v-list-item-title v-text="item.name"></v-list-item-title>
+													</v-list-item-content>
+													<v-list-item-action>
+													<v-icon>mdi-coin</v-icon>
+													</v-list-item-action>
+												</template>
+											</v-autocomplete>
 										</v-flex>
 									</v-container>
 									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
@@ -103,8 +146,8 @@
 											
 										<v-spacer></v-spacer>
 										 <v-row justify="space-around" class="mt-8">
-												<v-checkbox class="mx-2" label="Renta" color="secondary"></v-checkbox>
-												<v-checkbox class="mx-2" label="Venta" color="secondary"></v-checkbox>
+												<v-checkbox class="mx-2" label="Renta" v-model="selected_type" value="Renta" color="secondary"></v-checkbox>
+												<v-checkbox class="mx-2" label="Venta" v-model="selected_type" value="Venta" color="secondary"></v-checkbox>
 											</v-row>
 
 									</v-toolbar>
@@ -165,56 +208,14 @@
 									<v-subheader class="title">Comodidades</v-subheader>
 								
 									<v-container fluid>
-											<v-row>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="A/C"
-														color="primary"
-														append-icon="mdi-air-conditioner"
-														
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Secadora"
-														color="primary"
-														append-icon="mdi-tumble-dryer"											hide-details
-														></v-checkbox>
+											<v-row >
+													<v-col cols="12" sm="4" md="4" v-for="(amenitie, index) in ex4" :key="amenitie.id">
+														  <v-checkbox :label="amenitie.name" :value="amenitie.name" v-model="amenitie.checked"
+														  hide-details color="secondary" :prepend-icon="amenitie.icon">
+      													  </v-checkbox>
+													
 													</v-col>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="Pet Friendly"
-														color="primary"
-														hide-details
-														append-icon="mdi-paw"
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Extracción Basura"
-														color="primary"
-														append-icon="mdi-delete-empty"
-														hide-details
-														></v-checkbox>
-													</v-col>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="Calefacción"
-														color="primary"
-															append-icon="mdi-hvac"
-														
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Lavadora"
-														color="primary"
-														hide-details
-															append-icon="mdi-dishwasher"
-														></v-checkbox>
-													</v-col>
+									
 											</v-row>
 									</v-container>
 									<v-divider class="mx-5"></v-divider>
@@ -223,7 +224,7 @@
 							<v-card-actions>
 							<v-spacer></v-spacer>
 							<v-btn color="primary darken-1" text @click="resetForm()">Quitar todos</v-btn>
-							<v-btn color="secondary darken-1" text @click="dialog = false">Aplicar</v-btn>
+							<v-btn color="secondary darken-1" text @click="applyFilters()">Aplicar</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
@@ -250,43 +251,6 @@
 										
 										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 					
-											<!--v-container fluid grid-list-md fill-height>
-												<v-layout row wrap>
-													<v-flex xs12 d-flex justify-start>
-															<v-chip
-															class="ma-2"
-															label
-															color="secondary"
-															text-color="white"
-															>
-															RENT
-														</v-chip>
-														<v-chip
-															class="ma-2"
-															color="primary"
-															label
-															text-color="white"
-															>
-															NEW
-														</v-chip>
-													</v-flex>
-													
-												</v-layout>
-												
-												
-												<v-layout row wrap align-end>
-													
-													<v-flex xs12 d-flex justify-end>
-														<span class="text-truncante text-right title">Q1000</span>
-														<v-btn icon color="white" class="mx-3">
-														<v-icon>mdi-share-variant</v-icon>
-														</v-btn>
-														<v-btn icon color="white">
-														<v-icon>mdi-heart-outline</v-icon>
-														</v-btn> 
-													</v-flex>
-												</v-layout>
-											</v-container-->
 											<v-layout column justify-space-between fill-height px-5 py-5>
 												<v-layout row wrap>
 													<v-flex xs12 d-flex justify-start>
@@ -371,7 +335,7 @@
 						<v-flex xs12>
 							<v-pagination
 								v-model="page"
-								:length="Math.ceil(properties.length/perPage)"
+								:length="Math.ceil(selected_properties.length/perPage)"
 							></v-pagination>
 						</v-flex>
 					</v-layout>
@@ -394,42 +358,7 @@
 										:src="items[1].src"
 										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 						
-												<!--v-container fluid grid-list-md fill-height>
-													<v-layout row wrap>
-														<v-flex xs12 d-flex justify-start>
-																<v-chip
-																class="ma-2"
-																label
-																color="secondary"
-																text-color="white"
-																x-small
-																>
-																RENT
-															</v-chip>
-															<v-chip
-																class="ma-2"
-																color="primary"
-																label
-																text-color="white"
-																x-small
-																>
-																NEW
-															</v-chip>
-														</v-flex>
-													</v-layout>
-													<v-layout row wrap align-end>
-														<v-flex xs12 d-flex justify-end>
-															<span class="text-truncante text-right title">Q1000</span>
-															 <v-btn icon color="white" class="mx-3">
-															<v-icon>mdi-share-variant</v-icon>
-															</v-btn>
-															<v-btn icon color="white">
-															<v-icon>mdi-heart-outline</v-icon>
-															</v-btn> 
-														</v-flex>
-													</v-layout>
-												</v-container-->
-												<v-layout column justify-space-between fill-height px-5 py-5>
+											<v-layout column justify-space-between fill-height px-5 py-5>
 												<v-layout row wrap>
 													<v-flex xs12 d-flex justify-start>
 															<v-chip
@@ -499,442 +428,56 @@
 				</gmap-map>
 			</div>
       </section>
-	  <section v-if="favorites"> 
-			<v-container 
-				v-if="loading"
-				fluid 
-				grid-list-md 
-				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
-				<div  class="center-container">
-					<v-container fill-height>
-						<v-layout align-center justify-center>
-						<v-progress-circular
-							:size="48"
-							:width="4"
-							color="primary lighten-1"
-							indeterminate
-						></v-progress-circular>
-						</v-layout>
-					</v-container>
-				</div>
-			</v-container>
-			<v-container 
-				v-if="!loading"
-				fluid 
-				grid-list-md 
-				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
-			
-				<div v-if="errored" class="center-container">
-					<v-container fill-height>
-					<v-layout column align-center justify-center>
-						<h1 class="display-2">Conéctate a Internet</h1>
-						<p class="body-1 grey--text">Comprueba tu conexión y vuelve a intentarlo</p>
-						<v-btn
-						color="primary"
-						outlined
-						@click="fetchProperties"
-						>Reintentar</v-btn>
-					</v-layout>
-					</v-container>
-				</div>
-				<div>
-					<v-container fluid grid-list-md fill-height>
-						
-						<v-layout row wrap align-end>
-							<v-flex xs6 md6 d-flex justify-start>
-							<span class="body-2">{{favorites_properties.length}} propiedades</span>
-								</v-flex>
-								<v-flex xs6 md6 d-flex justify-end>
-								<v-switch color="secondary" class="my-1" v-model="favorites" @change="infoWinOpen = false" label="Mis Favoritos" ></v-switch>
-
-								<v-btn text v-on:click="dialog=true" style="float:right;" color="secondary">
-									<v-icon >mdi-cog</v-icon>	FILTROS
-								</v-btn>
-							</v-flex>
-							<v-flex xs12 md12 d-flex justify-start>
-								
-								<h3>Propiedades en Antigua Guatemala</h3>
-							</v-flex>
-							
-						</v-layout>
-					</v-container>
-					<v-dialog v-model="dialog" persistent max-width="600px">
-						<v-card>
-							<v-card-title>
-							<span class="headline">Filtros de Búsqueda</span>
-							<v-spacer></v-spacer>
-							<v-btn icon v-on:click="dialog=false">
-								<v-icon>mdi-close</v-icon>
-							</v-btn>
-							
-
-							</v-card-title>
-							<v-card-text>
-								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-									
-									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
-										<v-subheader class="title"  style="padding-left:0px!important;">Ubicación</v-subheader>
-											
-										<v-spacer></v-spacer>
-									<v-switch color="secondary" class="mt-5" label="Trato directo con dueño"></v-switch>
-
-									</v-toolbar>
-									<v-container fluid>
-										<v-flex xs12>
-											<v-text-field
-											prepend-inner-icon="mdi-map-marker"
-											flat
-											label="Busca por departamento, municipio, etc"
-											hide-details
-											solo
-											outlined
-											rounded
-											color="secondary"
-											v-model="city"
-											></v-text-field>
-										</v-flex>
-									</v-container>
-											<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
-										<v-subheader class="title" style="padding-left:0px!important;">Tipo</v-subheader>
-											
-										<v-spacer></v-spacer>
-										 <v-row justify="space-around" class="mt-8">
-												<v-checkbox class="mx-2" label="Renta" color="secondary"></v-checkbox>
-												<v-checkbox class="mx-2" label="Venta" color="secondary"></v-checkbox>
-											</v-row>
-
-									</v-toolbar>
-									<v-divider class="mx-5 mb-5"></v-divider>
-									<v-subheader class="title">Precio</v-subheader>
-									<v-container fluid>
-										<v-layout>
-												Q{{ range[0] }} 
-											<v-flex>
-											<v-range-slider
-											v-model="range"
-											:max="max"
-											:min="min"
-											height="50"
-											thumb-label
-											color="secondary"
-											>
-											</v-range-slider>
-											</v-flex>
-											Q{{ range[1] }}
-										</v-layout>
-									</v-container>
-									<!--v-divider class="mx-5 mb-5"></v-divider>
-									<v-subheader class="title">Habitaciones y baños</v-subheader>
-									<v-container fluid grid-list-md fill-height px-5>
-									
-										<v-layout row wrap>
-											<v-flex xs6 md10 d-flex justify-start>
-												<span>Habitaciones</span>
-											</v-flex>
-											<v-flex xs6 md2 d-flex justify-end>
-												<v-text-field 
-												v-model.number="foo" 
-												append-outer-icon="mdi-plus-circle-outline" 
-												@click:append-outer="increment" 
-												prepend-icon="mdi-minus-circle-outline" 
-												@click:prepend="decrement"
-												color="secondary">
-												</v-text-field>
-											</v-flex>
-											<v-flex xs6 md10 d-flex justify-start>
-												<span>Baños</span>
-											</v-flex>
-											<v-flex xs6 md2 d-flex justify-end>
-												<v-text-field 
-												color="secondary"
-												v-model.number="foo2" 
-												append-outer-icon="mdi-plus-circle-outline" 
-												@click:append-outer="increment" 
-												prepend-icon="mdi-minus-circle-outline" 
-												@click:prepend="decrement">
-												</v-text-field>
-											</v-flex>
-										</v-layout>
-									</v-container-->
-									<v-divider class="mx-5 mb-5"></v-divider>
-									<v-subheader class="title">Comodidades</v-subheader>
-								
-									<v-container fluid>
-											<v-row>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="A/C"
-														color="primary"
-														append-icon="mdi-air-conditioner"
-														
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Secadora"
-														color="primary"
-														append-icon="mdi-tumble-dryer"											hide-details
-														></v-checkbox>
-													</v-col>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="Pet Friendly"
-														color="primary"
-														hide-details
-														append-icon="mdi-paw"
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Extracción Basura"
-														color="primary"
-														append-icon="mdi-delete-empty"
-														hide-details
-														></v-checkbox>
-													</v-col>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="Calefacción"
-														color="primary"
-															append-icon="mdi-hvac"
-														
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Lavadora"
-														color="primary"
-														hide-details
-															append-icon="mdi-dishwasher"
-														></v-checkbox>
-													</v-col>
-											</v-row>
-
-									</v-container>
-									<v-divider class="mx-5"></v-divider>
-								</v-form>
-							</v-card-text>
-							<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="primary darken-1" text @click="resetForm()">Quitar todos</v-btn>
-							<v-btn color="secondary darken-1" text @click="dialog = false">Aplicar</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
-					<v-layout row wrap  justify="space-around" align-center align-content-center> 
-						<v-flex 
-							xs12
-							md6
-							:key="property.id"
-							v-for="(property,i) in favorites_properties">
-							<v-card
-								:loading="loading"
-								:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-1' : 'mx-1 my-1']"
-								
-								style="cursor:pointer;"
-								>
-									
-									<v-carousel hide-delimiters
-									class="white--text align-end"
-									height="175px">
-										<v-carousel-item
-										v-for="(item,i) in property.images"
-										:key="i"
-										:src="item.src"
-										
-										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
-					
-											<v-layout column justify-space-between fill-height px-5 py-5>
-												<v-layout row wrap>
-													<v-flex xs12 d-flex justify-start>
-															<v-chip
-															class="mx-1"
-															label
-															color="secondary"
-															text-color="white"
-															>
-															RENT
-														</v-chip>
-														<v-chip
-															class="mx-1"
-															color="primary"
-															label
-															text-color="white"
-															>
-															NEW
-														</v-chip>
-													</v-flex>
-													
-													
-												</v-layout>
-												<v-layout row wrap align-end>
-													
-													<v-flex xs12 d-flex justify-end>
-														<span class="text-truncante text-right title">Q1000</span>
-														
-													</v-flex>
-												</v-layout>
-											</v-layout>
-										</v-carousel-item>
-									</v-carousel>
-						
-									<v-card-title>
-										<div class="text-truncate">{{property.title}}</div>
-									</v-card-title>
-									<v-card-text>
-										2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-										1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-										1000 mts<sup>2</sup>
-										<div>
-											<v-chip-group
-											
-											column
-											>
-												<v-chip   small>
-														<v-icon left small>mdi-wifi</v-icon>
-													WIFI</v-chip>
-													<v-chip   small>
-														<v-icon left small>mdi-paw</v-icon>
-													Mascotas</v-chip>
-													<v-chip   small>
-														<v-icon left small>mdi-spray-bottle</v-icon>
-													Limpieza</v-chip>
-													<v-chip   small>
-														<v-icon left small>mdi-air-conditioner</v-icon>
-													A/C</v-chip>
-											</v-chip-group>
-										</div>
-										
-									</v-card-text>
-						
-									<v-divider class="mx-4"></v-divider>
-									<v-card-actions>
-										<v-btn
-										color="secondary"
-										text
-										router to = "/detail"
-										>
-										MÁS INFORMACIÓN
-										</v-btn>
-										<v-spacer></v-spacer>
-										<v-btn icon>
-											<v-icon>mdi-heart</v-icon>
-										</v-btn>
-										<v-btn icon>
-											<v-icon>mdi-share-variant</v-icon>
-										</v-btn>
-									</v-card-actions>
-							</v-card>
-						</v-flex>
-						<v-flex xs12>
-							<v-pagination
-								v-model="page"
-								:length="Math.ceil(properties.length/perPage)"
-							></v-pagination>
-						</v-flex>
-					</v-layout>
-				</div>
-        	</v-container>
-			<div class="search-map-container grey lighten-2 hidden-sm-and-down">
-				<gmap-map :center="center" :zoom="12" class="w-100 h-100">
-					<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-							<v-card
-								:loading="loading"
-								flat
-								:class="[$vuetify.breakpoint.smAndDown ? 'mx-0 my-0' : 'mx-0 my-0']"
-								:style="[{'max-width': $vuetify.breakpoint.smAndUp ? '250px' : '125px'}]"
-								>
-								
-								<v-img
-										class="white--text"
-										height="150px"
-										
-										:src="items[1].src"
-										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
-						
-												<v-layout column justify-space-between fill-height px-5 py-5>
-												<v-layout row wrap>
-													<v-flex xs12 d-flex justify-start>
-															<v-chip
-															class="mx-1"
-															label
-															color="secondary"
-															text-color="white"
-															small
-															>
-															RENT
-														</v-chip>
-														<v-chip
-															class="mx-1"
-															color="primary"
-															label
-															text-color="white"
-															small
-															>
-															NEW
-														</v-chip>
-													</v-flex>
-													
-													
-												</v-layout>
-												<v-layout row wrap align-end>
-													
-													<v-flex xs12 d-flex justify-end>
-														<span class="text-truncante text-right title">Q1000</span>
-														
-													</v-flex>
-												</v-layout>
-											</v-layout>
-										</v-img>
-								<v-card-title class="justify-left">
-									<span class="title">{{ selected_title }}</span>
-									
-								</v-card-title>
-								<v-card-text>
-											
-											2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-											1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-											1000 mts<sup>2</sup>
-											
-										</v-card-text>
-								
-								<v-divider class="mx-4"></v-divider>
-										<v-card-actions>
-											<v-btn
-											color="secondary"
-											text
-											router to = "/detail"
-											>
-											MÁS INFORMACIÓN
-											</v-btn>
-											<v-spacer></v-spacer>
-											<v-btn icon>
-												<v-icon>mdi-heart</v-icon>
-											</v-btn>
-											<v-btn icon>
-												<v-icon>mdi-share-variant</v-icon>
-											</v-btn>
-										</v-card-actions>
-							</v-card>
-						</gmap-info-window>
-
-					<gmap-marker :key="i" v-for="(m,i) in favorites_properties" :position="m.position" :clickable="true" @click="toggleInfoWindow(m,i)"></gmap-marker>
-				</gmap-map>
-			</div>
-      </section>
+	
    </div>
 </template>
 
 <script>
 export default {
-  name: 'search-page',
+  	name: 'search',
+  	props: {
+        location: String
+	},
   data() {
     return {
-		ex4: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],
+		ex4: [{
+			id: 1,
+			name: 'A/C',
+			checked: false,
+			icon: 'mdi-air-conditioner'
+		},
+		{
+			id: 2,
+			name: 'Secadora',
+			checked: false,
+			icon: 'mdi-tumble-dryer'
+		},
+		{
+			id: 3,
+			name: 'Lavadora',
+			checked: false,
+			icon: 'mdi-dishwasher'
+		},
+		{
+			id: 4,
+			name: 'Basura',
+			checked: false,
+			icon: 'mdi-trash-can'
+		},
+		{
+			id: 5,
+			name: 'Calefacción',
+			checked: false,
+			icon: 'mdi-hvac'
+		},
+		{
+			id: 6,
+			name: 'Mascotas',
+			checked: false,
+			icon: 'mdi-paw'
+		}],
+		selected_type: [],
+		owner: false,
 		page: 1,
 		perPage: 10,
 		favorites: null,
@@ -945,6 +488,7 @@ export default {
 		loading: false,
 		errored: false,
 		selected_title: null,
+		selected_properties: [],
 		favorites_properties: [{
 				id: 1,
 				title: 'Villas Antigua',
@@ -1163,6 +707,10 @@ export default {
 		city: null,
 		valid: true,
 		lazy:false,
+		isLoading: false,
+		itemsLocation: [],
+		model: null,
+		busqueda: null,
 		}
 	},
   	computed: {
@@ -1170,13 +718,64 @@ export default {
 			return this.$store.getters.getUser
 		},
 		visiblePages () {
-			return this.properties.slice((this.page - 1)* this.perPage, this.page* this.perPage)
+			return this.selected_properties.slice((this.page - 1)* this.perPage, this.page* this.perPage)
+		},
+		selected: function() {
+			return this.ex4.filter(amenitie => amenitie.checked)
 		}
 	},
+	watch: {
+     
+      busqueda (val) {
+        // Items have already been loaded
+        if (this.itemsLocation.length > 0) return
+
+		this.isLoading = true
+		this.itemsLocation = [
+			{"id":1,"name":"Antigua Guatemala, Sacatepéquez"},
+			{"id":2,"name":"Jocotenango, Sacatepéquez"},
+			{"id":3, "name":"Zona 1, Ciudad de Guatemala"}
+		]
+		
+		this.isLoading = false
+
+        // Lazily load input items
+        /*fetch('https://api.coingecko.com/api/v3/coins/list')
+          .then(res => res.clone().json())
+          .then(res => {
+            this.items = res
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally(() => (this.isLoading = false))*/
+      },
+    },
 	mounted() {
 		this.fetchProperties()
 	},
 	methods: {
+		applyFilters(){
+			console.log(this.selected)
+			console.log(this.range)
+			console.log(this.selected_type)
+			console.log(this.owner)
+			console.log(this.model)
+			if(this.favorites){
+				console.log('Filtros se aplicaran a favoritos')
+			}
+			else{
+				console.log('Filtros se aplicaran a propiedades normales')
+			}
+		},
+		changeArray(){
+			if(this.favorites){
+				this.selected_properties = this.favorites_properties
+			}
+			else{
+				this.selected_properties = this.properties
+			}
+		},
 		increment () {
 			this.foo = parseInt(this.foo,10) + 1
 		},
@@ -1226,7 +825,8 @@ export default {
 		},
 		fetchProperties() {
 			if (this.errored) this.errored = false
-
+			this.selected_properties = this.properties
+			
 		/*	this.loading = true
 			this.properties.push({
 				id: 1,
