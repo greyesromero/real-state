@@ -2,7 +2,7 @@
 <div>
 	<v-card :loading="loading_appointment" class="mx-auto" tile flat>
 		<v-card-title class="font-weight-bold">
-			Q1200<span class="ml-2 body-1 grey--text text--darken-2">/ por mes</span>
+			Q {{property.rent_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ por mes</span>
 		</v-card-title>
 	
 		<v-divider></v-divider>
@@ -174,7 +174,7 @@ export default {
 			fecha_dialog: false,
 			fecha: null,
 			succesfull: false,
-			mensaje: 'Me interesa la casa en Antigua Guatemala',
+			mensaje: null,
 			message: null,
 			emailRules: [
 				v => !!v || 'E-mail es Requerido',
@@ -305,7 +305,7 @@ export default {
 		},
 	},
 	mounted(){
-		
+		this.mensaje = 'Me interesa la propiedad '+this.property.name
 	}
 }
 </script>

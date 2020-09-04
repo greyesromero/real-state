@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Loader :visible="loading" />
+      
 		<v-content style="background:#ffffff !important">
 			<section style="background:#ffffff !important">
 				<v-container fluid>	

@@ -21,7 +21,7 @@
 				</v-container>
 			</div>
 		</v-container>
-		<div v-if="!loading">
+		<div v-if="!loading && property">
 			<section id="title" >
 				
 				<v-container fill-height fluid px-8>
@@ -30,7 +30,7 @@
 							<span
 							:class="[$vuetify.breakpoint.smAndDown ? 'text-center' : 'text-left']"
 							>
-								<h1 class="display-1 ">Casa deluxe en Antigua Guatemala</h1>
+								<h1 class="display-1 ">{{this.name}}</h1>
 							</span>
 						</v-col>
 						<v-col cols="12" md="4">
@@ -46,7 +46,7 @@
 					</v-row>
 				</v-container>
 			</section>
-			<section id="big_gallery" v-if="items.length>=3" class="d-none d-sm-flex" >
+			<section id="big_gallery" v-if="images.length>=3" class="d-none d-sm-flex" >
 				<v-container
 					fluid
 					grid-list-md
@@ -55,15 +55,15 @@
 				<v-layout align-center justify-center row fill-height px-10>
 						<v-flex sm8 xs12>
 							<v-card class="mr-2">
-							<v-img :src="items[0].src" height="412px" width="100%"></v-img>
+							<v-img :src="images[0].src" height="412px" width="100%"></v-img>
 							</v-card>
 						</v-flex>
 						<v-flex sm4 xs12>
 							<v-card class="mb-4">
-								<v-img :src="items[1].src" height="198px"></v-img>
+								<v-img :src="images[1].src" height="198px"></v-img>
 							</v-card>
 							<v-card >
-								<v-img :src="items[2].src" height="198px"></v-img>
+								<v-img :src="images[2].src" height="198px"></v-img>
 							</v-card>
 						</v-flex>
 					</v-layout>
@@ -85,16 +85,16 @@
 							
 							<v-flex  xs12 md8>
 								<v-card >
-									<v-img :src="items[0].src" height="400px"></v-img>
+									<v-img :src="images[0].src" height="400px"></v-img>
 								</v-card>
 							</v-flex>
 							<v-flex  xs12 md4>
 								<v-layout column justify-space-between fill-height>
 									<v-card class="mb-1">
-										<v-img :src="items[0].src" height="198px"></v-img>
+										<v-img :src="images[0].src" height="198px"></v-img>
 									</v-card>
 									<v-card >
-										<v-img :src="items[0].src" height="198px"></v-img>
+										<v-img :src="images[0].src" height="198px"></v-img>
 									</v-card>
 									
 								</v-layout>
@@ -144,14 +144,14 @@
 				</v-img>
 				</v-container>
 			</section>
-			<section id="small_gallery"  v-if="items.length<=2" class="d-none d-sm-flex">
+			<section id="small_gallery"  v-if="images.length==2 || images.length ==1" class="d-none d-sm-flex">
 				<v-container
 					fluid
 					grid-list-md
 					px-5
 				>
 					<v-img
-					:src="items[0].src"
+					:src="images[0].src"
 					gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
 					height="400px"
 					width="100%"
@@ -196,11 +196,52 @@
 					</v-img>
 				</v-container>
 			</section>
+			<section id="none_gallery"  v-if="images.length==0" class="d-none d-sm-flex">
+				<v-container
+					fluid
+					grid-list-md
+					px-5
+				>
+					<v-img
+					:src="'../assets/img/sin-imagen.jpg'"
+					gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
+					height="400px"
+					width="100%"
+					style="border-radius:5px"
+					>
+					<v-container fill-height px-0>
+						<v-layout row wrap>
+							<v-flex xs12 d-flex justify-start>
+									<v-chip
+									class="ma-2"
+									label
+									text-color="white"
+									color="secondary"
+									>
+									RENT
+								</v-chip>
+								<v-chip
+									class="ma-2"
+									color="primary"
+									label
+									text-color="white"
+									>
+									NEW
+								</v-chip>
+							</v-flex>
+						</v-layout>
+						<v-layout row wrap align-end pb-6>
+						
+						</v-layout>
+					</v-container>
+					</v-img>
+				</v-container>
+			</section>
 			<section id="slider_gallery"  class="d-flex d-sm-none">
 				<v-container>
 					<v-carousel hide-delimiters>
 						<v-carousel-item
-						v-for="(item,i) in items"
+						v-for="(item,i) in images"
 						:key="i"
 						:src="item.src"
 						>
@@ -243,24 +284,24 @@
 									<v-flex xs12 md4>
 										<span class="font-weight-bold">
 										<v-icon small left>mdi-bed</v-icon>
-										2 Habitaciones
+										{{rooms}} Habitaciones
 										</span>
 									</v-flex>
 									<v-flex xs12 md4>
 										<span class="font-weight-bold">
 											<v-icon small left>mdi-shower</v-icon>
-											2 Baños
+											{{bathrooms}} Baños
 										</span>
 									</v-flex>
 									<v-flex xs12 md4>
 										<span class="font-weight-bold">
 										<v-icon small left>mdi-resize</v-icon>
-										1200 m²
+										 {{construction}} m²
 										</span>
 									</v-flex>
 								</v-layout>
 							</v-container>
-							<p class="body-1 letter-spacing-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore, tempora vitae ipsam optio rem excepturi reiciendis repellat assumenda deleniti, veritatis dicta dolor provident inventore accusamus repellendus aspernatur quaerat odit perspiciatis.</p> 
+							<p class="body-1 letter-spacing-0">{{description}} </p> 
 						</section>
 						<section class="mt-12">
 						<h2 class="subtitle">Servicios</h2>
@@ -271,8 +312,8 @@
 										:key="amenity.id"
 									>
 										<span class="grey--text text--darken-1">
-										<v-icon small left>mdi-{{buildAmenityIcon(amenity.amenity)}}</v-icon>
-										{{ amenity.amenity }}
+										<v-icon small left>{{buildAmenityIcon(amenity.name)}}</v-icon>
+										{{ amenity.name }}
 										</span>
 									</v-flex>
 								</v-layout>
@@ -282,10 +323,10 @@
 						<section class="mt-12 mb-12">
 							<h2 class="subtitle">Ubicación</h2>
 							<v-container mt-6 mb-6 px-0 grid-list-md>
-								<h2 class="grey--text subtitle-1"><v-icon left small>mdi-map-marker</v-icon> 6A Avenida A, Ciudad de Guatemala</h2>
+								<h2 class="grey--text subtitle-1"><v-icon left small>mdi-map-marker</v-icon> {{address}}</h2>
 							</v-container>
-							<GmapMap :center="this.coordinates" :zoom="15" map-type-id="roadmap" style="width: auto; height: 300px">
-								<GmapMarker  color="secondary" :position="this.coordinates" />
+							<GmapMap ref="mapDiv" :center="coordinates" :zoom="15" map-type-id="roadmap" :options="map_options" style="width: auto; height: 300px">
+								<GmapMarker  color="secondary" :position="coordinates" />
 							</GmapMap>
 						</section>
 					</v-flex>
@@ -293,7 +334,7 @@
 					<v-flex xs12 md4>
 						<section>
 							<v-container grid-list-md pa-0 px-0>
-								<ScheduleForm />
+								<ScheduleForm :property="property"/>
 							</v-container>
 						</section>
 				
@@ -447,7 +488,7 @@
 				</v-container>
 				
 			</section>
-			<NewRecord v-if="isLoggedIn"></NewRecord>
+			<NewRecord v-if="isLoggedIn" :property="property"></NewRecord>
 			<v-overlay 
 				:value="galleryDialog"
 				color="white"
@@ -487,11 +528,18 @@ export default {
 		property: null,
 		loading: false,
 		model: 1,
-		
+		name: null,
+		description: null,
+		address: null,
+		rooms: 0,
+		bathrooms:0,
+		land: 0,
+		construction: 0,
 		coordinates: {
 			lat: 14.6349,
 			lng: -90.5069,
 		},
+		images:[],
 		toggle_exclusive: 0,
 		items: [
 			{
@@ -505,20 +553,16 @@ export default {
 			},
 		
 		],
-		amenities: [
-			{
-				id: 1,
-				amenity: 'Aire acondicionado'
+		amenities: [],
+		map_options: {
+				zoomControl: true,
+				mapTypeControl: false,
+				scaleControl: false,
+				streetViewControl: false,
+				rotateControl: false,
+				fullscreenControl: false,
+				disableDefaultUi: true,
 			},
-			{
-				id: 2,
-				amenity: 'Televisión'
-			},
-			{
-				id: 3,
-				amenity: 'Lavamanos'
-			}
-        ],
 	}),
 	computed: {
 		getUser : function(){ 
@@ -529,18 +573,22 @@ export default {
 		},
 	},
 	methods: {
-		 buildAmenityIcon(amenityName) {
+		
+		buildAmenityIcon(amenityName) {
 			switch (amenityName) {
-				case 'Aire acondicionado':
-				return 'air-conditioner'
-				case 'Televisión':
-				return 'television'
-				case 'Lavamanos':
-				return 'hand'
-				case 'Estufa':
-				return 'stove'
-				case 'Tina':
-				return 'hot-tub'
+				case 'Aire Acondicionado':
+				return 'mdi-air-conditioner'
+				case 'WiFi':
+				return 'mdi-wifi'
+				case 'Lavandería':
+				return 'mdi-dishwasher'
+				case 'Mascotas':
+				return 'mdi-paw'
+				case 'Basura':
+				return 'mdi-delete-empty'
+				case 'Calefacción':
+				return 'mdi-hvac'
+			
 			}
 		},
 		toggleGallery() {
@@ -556,10 +604,32 @@ export default {
 		},
 	},
 	mounted() {
+		this.loading = true
+		let params = this.$route.params ? Object.assign({}, this.$route.params): {};
+		axios.get('https://hsrealestate-api.herokuapp.com/api/properties/'+params.id+'/')
+		.then(response => {
+			this.loading = false
+			this.property = response.data
+			this.name = response.data.name
+			this.description = response.data.description
+			this.address = response.data.address
+			this.rooms = response.data.rooms
+			this.bathrooms = response.data.bathrooms
+			this.construction = response.data.construction_area
+			this.coordinates.lat = response.data.latitude
+			this.coordinates.lng = response.data.longitude
+			this.amenities = response.data.amenities
+			this.images = response.data.images
+			
+		})
+		.catch(error => {
+			this.loading = false
+			console.log(error);
+		})
 		
 	},
 	created(){
-	
+		console.log(this.getUser)
 	}
 
 }

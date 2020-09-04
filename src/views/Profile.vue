@@ -244,6 +244,7 @@ export default {
 				if (file !== undefined) {
 					const fr = new FileReader()
 					fr.readAsDataURL(file)
+					console.log(file)
 					fr.addEventListener('load', () => {
 						this.upload_image = []
 						this.upload_image.push(file); // this is an image file that can be sent to server...
@@ -323,7 +324,6 @@ export default {
 		this.subscription = this.getUser.active
 		this.gender = this.getUser.gender
 		this.email = this.getUser.email
-		this.payment_options = this.getUser.payment_options
 			
 	}
 }

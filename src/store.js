@@ -5,7 +5,7 @@ import { loader } from './modules/loader';
 import VuexPersistence from 'vuex-persist'
 
 Vue.use(Vuex)
-const baseURL = 'https://choosemyfitness-api.herokuapp.com/api/';
+const baseURL = 'https://hsrealestate-api.herokuapp.com/api/';
 
 export default new Vuex.Store({
   	state: {
@@ -86,45 +86,25 @@ export default new Vuex.Store({
 		},
 		login({commit}, credentials){
 			return new Promise((resolve, reject) => {
-			  commit('auth_request')
-			  const token = 1234
-			  const user = 	  {
-				"id": 1,
-				"email": "gaby12reyes@gmail.com",
-				"first_name": "Gabriela",
-				"last_name": "Reyes",
-				"image": null,
-				"birth_date": null,
-				"gender": null,
-				"credit_card": "",
-				"payment_options": [],
-				"influencer": false,
-				"subscription": 0,
-				"active": false,
-				"timestamp": "2020-06-19T20:42:53.167986Z"
-			}
-			commit('auth_success', token, user)
-				commit('SET_USER', user);
-				resolve()
-		
+			  	commit('auth_request')
 			 
-			/*	axios({url: baseURL + 'users/login/', data: credentials, method: 'POST' })
-			  .then(response => {
-				const token = response.data.jwt
-				const user = response.data.user
-				
-				localStorage.setItem('token', user.id)
-				localStorage.setItem('user', JSON.stringify(user))
-				axios.defaults.headers.common['Authorization'] = user.id
-				commit('auth_success', token, user)
-				commit('SET_USER', user);
-				resolve(response)
-			  })
-			  .catch(err => {
-				commit('auth_error')
-				localStorage.removeItem('token')
-				reject(err)
-			  })*/
+				axios({url: baseURL + 'users/login/', data: credentials, method: 'POST' })
+				.then(response => {
+					const token = response.data.jwt
+					const user = response.data.user
+					
+					localStorage.setItem('token', token)
+					localStorage.setItem('user', JSON.stringify(user))
+					axios.defaults.headers.common['Authorization'] = token
+					commit('auth_success', token, user)
+					commit('SET_USER', user);
+					resolve(response)
+				})
+				.catch(err => {
+					commit('auth_error')
+					localStorage.removeItem('token')
+					reject(err)
+				})
 			})
 		},
 		token({commit}, email){

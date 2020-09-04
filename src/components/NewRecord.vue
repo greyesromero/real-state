@@ -35,7 +35,7 @@
 	</v-speed-dial>
 	<!-- Update -->
 	 <v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
-     	<UpdateProperty v-on:closeDialog="closeDialog($event)"></UpdateProperty>
+     	<UpdateProperty v-on:closeDialog="closeDialog($event)" :property="property"></UpdateProperty>
     </v-dialog>
 	 <!-- Delete -->
 	<v-dialog v-model="delete_dialog" max-width="500" persistent>
@@ -111,7 +111,7 @@ import moment from 'moment'
 import UpdateProperty from '../components/UpdateProperty.vue'
 import EmptyCard from '../components/EmptyCard.vue'
 export default {
-	props: ['appointment'],
+	props: ['property'],
 	components: {
 		UpdateProperty,
 		EmptyCard
@@ -164,7 +164,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.payment_options = this.getUser.payment_options
+		this.payment_options = []
 	}
 }
 </script>
