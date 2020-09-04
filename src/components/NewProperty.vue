@@ -294,6 +294,8 @@
 														<v-flex xs12 md8 d-flex justify-end>
 															<v-select
 															:items="createForm.propertyTypes"
+															item-value="id"
+															item-text="name"
 															v-model="createForm.type"
 															@change="chooseType(createForm.type)"
 															outlined
@@ -687,13 +689,40 @@
 			dropzoneOptions: {
 				url: 'https://httpbin.org/post',
 				thumbnailWidth: 150,
-				maxFilesize: 0.5,
+				maxFilesize: 1,
 				addRemoveLinks: true,
 				headers: { "My-Awesome-Header": "header value" }
 			},
 			createForm: {
-				propertyTypes: ['Apartamento', 'Casa', 'Oficina', 'Bodega', 'Terreno', 'Local Comercial', 'Finca'],
-				type: 'Apartamento',
+				propertyTypes: [{
+					id: 1,
+					name: 'Apartamento'
+				},
+				{
+					id: 2,
+					name: 'Casa'
+				},
+				{
+					id: 3,
+					name: 'Oficina'
+				},
+				{
+					id: 4,
+					name: 'Bodega'
+				},
+				{
+					id: 5,
+					name: 'Terreno'
+				},
+				{
+					id: 6,
+					name: 'Finca'
+				},
+				{
+					id: 7,
+					name: 'Local Comercial'
+				}],
+				type: 1,
 				name: '',
 				nameError: null,
 				address: '',
@@ -807,6 +836,13 @@
 			},
 			vremoved(file, xhr, error) {
 				this.removedFile = true
+				console.log(this.upload_image)
+				var found = this.upload_image.findIndex(function(post, index) {
+					if(post.name == file.name)
+						return true;
+				});
+				this.upload_image.splice(found, 1);
+				console.log(this.upload_image)
 				// window.toastr.warning('', 'Event : vdropzone-removedFile')
 			},
 			buildAmenityIcon(amenityName) {
@@ -843,7 +879,7 @@
 				this.$emit('closeDialog')
 			},
 			chooseType(type){
-				if(type == 'Casa' || type == 'Finca' || type == 'Terreno'){
+				if(type == 2 || type == 5 || type == 6){
 					this.land_type = true
 				}else{
 					this.land_type = false
@@ -929,6 +965,7 @@
 					name: this.createForm.name,
 					description: this.createForm.description,
 					address: this.createForm.address,
+					type: this.createForm.type,
 					latitude: this.coordinates.lat,
 					longitude: this.coordinates.lng,
 					owner: this.getUser.id,
@@ -943,47 +980,49 @@
 				}).then(response => {
 				
 					this.property_id = response.data.id
-					this.loading = false
-					this.$emit('closeDialog')
-					this.$router.push('/detail/'+this.property_id)
-					//this.uploadImages()
+					
+					if(this.upload_image.length>0){
+						let axiosRequests= [];
+						this.upload_image.forEach((value, index) => {
+							console.log(value)
+							let formData = new FormData();
+							formData.append('property', this.property_id)
+							formData.append('image', value)
+							let request_post =  axios.post('https://hsrealestate-api.herokuapp.com/api/properties/images/', formData)
+							axiosRequests.push(request_post);
+							
+						});
+						
+						axios.all(axiosRequests).then(axios.spread((comments, images) => {
+							this.loading = false
+							this.upload_image = []
+							this.e1 = 1
+							this.$emit('closeDialog')
+							this.$router.push('/detail/'+this.property_id)
+						}));
+
+						
+					}else{
+						this.upload_image = []
+						this.e1= 1
+						this.$emit('closeDialog')
+						this.$router.push('/detail/'+this.property_id)
+						this.loading = false					
+					}
 				})
 				.catch(error => {
 					console.log(error);
 				})
 				
-			},
-			uploadImages(){
-				let axiosRequests= [];
 				
-				this.upload_image.forEach((value, index) => {
-					console.log(value)
-					let formData = new FormData();
-					formData.append('property', 4)
-					formData.append('image', value)
-					let request_post =  axios.post('https://hsrealestate-api.herokuapp.com/api/properties/images/', formData)
-					axiosRequests.push(request_post);
-					
-				});
-				if(axiosRequests.lenght>0){
-					this.loading = true
-					axios.all(axiosRequests).then(axios.spread((...responses) => {
-						this.upload_image = []
-						this.loading = false
-						this.$emit('closeDialog')
-						this.$router.push('/detail/'+this.property_id)
-					})).catch(errors => {
-						console.log(errors)
-						this.loading = true
-					})
-				}else{
-					this.loading = false					
-				}
-
-			}
+			},
+			
 		
 		},
 		mounted(){
+			this.upload_image = []
+			this.e1= 1
+			this.loading = false
 			axios
 			.get('https://hsrealestate-api.herokuapp.com/api/properties/amenities/')
 			.then(response => {
@@ -1000,3 +1039,12 @@
 	}
 </script>
 
+<style>
+.vue-dropzone>.dz-preview .dz-error-message {
+    margin-left: 10px!important;
+    margin-right: auto;
+    top: 0!important;
+    width: 100%;
+    text-align: center;
+}
+</style>

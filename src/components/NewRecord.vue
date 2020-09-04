@@ -35,7 +35,7 @@
 	</v-speed-dial>
 	<!-- Update -->
 	 <v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
-     	<UpdateProperty v-on:closeDialog="closeDialog($event)" :property="property"></UpdateProperty>
+     	<UpdateProperty v-on:closeDialog="closeDialog($event)" :original_property="property"></UpdateProperty>
     </v-dialog>
 	 <!-- Delete -->
 	<v-dialog v-model="delete_dialog" max-width="500" persistent>
@@ -137,6 +137,7 @@ export default {
 	},
 	methods: {
 		closeDialog(){
+			
 			this.dialog_fullscreen = false
 			this.$emit('updateProperty')
 		},

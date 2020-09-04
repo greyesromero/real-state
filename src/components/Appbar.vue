@@ -258,6 +258,8 @@ import NewProperty from '../components/NewProperty.vue'
 		methods: {
 			closeDialog(){
 				this.dialog_fullscreen = false
+				return true;
+			
 			},
 			logout: function () {
 			this.$store.dispatch('logout')
@@ -279,6 +281,7 @@ import NewProperty from '../components/NewProperty.vue'
 			}
 		},
 		mounted(){
+			this.dialog_fullscreen = false
 		}
 	}
 </script>

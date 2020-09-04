@@ -136,6 +136,7 @@ export default new Vuex.Store({
 				commit('changeLoadingState', true)
 				axios({url: baseURL + 'users/'+ id +'/', method: 'GET' })
 				.then(response => {
+					
 					localStorage.setItem('user', JSON.stringify(response.data))
 					commit('SET_USER', response.data);
 					resolve(response)

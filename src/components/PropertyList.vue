@@ -5,10 +5,12 @@
 			<!-- APPOINTMENT -->
 			<v-list-item class="colored_border">
 				<v-list-item-avatar color="primary">
-						<img class="profile-picture" :src="property.image" alt="alt" lazy-src="../assets/logo.png">
+						<img class="profile-picture" v-if="property.images.length>0" :src="property.images[0].image" alt="alt" lazy-src="../assets/logo.png">
+						<img z-index="0" v-if="property.images.length==0"  class="profile-picture" :src="'../assets/img/sin-imagen.jpg'" alt="alt" lazy-src="../assets/logo.png">
+
 				</v-list-item-avatar>
 				<v-list-item-content>
-					<v-list-item-title class="title font-weight-regular"> {{property.title}}</v-list-item-title>
+					<v-list-item-title class="title font-weight-regular"> {{property.name}}</v-list-item-title>
 					<v-list-item-subtitle v-if="property.status == false"  class="font-weight-regular"><v-icon small>mdi-bell</v-icon>&nbsp;Sin Publicar</v-list-item-subtitle>
 					<v-list-item-subtitle v-if="property.status == true" class="font-weight-regular"><v-icon small color="secondary">mdi-bell</v-icon>&nbsp;Publicado: {{duration}} días</v-list-item-subtitle>
 
@@ -65,7 +67,7 @@
 						</v-card>
 					</v-dialog>
 					<!-- Consulta -->
-					<v-btn color="primary" icon router to="/detail">
+					<v-btn color="primary" icon router  :to="`/detail/`+property.id">
 						<v-icon>mdi-eye</v-icon>
 					</v-btn>
 					<!-- Update -->
@@ -75,7 +77,7 @@
 								<v-icon>mdi-square-edit-outline</v-icon>
 							</v-btn>
 						</template>
-						<UpdateProperty v-on:closeDialog="closeDialog($event)"></UpdateProperty>
+						<UpdateProperty v-on:closeDialog="closeDialog($event)" :original_property="property"></UpdateProperty>
 					</v-dialog>
 
 					<!-- Delete -->
@@ -162,6 +164,7 @@ export default {
   	methods: {
 		  closeDialog(){
 			this.dialog_fullscreen = false
+			this.$emit('updateProperties')
 		},
 	
 		confirmPublish(){
@@ -191,6 +194,7 @@ export default {
 	},
 	mounted(){
 		this.payment_options = []
+	
 	
 	}
 

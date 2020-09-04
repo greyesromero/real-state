@@ -52,7 +52,7 @@
 				
 			</v-row>
 		</section>
-		<section id="explora" style="background:#fff !important" v-if="properties">
+		<!--section id="explora" style="background:#fff !important" v-if="properties">
 			<div class="py-3"></div>
 			<v-container class="text-center">
 				<v-responsive
@@ -123,7 +123,7 @@
 					</v-col>
 					
 					
-				</v-row-->
+				</v-row>
 	
       <v-slide-group
         v-model="model"
@@ -149,9 +149,9 @@
 					height="175px"
 					v-if="n.images.length!=0">
 						<v-carousel-item
-						v-for="(item,i) in items"
+						v-for="(item,i) in n.images"
 						:key="i"
-						:src="item.src"
+						:src="item.image"
 						
 						gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 	
@@ -192,6 +192,7 @@
 					:src="'../assets/img/sin-imagen.jpg'"
 					gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
 					height="175px"
+					v-if="n.images.length == 0"
 					width="100%"
 					style="border-radius:5px"
 					>
@@ -279,7 +280,7 @@
       </v-slide-group>
 			</v-container>
 			<div class="py-3"></div>
-		</section>
+		</section-->
 		<v-divider></v-divider>
 		<section id="features" class="grey lighten-5">
 			<div class="py-10"></div>
@@ -483,7 +484,7 @@ export default {
 		
 	},
 	created(){
-	
+		
 	}
 
 }

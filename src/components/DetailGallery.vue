@@ -53,24 +53,12 @@ export default {
   name: 'detail-gallery',
   props: ['property'],
   data() {
-    return {
-      galleryThumbs: null,
-      gallery: null,
-      image:'../assets/img/house5.jpg',
-          items: [
-		{
-      image: '../assets/img/house2.jpg',
-       floorPlan: false
-		},
-		{
-      image: '../assets/img/house4.jpg',
-       floorPlan: false
-		},
-			{
-      image: '../assets/img/house1.jpg',
-       floorPlan: false
-		},]
-    }
+		return {
+			galleryThumbs: null,
+			gallery: null,
+			image:'../assets/img/house5.jpg',
+			items: []
+		}
     
   },
   mounted() {
@@ -78,14 +66,9 @@ export default {
   },
   computed: {
     images() {
-      const images = [
-        {
-          image: this.image,
-          floorPlan: false,
-        }
-      ]
+      const images = []
 
-      this.items.forEach(area => {
+      this.property.images.forEach(area => {
         images.push({
           image: area.image,
           floorPlan: false
@@ -118,6 +101,7 @@ export default {
         },
       });
     },
-  }
+  },
+
 }
 </script>

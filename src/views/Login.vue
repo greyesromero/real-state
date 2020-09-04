@@ -160,7 +160,9 @@ export default {
 				let token = this.token
 				this.$store.dispatch('login', {email: email, token: token})
 				.then(response => {
-					this.$router.push('/')			
+					this.$store.dispatch('getProfile', response.data.user.id).then(response => {
+						this.$router.push('/')			
+					})
 				})
 				.catch(err => {
 					this.msgError = 'Error de autenticación, intenta de nuevo.'

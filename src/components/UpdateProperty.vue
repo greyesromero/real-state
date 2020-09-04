@@ -379,11 +379,20 @@
 
 									<v-container grid-list-lg>
 										<v-layout row wrap>
-											<v-flex xs12 md6>
+											<v-flex xs12 md5>
 												<p class="font-weight-bold" style="text-align:left;">Fotos Actuales:</p>
+												<v-layout row wrap>
+													
+													<v-flex xs6 md4 mb-5 v-for="(image, index) in images" :key="image.id" >
+														<!-- Personal Administrativo -->
+														<ImageGallery :image="image" :index="index" v-on:deleteImage="deleteImage($event)"></ImageGallery>
+
+													</v-flex>
+												</v-layout>
 											</v-flex>
-											<v-flex xs12 md6>
-												<vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
+											<v-flex xs12 md7>
+												<p class="font-weight-bold" style="text-align:left;">Agrega fotos nuevas:</p>
+													<vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"  @vdropzone-file-added="vfileAdded" @vdropzone-removed-file="vremoved"></vue-dropzone>
 											</v-flex>
 										</v-layout>
 									</v-container>	
@@ -604,17 +613,20 @@
 	import axios from 'axios'
 	import Staff from '../components/Staff.vue'
 	import EmptyStaff from '../components/EmptyStaff.vue'
+	import ImageGallery from '../components/ImageGallery.vue'
 	export default {
-		props: ['property'],
+		props: ['original_property'],
 		components: {
 			vueDropzone: vue2Dropzone,
 			Staff,
-			EmptyStaff
+			EmptyStaff,
+			ImageGallery
 		},
 		data: () => ({
 			removedFile: false,
 			rules: [v => v.length <= 50 || 'Max 50 caracteres'],
 			e1: 1,
+			property: [],
 			agents: [],
 			selected_agent: [],
 			fileAdded: false,
@@ -652,7 +664,8 @@
 			dropzoneOptions: {
 				url: 'https://httpbin.org/post',
 				thumbnailWidth: 150,
-				maxFilesize: 0.5,
+				maxFilesize: 1,
+				addRemoveLinks: true,
 				headers: { "My-Awesome-Header": "header value" }
 			},
 			createForm: {
@@ -682,6 +695,7 @@
 			},
 			upload_image: [],
 			property_id: null,
+			images: []
 		
 		}),
 		computed : {
@@ -883,19 +897,82 @@
 				}).then(response => {
 				
 					
-					this.loading = false
-					this.$emit('closeDialog')
-					
-					//this.uploadImages()
+					if(this.upload_image.length>0){
+						let axiosRequests= [];
+						this.upload_image.forEach((value, index) => {
+							console.log(value)
+							let formData = new FormData();
+							formData.append('property', this.property.id)
+							formData.append('image', value)
+							let request_post =  axios.post('https://hsrealestate-api.herokuapp.com/api/properties/images/', formData)
+							axiosRequests.push(request_post);
+							
+						});
+						
+						axios.all(axiosRequests).then(axios.spread((comments, images) => {
+							this.upload_image = []
+							this.loading = false
+							this.e1= 1
+							this.$emit('closeDialog')
+							
+						}));
+
+						
+					}else{
+						this.e1= 1
+						this.upload_image = []
+						this.loading = false
+						this.$emit('closeDialog')				
+					}
 				})
 				.catch(error => {
 					console.log(error);
+					this.loading = false
 				})
+			},
+			uploadImages(){
+				if(this.upload_image.length> 0){
+					let axiosRequests= [];
+				
+					this.upload_image.forEach((value, index) => {
+						
+						let formData = new FormData();
+						formData.append('property', this.property.id)
+						formData.append('image', value)
+						let request_post =  axios.post('https://hsrealestate-api.herokuapp.com/api/properties/images/', formData)
+						axiosRequests.push(request_post);
+						
+					});
+					axios.all(axiosRequests).then(axios.spread((...responses) => {
+						this.upload_image = []
+						this.loading = false
+						this.$emit('closeDialog')
+					
+					})).catch(errors => {
+						console.log(errors)
+						this.loading = true
+					})
+				}else{
+					this.loading = false
+					this.$emit('closeDialog')
+				}
+					
+
+			},
+			deleteImage(){
+				this.images.splice(index, 1);
+				
 			}
+		
 		
 		},
 		mounted(){
+
 			axios
+			.get('https://hsrealestate-api.herokuapp.com/api/properties/'+this.original_property.id+'/')
+			.then(response => {
+				this.property = response.data
+				axios
 			.get('https://hsrealestate-api.herokuapp.com/api/properties/amenities/')
 			.then(response => {
 				let falseAmenities = response.data.map(function(obj){
@@ -923,7 +1000,7 @@
 				
 				
 			})
-			
+			this.images = this.property.images
 			this.createForm.name = this.property.name
 			this.createForm.description = this.property.description
 			this.createForm.address = this.property.address
@@ -962,6 +1039,8 @@
 				this.createForm.purchasePrice = this.property.sale_price
 			}
 
+			});
+			
 		}
 	}
 </script>

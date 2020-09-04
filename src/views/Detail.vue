@@ -55,15 +55,15 @@
 				<v-layout align-center justify-center row fill-height px-10>
 						<v-flex sm8 xs12>
 							<v-card class="mr-2">
-							<v-img :src="images[0].src" height="412px" width="100%"></v-img>
+							<v-img :src="images[0].image" height="412px" width="100%"></v-img>
 							</v-card>
 						</v-flex>
 						<v-flex sm4 xs12>
 							<v-card class="mb-4">
-								<v-img :src="images[1].src" height="198px"></v-img>
+								<v-img :src="images[1].image" height="198px"></v-img>
 							</v-card>
 							<v-card >
-								<v-img :src="images[2].src" height="198px"></v-img>
+								<v-img :src="images[2].image" height="198px"></v-img>
 							</v-card>
 						</v-flex>
 					</v-layout>
@@ -153,7 +153,7 @@
 					px-5
 				>
 					<v-img
-					:src="images[0].src"
+					:src="images[0].image"
 					gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
 					height="400px"
 					width="100%"
@@ -184,7 +184,7 @@
 						</v-layout>
 						<v-layout row wrap align-end pb-6>
 						<v-flex xs12 d-flex justify-end>
-							<v-btn color="secondary" class="white--text">
+							<v-btn color="secondary" class="white--text" v-if="images.length == 2" @click="toggleGallery">
 							<v-icon small left>mdi-folder-multiple-image</v-icon>
 							Ver Galería
 							</v-btn>
@@ -681,6 +681,7 @@ export default {
 			console.log(this.forRent)
 			console.log(this.forSale)
 			
+			
 		})
 		.catch(error => {
 			this.loading = false
@@ -689,7 +690,7 @@ export default {
 		
 	},
 	created(){
-		console.log(this.getUser)
+		
 	}
 
 }

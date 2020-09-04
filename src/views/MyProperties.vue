@@ -22,28 +22,86 @@
 			</v-container>
 			<v-container v-if="properties" px-8>
 				<v-row>
-					<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
-						<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{filteredProperties.length}} </h2>
-						<v-spacer></v-spacer>
-					</v-toolbar>
+					
 					<!-- Info General -->
 					<v-col cols="12">
-						<v-toolbar class="mb-3">
-							<v-text-field hide-details prepend-icon="mdi-magnify" single-line color="red lighten-2" v-model="search"></v-text-field>
-
-							<v-spacer></v-spacer>
-							<v-btn @click="sortBy('name')" text>
-								Nombre
-								<v-icon right>mdi-unfold-more-horizontal</v-icon>
-							</v-btn>
-							
-						</v-toolbar>
+						
 						<v-layout >
 							<v-container fluid grid-list-xl class="pa-0">
+								
+
+							<v-tabs height="64px" color="primary" grow>
+							<v-tab>
+								<v-icon left>mdi-home-city</v-icon>
+								Mis Propiedades
+							</v-tab>
+							<v-tab>
+								<v-icon left>mdi-home-group</v-icon>
+								Propiedades Administradas
+							</v-tab>
+							
+							<!-- Información General -->
+							<v-tab-item>
+								<v-toolbar class="mb-3 mt-5" style="background-color:transparent!important;box-shadow:none!important;">
+									<h2 v-if="search==''" class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{properties.length}} </h2>
+									<h2 v-if="search!=''" class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{filteredProperties.length}} </h2>
+
+								
+								</v-toolbar>
+								<v-toolbar class="mb-3">
+									<v-text-field hide-details prepend-icon="mdi-magnify" single-line color="red lighten-2" v-model="search"></v-text-field>
+
+									<v-spacer></v-spacer>
+									<v-btn @click="sortBy('name')" text>
+										Nombre
+										<v-icon right>mdi-unfold-more-horizontal</v-icon>
+									</v-btn>
+											
+								</v-toolbar>
 								<v-layout v-if="filteredProperties.length>0" row wrap>
-									<PropertyList v-for="(property, index) in filteredProperties" :property="property" :index="index"  v-on:createPayment="createPayment($event)">
+									<PropertyList v-for="(property, index) in filteredProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)">
 									</PropertyList>
 								</v-layout>
+								<v-pagination
+									v-if="search==''"
+									v-model="page"
+									:length="Math.ceil(properties.length/perPage)"
+								></v-pagination>
+							</v-tab-item>
+							<!-- Métodos de Pago -->
+								<v-tab-item  class="mb-10">
+										<v-toolbar class="mb-3 mt-5" style="background-color:transparent!important;box-shadow:none!important;">
+									<h2 v-if="search==''" class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{managed_properties.length}} </h2>
+									<h2 v-if="search!=''" class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Propiedades: {{filteredManagedProperties.length}} </h2>
+
+								
+								</v-toolbar>
+								<v-toolbar class="mb-3">
+									<v-text-field hide-details prepend-icon="mdi-magnify" single-line color="red lighten-2" v-model="searchManaged"></v-text-field>
+
+									<v-spacer></v-spacer>
+									<v-btn @click="sortBy('name')" text>
+										Nombre
+										<v-icon right>mdi-unfold-more-horizontal</v-icon>
+									</v-btn>
+											
+								</v-toolbar>
+								<v-layout v-if="filteredManagedProperties.length>0" row wrap>
+									<PropertyList v-for="(property, index) in filteredManagedProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)">
+									</PropertyList>
+								</v-layout>
+								<v-pagination
+									v-if="searchManaged=='' && managed_properties.length > 0"
+									v-model="pageM"
+									:length="Math.ceil(managed_properties.length/perPage)"
+								></v-pagination>
+								
+								</v-tab-item>
+							
+							
+							</v-tabs>
+
+								
 							</v-container>
 						</v-layout>
 					</v-col>
@@ -61,12 +119,32 @@ export default {
 		PropertyList
 	},
 	data: () => ({
+		tab: 0,
 		properties: true,
 		selected_gym:0,
+		managed_properties: [],
 		search: '',
+		searchManaged: '',
 		properties:[],
 		loading: false,
-		payment: []
+		payment: [],
+		page: 1,
+		perPage: 10,
+		pageM: 1,
+		perPageM: 10,
+		selected_filter: 0,
+		filters:[{
+			id: 1,
+			value: 'Todas'
+		},
+		{
+			id: 2,
+			value: 'Propias'
+		},
+		{
+			id: 3,
+			value: 'Administradas'
+		}]
 	
 	}),
 	computed: {
@@ -75,17 +153,59 @@ export default {
 			let filtered = this.properties;
 			if (this.search) {
 				filtered = this.properties.filter(
-				m => m.title.toLowerCase().indexOf(this.search) > -1
+				m => m.name.toLowerCase().indexOf(this.search) > -1
 				);
+				return filtered;
+			}else{
+				return filtered.slice((this.page - 1)* this.perPage, this.page* this.perPage);
 			}
 
 		
 			
-			return filtered;
-		}
+			
+		},
+		filteredManagedProperties: function() {
+			let filtered_managed = this.managed_properties;
+			if (this.searchManaged) {
+				filtered_managed = this.managed_properties.filter(
+				m => m.name.toLowerCase().indexOf(this.searchManaged) > -1
+				);
+				return filtered_managed;
+			}else{
+				return filtered_managed.slice((this.pageM - 1)* this.perPageM, this.pageM* this.perPageM);
+			}
+
+		
+			
+			
+		},
+		getUser : function(){ 
+			return this.$store.getters.getUser
+		},
+		visiblePages () {
+			return this.properties.slice((this.page - 1)* this.perPage, this.page* this.perPage)
+		},
+
+		visiblePagesManaged () {
+			return this.managed_properties.slice((this.pageM - 1)* this.perPageM, this.pageM* this.perPageM)
+		},
 	},
 	methods: {
-		
+		updateProperties(){
+			this.loading = true
+			axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
+			.then(response => {
+				
+				this.properties = response.data.owned_properties
+				this.managed_properties = response.data.managed_properties
+				this.loading = false
+			})
+			.catch(error => {
+				this.loading = false
+				console.log(error);
+			})
+
+		},
 		sortBy(prop) {
 			this.properties.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
 		},
@@ -158,12 +278,19 @@ export default {
 
 	},
 	mounted () {
-		this.properties.push({
-			image: '../assets/img/house4.jpg',
-			title: ' Casa Deluxe en Antigua Guatemala',
-			date: '2020-08-05',
-			status: false
+		this.loading = true
+		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
+		.then(response => {
+			
+			this.properties = response.data.owned_properties
+			this.managed_properties = response.data.managed_properties
+			this.loading = false
 		})
+		.catch(error => {
+			this.loading = false
+			console.log(error);
+		})
+		
 	}
 }
 </script>
