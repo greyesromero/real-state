@@ -52,7 +52,7 @@
 				
 			</v-row>
 		</section>
-		<section id="explora" style="background:#fff !important">
+		<section id="explora" style="background:#fff !important" v-if="properties">
 			<div class="py-3"></div>
 			<v-container class="text-center">
 				<v-responsive
@@ -133,8 +133,8 @@
 		mobile-breakpoint
       >
         <v-slide-item
-          v-for="n in 15"
-          :key="n"
+          v-for="n in properties"
+          :key="n.id"
           v-slot:default="{ active, toggle }"
         >
 			<v-card
@@ -146,7 +146,8 @@
 					
 					<v-carousel hide-delimiters
 					class="white--text align-end"
-					height="175px">
+					height="175px"
+					v-if="n.images.length!=0">
 						<v-carousel-item
 						v-for="(item,i) in items"
 						:key="i"
@@ -187,9 +188,48 @@
 							</v-layout>
 						</v-carousel-item>
 					</v-carousel>
+					<v-img
+					:src="'../assets/img/sin-imagen.jpg'"
+					gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
+					height="175px"
+					width="100%"
+					style="border-radius:5px"
+					>
+						<v-layout column justify-space-between fill-height px-5 py-5>
+								<v-layout row wrap>
+									<v-flex xs12 d-flex justify-start>
+											<v-chip
+											class="mx-1"
+											label
+											color="secondary"
+											text-color="white"
+											>
+											RENT
+										</v-chip>
+										<v-chip
+											class="mx-1"
+											color="primary"
+											label
+											text-color="white"
+											>
+											NEW
+										</v-chip>
+									</v-flex>
+									
+									
+								</v-layout>
+								<v-layout row wrap align-end>
+									
+									<v-flex xs12 d-flex justify-end>
+										<span class="text-truncante text-right title white--text">Q1000</span>
+										
+									</v-flex>
+								</v-layout>
+							</v-layout>
+					</v-img>
 		
 					<v-card-title>
-						<div class="text-truncate">Villas Antigua</div>
+						<div class="text-truncate">{{n.name}}</div>
 					</v-card-title>
 					<v-card-text>
 						2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
@@ -222,7 +262,7 @@
 						<v-btn
 						color="secondary"
 						text
-						router to = "/detail"
+						router :to="`/detail/`+n.id"
 						>
 						MÁS INFORMACIÓN
 						</v-btn>
@@ -354,6 +394,7 @@ export default {
 	},
 	data: () => ({
 		loading: false,
+		properties: null,
 		model: 1,
 		icons: [{
 			icon: 'mdi-facebook',
@@ -426,6 +467,19 @@ export default {
 		
 	},
 	mounted() {
+		this.loading = true
+		
+		axios.get('https://hsrealestate-api.herokuapp.com/api/properties/')
+		.then(response => {
+			this.loading = false
+			this.properties = response.data
+			
+			
+		})
+		.catch(error => {
+			this.loading = false
+			console.log(error);
+		})
 		
 	},
 	created(){

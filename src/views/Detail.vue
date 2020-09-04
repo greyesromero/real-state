@@ -108,21 +108,23 @@
 
 						<v-layout row wrap mx-5>
 							<v-flex xs12 d-flex justify-start>
-									<v-chip
+								<v-chip
 									class="ma-2"
 									label
-									color="secondary"
 									text-color="white"
+									color="secondary"
+									v-if="forRent"
 									>
-									RENT
+									SE RENTA
 								</v-chip>
 								<v-chip
+									v-if="forSale"
 									class="ma-2"
 									color="primary"
 									label
 									text-color="white"
 									>
-									NEW
+									SE VENDE
 								</v-chip>
 							</v-flex>
 						</v-layout>
@@ -165,16 +167,18 @@
 									label
 									text-color="white"
 									color="secondary"
+									v-if="forRent"
 									>
-									RENT
+									SE RENTA
 								</v-chip>
 								<v-chip
+									v-if="forSale"
 									class="ma-2"
 									color="primary"
 									label
 									text-color="white"
 									>
-									NEW
+									SE VENDE
 								</v-chip>
 							</v-flex>
 						</v-layout>
@@ -212,21 +216,23 @@
 					<v-container fill-height px-0>
 						<v-layout row wrap>
 							<v-flex xs12 d-flex justify-start>
-									<v-chip
+								<v-chip
 									class="ma-2"
 									label
 									text-color="white"
 									color="secondary"
+									v-if="forRent"
 									>
-									RENT
+									SE RENTA
 								</v-chip>
 								<v-chip
+									v-if="forSale"
 									class="ma-2"
 									color="primary"
 									label
 									text-color="white"
 									>
-									NEW
+									SE VENDE
 								</v-chip>
 							</v-flex>
 						</v-layout>
@@ -488,7 +494,7 @@
 				</v-container>
 				
 			</section>
-			<NewRecord v-if="isLoggedIn" :property="property"></NewRecord>
+			<NewRecord v-if="isLoggedIn" :property="property" v-on:updateProperty="updateProperty($event)"></NewRecord>
 			<v-overlay 
 				:value="galleryDialog"
 				color="white"
@@ -524,6 +530,8 @@ export default {
 		NewRecord	
 	},
 	data: () => ({
+		forRent: false,
+		forSale: false,
 		galleryDialog: false,
 		property: null,
 		loading: false,
@@ -602,6 +610,42 @@ export default {
 				this.galleryDialog = true
 			}
 		},
+		updateProperty(){
+			this.loading = true
+			let params = this.$route.params ? Object.assign({}, this.$route.params): {};
+			axios.get('https://hsrealestate-api.herokuapp.com/api/properties/'+params.id+'/')
+			.then(response => {
+				this.loading = false
+				this.property = response.data
+				this.name = response.data.name
+				this.description = response.data.description
+				this.address = response.data.address
+				this.rooms = response.data.rooms
+				this.bathrooms = response.data.bathrooms
+				this.construction = response.data.construction_area
+				this.coordinates.lat = response.data.latitude
+				this.coordinates.lng = response.data.longitude
+				this.amenities = response.data.amenities
+				this.images = response.data.images
+				if(response.data.sale_price == null || parseInt(response.data.sale_price) == 0){
+					this.forSale = false
+				}else{
+					this.forSale = true
+				}
+
+				if(response.data.rent_price == null || parseInt(response.data.rent_price) == 0){
+					this.forRent = false
+				}else{
+					this.forRent = true
+				}
+				
+			})
+			.catch(error => {
+				this.loading = false
+				console.log(error);
+			})
+		}
+
 	},
 	mounted() {
 		this.loading = true
@@ -616,10 +660,26 @@ export default {
 			this.rooms = response.data.rooms
 			this.bathrooms = response.data.bathrooms
 			this.construction = response.data.construction_area
+			this.land = response.data.land_area
 			this.coordinates.lat = response.data.latitude
 			this.coordinates.lng = response.data.longitude
 			this.amenities = response.data.amenities
 			this.images = response.data.images
+
+			if(response.data.sale_price == null || parseInt(response.data.sale_price) == 0){
+				this.forSale = false
+			}else{
+				this.forSale = true
+			}
+
+			if(response.data.rent_price == null || parseInt(response.data.rent_price) == 0){
+				this.forRent = false
+			}else{
+				this.forRent = true
+			}
+			
+			console.log(this.forRent)
+			console.log(this.forSale)
 			
 		})
 		.catch(error => {

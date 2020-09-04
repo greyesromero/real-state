@@ -138,6 +138,7 @@ export default {
 	methods: {
 		closeDialog(){
 			this.dialog_fullscreen = false
+			this.$emit('updateProperty')
 		},
 		confirmPublish(){
 			if (this.$refs.form.validate()){

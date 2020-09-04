@@ -222,7 +222,7 @@ export default {
 				let formData = new FormData();
 				formData.append('image', this.upload_image[0]);
 				this.load = true;
-				axios.patch('https://choosemyfitness-api.herokuapp.com/api/users/'+this.getUser.id+'/', formData)
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/', formData)
 				.then(response => {
 					this.image_dialog = false;
 					this.load = false
@@ -318,6 +318,8 @@ export default {
 		},
 	},
 	created(){
+
+		console.log(this.getUser)
 		this.first_name = this.getUser.first_name
 		this.last_name = this.getUser.last_name
 		this.birth_date = this.getUser.birth_date

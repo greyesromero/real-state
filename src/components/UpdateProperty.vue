@@ -8,7 +8,7 @@
 			<v-toolbar-title>Actualizar Propiedad</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<v-btn dark text @click="closeDialog()" v-if="e1==6">Guardar</v-btn>
+				<v-btn color="secondary" @click="updateProperty()" v-if="e1==7">Actualizar Propiedad</v-btn>
 			</v-toolbar-items>
 			</v-toolbar>
 			<v-stepper v-model="e1" class="elevation-0">
@@ -25,6 +25,8 @@
 				<v-stepper-step step="5" :complete="e1 > 5">Fotos</v-stepper-step>
 				<v-divider></v-divider>
 				<v-stepper-step step="6" :complete="e1 > 6">Precio y disponibilidad</v-stepper-step>
+				<v-divider></v-divider>
+				<v-stepper-step step="7" :complete="e1 > 7">Agentes</v-stepper-step>
 			</v-stepper-header>
 				
 			<v-stepper-items >
@@ -207,7 +209,7 @@
 									</p>
 									<v-container grid-list-lg>
 										<v-layout row wrap>
-											<!--v-flex xs12 md6>
+											<v-flex xs12 md6>
 												<v-container fluid grid-list-md fill-height px-5>
 													
 													<v-layout row wrap>
@@ -216,7 +218,7 @@
 														</v-flex>
 														<v-flex xs6 md3 d-flex justify-end>
 															<v-text-field 
-															v-model.number="foo" 
+															v-model.number="createForm.rooms" 
 															append-outer-icon="mdi-plus-circle-outline" 
 															@click:append-outer="increment" 
 															prepend-icon="mdi-minus-circle-outline" 
@@ -228,27 +230,20 @@
 														</v-flex>
 														<v-flex xs6 md3 d-flex justify-end>
 															<v-text-field 
-															v-model.number="foo" 
+															v-model.number="createForm.bathrooms" 
 															append-outer-icon="mdi-plus-circle-outline" 
-															@click:append-outer="increment" 
+															@click:append-outer="incrementBath" 
 															prepend-icon="mdi-minus-circle-outline" 
-															@click:prepend="decrement">
+															@click:prepend="decrementBath">
 															</v-text-field>
 														</v-flex>
 													</v-layout>
 												</v-container>
-											</v-flex-->
-											<v-flex xs12 md12>
+											</v-flex>
+											<v-flex xs12 md6>
 												<v-container fluid grid-list-md fill-height px-5>
 													
 													<v-layout row wrap>
-														<v-flex xs12 md4 d-flex justify-start>
-															<span>Tamaño</span>
-														</v-flex>
-														<v-flex xs12 md8 d-flex justify-end>
-														<v-text-field color="secondary" name="size" label="" suffix="m²" outlined>
-														</v-text-field>
-														</v-flex>
 														<v-flex xs12 md4 d-flex justify-start>
 															<span>Tipo</span>
 														</v-flex>
@@ -256,9 +251,25 @@
 															<v-select
 															:items="createForm.propertyTypes"
 															v-model="createForm.type"
+															@change="chooseType(createForm.type)"
 															outlined
 															></v-select>
 														</v-flex>
+														<v-flex xs12 md4 d-flex justify-start>
+															<span>Área de Construcción</span>
+														</v-flex>
+														<v-flex xs12 md8 d-flex justify-end>
+														<v-text-field color="secondary" name="size" v-model="createForm.constructionArea" label="" :suffix="'m²'" outlined>
+														</v-text-field>
+														</v-flex>
+														<v-flex xs12 md4 d-flex justify-start v-if="land_type">
+															<span>Tamaño de Terreno</span>
+														</v-flex>
+														<v-flex xs12 md8 d-flex justify-end v-if="land_type">
+														<v-text-field color="secondary" name="land_size" label="" v-model="createForm.landArea" :suffix="'m²'" outlined>
+														</v-text-field>
+														</v-flex>
+														
 													</v-layout>
 												</v-container>
 											</v-flex>
@@ -309,53 +320,15 @@
 
 									</p>
 									<v-container fluid px-12>
-												<v-row>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="A/C"
-														color="primary"
-														
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Secadora"
-														color="primary"
-																												hide-details
-														></v-checkbox>
-													</v-col>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="Pet Friendly"
-														color="primary"
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Extracción Basura"
-														color="primary"
-														hide-details
-														></v-checkbox>
-													</v-col>
-													<v-col cols="12" sm="4" md="4">
-														<v-checkbox
-														v-model="ex4"
-														label="Calefacción"
-														color="primary"
-														hide-details
-														></v-checkbox>
-														<v-checkbox
-														v-model="ex4"
-														label="Lavadora"
-														color="primary"
-														hide-details
-														></v-checkbox>
-													</v-col>
-													</v-row>
-
-											</v-container>
+										<v-row v-if="amenities.length>0">
+											<v-col cols="12" sm="4" md="4" v-for="(amenitie, index) in amenities" :key="amenitie.id">
+												
+												<v-checkbox :label="amenitie.name" :value="amenitie.checked" v-model="amenitie.checked"
+												hide-details color="secondary" :prepend-icon="buildAmenityIcon(amenitie.name)">
+												</v-checkbox>											
+											</v-col>
+										</v-row>
+									</v-container>
 								
 									
 								</v-flex>
@@ -403,8 +376,16 @@
 										Las fotos ayudan a que los clientes se imaginen cómo es vivir en tu propiedad. Puedes empezar con una y agregar más después de publicar.
 
 									</p>
-									<v-container fluid px-12 py-0>
-										<vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
+
+									<v-container grid-list-lg>
+										<v-layout row wrap>
+											<v-flex xs12 md6>
+												<p class="font-weight-bold" style="text-align:left;">Fotos Actuales:</p>
+											</v-flex>
+											<v-flex xs12 md6>
+												<vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
+											</v-flex>
+										</v-layout>
 									</v-container>	
 								</v-flex>
 								
@@ -430,7 +411,7 @@
 							</v-flex>
 							<v-flex xs6 d-flex justify-end>
 								<v-btn
-									v-if="e1!=6"
+									
 									color="primary"
 									@click="nextStep(e1)"
 									>
@@ -457,11 +438,11 @@
 
 										<v-layout row wrap>
 											<v-flex xs6 md6>
-												<v-switch color="secondary" class="my-1" v-model="switch_venta" label="Se vende?" ></v-switch>
+												<v-switch color="secondary" @change="chooseSale()" class="my-1" v-model="switch_venta" label="Se vende?" ></v-switch>
 
 											</v-flex>
 											<v-flex xs6 md6>
-												<v-switch color="secondary" class="my-1" v-model="switch_renta" label="Se renta?" ></v-switch>
+												<v-switch color="secondary" @change="chooseRent()" class="my-1" v-model="switch_renta" label="Se renta?" ></v-switch>
 
 											</v-flex>
 											<v-flex xs12 md6>
@@ -471,10 +452,12 @@
 												type="number"
 												outlined
 												:disabled="switch_venta ? false : true"
+												prefix="Q"
 											></v-text-field>
 											</v-flex>
 											<v-flex xs12 md6>
 											<v-text-field
+											prefix="Q"
 												label="Precio de renta"
 												v-model="createForm.rentPrice"
 												type="number"
@@ -482,14 +465,15 @@
 												:disabled="switch_renta ? false : true"
 											></v-text-field>
 											</v-flex>
-											<v-flex xs12 md6>
-											<v-text-field
-												label="Longitud del Contrato"
-												v-model="createForm.minimumContractLength"
-												type="number"
-												outlined
-												:disabled="switch_renta ? false : true"
-											></v-text-field>
+											<!--v-flex xs12 md6>
+												<v-text-field
+													label="Longitud del Contrato"
+													v-model="createForm.minimumContractLength"
+													type="number"
+													outlined
+													:suffix="'meses'"
+													:disabled="switch_renta ? false : true"
+												></v-text-field>
 											</v-flex>
 											
 											<v-flex xs12 md6>
@@ -521,21 +505,82 @@
 											</v-flex>
 											
 											<v-flex xs12 md6>
-											<v-checkbox
-												v-model="createForm.priceNegotiable"
-												label="Precio negociable?"
-												color="secondary"
-											></v-checkbox>
+												<v-checkbox
+													v-model="createForm.priceNegotiable"
+													label="Precio negociable?"
+													color="secondary"
+												></v-checkbox>
 											</v-flex>
 											<v-flex xs12 md6>
-											<v-checkbox
-												v-model="createForm.dateNegotiable"
-												label="Fecha negociable?"
-												color="secondary"
-											></v-checkbox>
+												<v-checkbox
+													v-model="createForm.dateNegotiable"
+													label="Fecha negociable?"
+													color="secondary"
+												></v-checkbox>
+											</v-flex-->
+										</v-layout>
+									</v-container>	
+								</v-flex>
+								
+								
+							</v-layout>
+						</v-container>
+					</v-card>
+					
+				</v-stepper-content>
+
+				<v-stepper-content step="7">
+					<v-container fluid grid-list-md fill-height>
+						<v-layout row wrap align-end>
+							<v-flex xs6 d-flex justify-start>
+							
+								<v-btn
+								v-if="e1!=1"
+								color="primary"
+								@click="previewStep(e1)"
+								>
+								Anterior
+								</v-btn>
+							</v-flex>
+							<v-flex xs6 d-flex justify-end>
+								<v-btn
+									v-if="e1!=7"
+									color="primary"
+									@click="nextStep(e1)"
+									>
+									Siguiente
+									</v-btn>
+								
+							</v-flex>
+							
+						</v-layout>
+					</v-container>
+					<v-card color="lighten-1" class="mb-5" flat>
+						<v-container
+							fluid
+							grid-list-lg
+							:class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']"
+							>
+							<v-layout row wrap justify-center :class="[$vuetify.breakpoint.smAndDown ? 'px-1' : 'px-10']">
+								<v-flex xs12 md12 align-self-center text-center>
+									<span class="display-1">Agentes</span>
+									<p class="heading-4 mt-5">
+										Puedes asignar personas que se encarguen de ayudarte a promocionar tu propiedad.
+									</p>
+									<v-container grid-list-lg>
+										<v-layout row wrap>
+											<v-flex xs12 md6 mb-5>
+												<EmptyStaff v-on:createStaff="createStaff($event)" :clinic="this.getUser.id" :employees="this.agents"></EmptyStaff>
+
+											</v-flex>
+											<v-flex xs12 md6 mb-5>
+												<!-- Personal Administrativo -->
+												<Staff v-for="(agent, index) in this.agents" :key="agent.id" :staff="agent" :index="index" v-if="agent.id != getUser.id" v-on:deleteStaff="deleteStaff($event)"></Staff>
+
 											</v-flex>
 										</v-layout>
-										</v-container>	
+										
+									</v-container>	
 								</v-flex>
 								
 								
@@ -556,19 +601,31 @@
 	import vue2Dropzone from 'vue2-dropzone'
 	import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 	import moment from 'moment'
+	import axios from 'axios'
+	import Staff from '../components/Staff.vue'
+	import EmptyStaff from '../components/EmptyStaff.vue'
 	export default {
+		props: ['property'],
 		components: {
-			vueDropzone: vue2Dropzone
+			vueDropzone: vue2Dropzone,
+			Staff,
+			EmptyStaff
 		},
 		data: () => ({
-			ex4: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],
-
+			removedFile: false,
 			rules: [v => v.length <= 50 || 'Max 50 caracteres'],
 			e1: 1,
+			agents: [],
+			selected_agent: [],
+			fileAdded: false,
+			filesAdded: false,
 			switch_venta: false,
 			switch_renta: false,
 			disabled_venta: false,
 			disabled_renta: false,
+			house_type: false,
+			land_type: false,
+			amenities: [],
 			steps: 9,
 			 foo: 0,
 			 loading: false,
@@ -576,50 +633,55 @@
 			altLabels: false,
 			editable: true,
 			coordinates: {
-					lat: 14.6349,
-					lng: -90.5069,
-				},
-				map_center: {
-					lat: 14.6349,
-					lng: -90.5069,
-				},
-				map_options: {
-					zoomControl: true,
-					mapTypeControl: false,
-					scaleControl: false,
-					streetViewControl: false,
-					rotateControl: false,
-					fullscreenControl: false,
-					disableDefaultUi: true,
-				},
-				dropzoneOptions: {
-					url: 'https://httpbin.org/post',
-					thumbnailWidth: 150,
-					maxFilesize: 0.5,
-					headers: { "My-Awesome-Header": "header value" }
-				},
-				createForm: {
-					propertyTypes: ['Apartamento', 'Casa', 'Oficina', 'Bodega', 'Terreno', 'Local Comercial'],
-					type: 'Apartamento',
-					name: '',
-					nameError: null,
-					address: '',
-					addressError: null,
-					description: null,
-					descriptionError: null,
-					landArea: null,
-					constructionArea: null,
-					purchasePrice: null,
-					rentPrice: null,
-					minimumContractLength: null,
-					priceNegotiable: false,
-					modalDate: false,
-					fecha: null,
-					date: new Date().toISOString().substr(0, 10),
-					dateNegotiable: false,
-					commission: 0,
-					stepTwoValid: false,
-				}
+				lat: 14.6349,
+				lng: -90.5069,
+			},
+			map_center: {
+				lat: 14.6349,
+				lng: -90.5069,
+			},
+			map_options: {
+				zoomControl: true,
+				mapTypeControl: false,
+				scaleControl: false,
+				streetViewControl: false,
+				rotateControl: false,
+				fullscreenControl: false,
+				disableDefaultUi: true,
+			},
+			dropzoneOptions: {
+				url: 'https://httpbin.org/post',
+				thumbnailWidth: 150,
+				maxFilesize: 0.5,
+				headers: { "My-Awesome-Header": "header value" }
+			},
+			createForm: {
+				propertyTypes: ['Apartamento', 'Casa', 'Oficina', 'Bodega', 'Terreno', 'Local Comercial', 'Finca'],
+				type: 'Apartamento',
+				name: '',
+				nameError: null,
+				address: '',
+				addressError: null,
+				description: null,
+				descriptionError: null,
+				constructionArea: null,
+				rooms: 0,
+				bathrooms: 0,
+				landArea: null,
+				purchasePrice: null,
+				rentPrice: null,
+				amenities: [],
+				minimumContractLength: null,
+				priceNegotiable: false,
+				modalDate: false,
+				fecha: null,
+				date: new Date().toISOString().substr(0, 10),
+				dateNegotiable: false,
+				commission: 0,
+				stepTwoValid: false,
+			},
+			upload_image: [],
+			property_id: null,
 		
 		}),
 		computed : {
@@ -631,18 +693,114 @@
 			},
 			formatDate() {
 				return this.createForm.date ? moment(this.createForm.date).format('DD/MM/Y') : ''
+			},
+			selected: function() {
+				return this.amenities.filter(amenitie => amenitie.checked).map(function(amenitie) { return amenitie.id; });
 			}
 			/*getNotificationsByDoctor : function(){ 
 			return this.$store.getters.getNotificationsByDoctor(this.getUser.id)
 			},*/
 		},
-		
+		watch: {
+			fileAdded() {
+				let that = this
+				setTimeout(function() {
+					that.fileAdded = false
+				}, 2000)
+			},
+			filesAdded() {
+				let that = this
+				setTimeout(function() {
+					that.filesAdded = false
+				}, 2000)
+			},
+			removedFile() {
+				let that = this
+				setTimeout(function() {
+					that.removedFile = false
+				}, 2000)
+			},
+		},
 		methods: {
+			chooseSale(){
+				if(this.switch_venta){
+					this.disabled_venta = false
+				}else{
+					this.disabled_venta = true
+					this.createForm.purchasePrice = 0
+				}
+			},
+			chooseRent(){
+				if(this.switch_renta){
+					this.disabled_renta = false
+				}else{
+					this.disabled_renta = true
+					this.createForm.rentPrice = 0
+				}
+			},
+			vfileAdded(file) {
+				this.fileAdded = true
+				if(file){
+				if (file !== undefined) {
+					const fr = new FileReader()
+					fr.readAsDataURL(file)
+					fr.addEventListener('load', () => {
+						
+						this.upload_image.push(file); // this is an image file that can be sent to server...
+					})
+				} else {
+					console.log('No se puedo agregar la imagen.');
+				}
+			}
+				
+			},
+			vfilesAdded(file) {
+				this.filesAdded = true
+				if(file){
+				if (file !== undefined) {
+					const fr = new FileReader()
+					fr.readAsDataURL(file)
+					fr.addEventListener('load', () => {
+						
+						this.upload_image.push(file); // this is an image file that can be sent to server...
+					})
+				} else {
+					console.log('No se puedo agregar la imagen.');
+				}
+			}
+			},
+			vremoved(file, xhr, error) {
+				this.removedFile = true
+				// window.toastr.warning('', 'Event : vdropzone-removedFile')
+			},
+			buildAmenityIcon(amenityName) {
+				switch (amenityName) {
+					case 'Aire Acondicionado':
+					return 'mdi-air-conditioner'
+					case 'WiFi':
+					return 'mdi-wifi'
+					case 'Lavandería':
+					return 'mdi-dishwasher'
+					case 'Mascotas':
+					return 'mdi-paw'
+					case 'Basura':
+					return 'mdi-delete-empty'
+					case 'Calefacción':
+					return 'mdi-hvac'
+				
+				}
+			},
 			increment () {
-				this.foo = parseInt(this.foo,10) + 1
+				this.createForm.rooms = parseInt(this.createForm.rooms,10) + 1
 			},
 			decrement () {
-				this.foo = parseInt(this.foo,10) - 1
+				this.createForm.rooms = parseInt(this.createForm.rooms,10) - 1
+			},
+			incrementBath () {
+				this.createForm.bathrooms = parseInt(this.createForm.bathrooms,10) + 1
+			},
+			decrementBath () {
+				this.createForm.bathrooms = parseInt(this.createForm.bathrooms,10) - 1
 			},
 			closeDialog(){
 				this.e1 = 1
@@ -706,9 +864,104 @@
 					return true
 				}
 			},
+			updateProperty(){
+				this.loading = true
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/properties/'+this.property.id+'/',  {
+					name: this.createForm.name,
+					description: this.createForm.description,
+					address: this.createForm.address,
+					latitude: this.coordinates.lat,
+					longitude: this.coordinates.lng,
+					sale_price: this.createForm.purchasePrice,
+					rent_price: this.createForm.rentPrice,
+					land_area: this.createForm.landArea,
+					construction_area: this.createForm.constructionArea,
+					rooms: this.createForm.rooms,
+					bathrooms: this.createForm.bathrooms,
+					amenities: this.selected
+					
+				}).then(response => {
+				
+					
+					this.loading = false
+					this.$emit('closeDialog')
+					
+					//this.uploadImages()
+				})
+				.catch(error => {
+					console.log(error);
+				})
+			}
 		
 		},
 		mounted(){
+			axios
+			.get('https://hsrealestate-api.herokuapp.com/api/properties/amenities/')
+			.then(response => {
+				let falseAmenities = response.data.map(function(obj){
+									obj.checked = false;
+									return obj;
+								});
+				let trueAmenities = this.property.amenities.map(function(obj){
+									obj.checked = true;
+									return obj;
+								});
+				
+				
+				for (var i = 0; i < trueAmenities.length; ++i) {
+					var updateItem = trueAmenities[i];
+					for (var j = 0; j < falseAmenities.length; ++j) {
+						var origItem = falseAmenities[j];
+						if (origItem.name == updateItem.name) {
+							origItem.checked = updateItem.checked;
+						break;    
+						}
+					}
+				}
+
+				this.amenities = falseAmenities
+				
+				
+			})
+			
+			this.createForm.name = this.property.name
+			this.createForm.description = this.property.description
+			this.createForm.address = this.property.address
+			this.coordinates.lat = this.property.latitude
+			this.coordinates.lng = this.property.longitude
+			this.createForm.rooms = this.property.rooms
+			this.createForm.bathrooms = this.property.bathrooms
+			if(this.property.land_area == null || this.property.land_area == 0){
+				this.land_type = false
+				
+			}else{
+				this.land_type = true
+				this.createForm.landArea = this.property.land_area
+			}
+			this.createForm.constructionArea = this.property.construction_area
+			
+			
+
+			if(this.property.rent_price == null || this.property.rent_price == 0){
+				this.switch_renta = false
+				this.disabled_renta = true
+				
+			}else{
+				this.switch_renta = true
+				this.disabled_renta = false
+				this.createForm.rentPrice = this.property.rent_price
+			}
+
+			if(this.property.sale_price == null || this.property.sale_price == 0){
+				this.switch_venta = false
+				this.disabled_venta = true
+				
+			}else{
+				this.switch_venta = true
+				this.disabled_venta = false
+				this.createForm.purchasePrice = this.property.sale_price
+			}
+
 		}
 	}
 </script>

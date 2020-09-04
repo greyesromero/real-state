@@ -476,11 +476,11 @@
 
 										<v-layout row wrap>
 											<v-flex xs6 md6>
-												<v-switch color="secondary" class="my-1" v-model="switch_venta" label="Se vende?" ></v-switch>
+												<v-switch color="secondary" @change="chooseSale()" class="my-1" v-model="switch_venta" label="Se vende?" ></v-switch>
 
 											</v-flex>
 											<v-flex xs6 md6>
-												<v-switch color="secondary" class="my-1" v-model="switch_renta" label="Se renta?" ></v-switch>
+												<v-switch color="secondary" @change="chooseRent()" class="my-1" v-model="switch_renta" label="Se renta?" ></v-switch>
 
 											</v-flex>
 											<v-flex xs12 md6>
@@ -501,7 +501,7 @@
 												:disabled="switch_renta ? false : true"
 											></v-text-field>
 											</v-flex>
-											<v-flex xs12 md6>
+											<!--v-flex xs12 md6>
 											<v-text-field
 												label="Longitud del Contrato"
 												v-model="createForm.minimumContractLength"
@@ -553,7 +553,7 @@
 												label="Fecha negociable?"
 												color="secondary"
 											></v-checkbox>
-											</v-flex>
+											</v-flex-->
 										</v-layout>
 										</v-container>	
 								</v-flex>
@@ -758,6 +758,22 @@
 		},
 		
 		methods: {
+			chooseSale(){
+				if(this.switch_venta){
+					this.disabled_venta = false
+				}else{
+					this.disabled_venta = true
+					this.createForm.purchasePrice = 0
+				}
+			},
+			chooseRent(){
+				if(this.switch_renta){
+					this.disabled_renta = false
+				}else{
+					this.disabled_renta = true
+					this.createForm.rentPrice = 0
+				}
+			},
 			vfileAdded(file) {
 				this.fileAdded = true
 				if(file){

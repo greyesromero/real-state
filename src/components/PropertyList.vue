@@ -190,7 +190,7 @@ export default {
 		}
 	},
 	mounted(){
-		this.payment_options = this.getUser.payment_options
+		this.payment_options = []
 	
 	}
 

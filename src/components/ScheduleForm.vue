@@ -1,8 +1,11 @@
 <template>
 <div>
 	<v-card :loading="loading_appointment" class="mx-auto" tile flat>
-		<v-card-title class="font-weight-bold">
-			Q {{property.rent_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ por mes</span>
+		<v-card-title class="font-weight-bold" v-if="property.rent_price>0">
+			Q {{property.rent_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ precio renta</span>
+		</v-card-title>
+		<v-card-title class="font-weight-bold" v-if="property.sale_price>0">
+			Q {{property.sale_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ precio venta</span>
 		</v-card-title>
 	
 		<v-divider></v-divider>
