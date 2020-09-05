@@ -503,7 +503,7 @@
 												:disabled="switch_renta ? false : true"
 											></v-text-field>
 											</v-flex>
-											<!--v-flex xs12 md6>
+											<v-flex xs12 md6>
 											<v-text-field
 												label="Longitud del Contrato"
 												v-model="createForm.minimumContractLength"
@@ -555,7 +555,7 @@
 												label="Fecha negociable?"
 												color="secondary"
 											></v-checkbox>
-											</v-flex-->
+											</v-flex>
 										</v-layout>
 										</v-container>	
 								</v-flex>
@@ -997,14 +997,19 @@
 							this.loading = false
 							this.upload_image = []
 							this.e1 = 1
+							
+							this.resetForm()
 							this.$emit('closeDialog')
 							this.$router.push('/detail/'+this.property_id)
+							this.property_id =  null
+
 						}));
 
 						
 					}else{
 						this.upload_image = []
 						this.e1= 1
+						this.resetForm()
 						this.$emit('closeDialog')
 						this.$router.push('/detail/'+this.property_id)
 						this.loading = false					
@@ -1016,6 +1021,76 @@
 				
 				
 			},
+			resetForm(){
+				axios
+				.get('https://hsrealestate-api.herokuapp.com/api/properties/amenities/')
+				.then(response => {
+					this.amenities = response.data.map(function(obj){
+										obj.checked = false;
+										return obj;
+									});
+				})
+				this.createForm = {
+					propertyTypes: [{
+						id: 1,
+						name: 'Apartamento'
+					},
+					{
+						id: 2,
+						name: 'Casa'
+					},
+					{
+						id: 3,
+						name: 'Oficina'
+					},
+					{
+						id: 4,
+						name: 'Bodega'
+					},
+					{
+						id: 5,
+						name: 'Terreno'
+					},
+					{
+						id: 6,
+						name: 'Finca'
+					},
+					{
+						id: 7,
+						name: 'Local Comercial'
+					}],
+					type: 1,
+					name: '',
+					nameError: null,
+					address: '',
+					addressError: null,
+					description: null,
+					descriptionError: null,
+					constructionArea: null,
+					rooms: 0,
+					bathrooms: 0,
+					landArea: null,
+					purchasePrice: null,
+					rentPrice: null,
+					minimumContractLength: null,
+					priceNegotiable: false,
+					modalDate: false,
+					fecha: null,
+					date: new Date().toISOString().substr(0, 10),
+					dateNegotiable: false,
+					commission: 0,
+					stepTwoValid: false,
+				}
+
+				this.$refs.myVueDropzone.removeAllFiles()
+				this.house_type = false
+				this.land_type = false
+				this.switch_venta = false
+				this.switch_renta = false
+				this.disabled_venta = false
+				this.disabled_renta = false
+			}
+			
 			
 		
 		},

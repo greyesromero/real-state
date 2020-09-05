@@ -249,7 +249,9 @@
 														</v-flex>
 														<v-flex xs12 md8 d-flex justify-end>
 															<v-select
-															:items="createForm.propertyTypes"
+																:items="createForm.propertyTypes"
+															item-value="id"
+															item-text="name"
 															v-model="createForm.type"
 															@change="chooseType(createForm.type)"
 															outlined
@@ -474,7 +476,7 @@
 												:disabled="switch_renta ? false : true"
 											></v-text-field>
 											</v-flex>
-											<!--v-flex xs12 md6>
+											<v-flex xs12 md6>
 												<v-text-field
 													label="Longitud del Contrato"
 													v-model="createForm.minimumContractLength"
@@ -526,7 +528,7 @@
 													label="Fecha negociable?"
 													color="secondary"
 												></v-checkbox>
-											</v-flex-->
+											</v-flex>
 										</v-layout>
 									</v-container>	
 								</v-flex>
@@ -669,8 +671,35 @@
 				headers: { "My-Awesome-Header": "header value" }
 			},
 			createForm: {
-				propertyTypes: ['Apartamento', 'Casa', 'Oficina', 'Bodega', 'Terreno', 'Local Comercial', 'Finca'],
-				type: 'Apartamento',
+				propertyTypes: [{
+						id: 1,
+						name: 'Apartamento'
+					},
+					{
+						id: 2,
+						name: 'Casa'
+					},
+					{
+						id: 3,
+						name: 'Oficina'
+					},
+					{
+						id: 4,
+						name: 'Bodega'
+					},
+					{
+						id: 5,
+						name: 'Terreno'
+					},
+					{
+						id: 6,
+						name: 'Finca'
+					},
+					{
+						id: 7,
+						name: 'Local Comercial'
+					}],
+					type: 1,
 				name: '',
 				nameError: null,
 				address: '',
@@ -884,6 +913,7 @@
 					name: this.createForm.name,
 					description: this.createForm.description,
 					address: this.createForm.address,
+					type: this.createForm.type,
 					latitude: this.coordinates.lat,
 					longitude: this.coordinates.lng,
 					sale_price: this.createForm.purchasePrice,
@@ -910,6 +940,7 @@
 						});
 						
 						axios.all(axiosRequests).then(axios.spread((comments, images) => {
+							this.$refs.myVueDropzone.removeAllFiles()
 							this.upload_image = []
 							this.loading = false
 							this.e1= 1
@@ -919,6 +950,7 @@
 
 						
 					}else{
+						this.$refs.myVueDropzone.removeAllFiles()
 						this.e1= 1
 						this.upload_image = []
 						this.loading = false
@@ -1001,6 +1033,7 @@
 				
 			})
 			this.images = this.property.images
+			this.createForm.type = this.property.type
 			this.createForm.name = this.property.name
 			this.createForm.description = this.property.description
 			this.createForm.address = this.property.address
