@@ -101,7 +101,7 @@ export default {
 			if (this.$refs.form.validate()){
 				this.$emit('createPayment', {
 					card_holder: this.card_holder,
-					credit_card_token: this.credit_card_token,
+					credit_card: this.credit_card_token,
 					cvv: this.cvv,
 					type: this.type,
 					card_date: this.card_date,
@@ -132,5 +132,6 @@ export default {
 			this.$refs.form.reset()
 		},
 	},
+	
 }
 </script>

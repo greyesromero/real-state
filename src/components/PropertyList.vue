@@ -11,8 +11,8 @@
 				</v-list-item-avatar>
 				<v-list-item-content>
 					<v-list-item-title class="title font-weight-regular"> {{property.name}}</v-list-item-title>
-					<v-list-item-subtitle v-if="property.status == false"  class="font-weight-regular"><v-icon small>mdi-bell</v-icon>&nbsp;Sin Publicar</v-list-item-subtitle>
-					<v-list-item-subtitle v-if="property.status == true" class="font-weight-regular"><v-icon small color="secondary">mdi-bell</v-icon>&nbsp;Publicado: {{duration}} días</v-list-item-subtitle>
+					<v-list-item-subtitle v-if="published == false"  class="font-weight-regular"><v-icon small>mdi-bell</v-icon>&nbsp;Sin Publicar</v-list-item-subtitle>
+					<v-list-item-subtitle v-if="published == true" class="font-weight-regular"><v-icon small color="secondary">mdi-bell</v-icon>&nbsp;Publicado: {{duration}} días</v-list-item-subtitle>
 
 				</v-list-item-content>
 				
@@ -44,12 +44,12 @@
 								</div>
 
 								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-									<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card_token" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
+									<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
 										<template slot='selection' slot-scope='{ item }'>
-											**** **** **** {{ item.credit_card_token }} 
+											**** **** **** {{ item.credit_card }} 
 										</template>
 										<template slot='item' slot-scope='{ item }'>
-											**** **** **** {{ item.credit_card_token }} 
+											**** **** **** {{ item.credit_card }} 
 										</template>
 									</v-select>	
 									<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
@@ -136,6 +136,7 @@ export default {
 		dias: 0,
 		payment: null,
 		payment_options: [],
+		published: false,
 		
 		publish_dialog: false,
 		edit_dialog: false,
@@ -169,7 +170,7 @@ export default {
 	
 		confirmPublish(){
 			if (this.$refs.form.validate()){
-				this.property.status = true
+				this.published = true
 				this.publish_dialog=false
 			}
 			
@@ -193,8 +194,14 @@ export default {
 		}
 	},
 	mounted(){
-		this.payment_options = []
-	
+		if(this.getUser.credit_card!=null){
+			this.payment_options.push({
+				id:1,
+				credit_card: this.getUser.credit_card
+			})
+		}
+
+		
 	
 	}
 

@@ -24,34 +24,10 @@
 			<v-container  v-if="properties" px-8>
 				
 				<v-row>
-						<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
-								<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: 1</h2>
-										
-								<v-spacer></v-spacer>
-								<span>
-									<v-menu bottom right >
-										<template v-slot:activator="{ on }">
-											<v-btn outlined v-on="on">
-												
-												<span >{{ filters[selected_filter]['value']}}</span>
-												<v-icon right>mdi-menu-down</v-icon>
-											</v-btn>
-										</template>
-										
-										<v-list>
-											<v-list-item  v-for="(filter, index) in filters" :key="index"  @click.native="selectFilter(index)">
-												<v-list-item-title>{{ filter['value'] }}</v-list-item-title>
-											</v-list-item>
-										</v-list>
-									</v-menu>
-								</span>
-								
-									
-									
-								</v-toolbar>
+						
 					<!-- Info General -->
 					<v-col cols="12">
-						<v-toolbar class="mb-3">
+						<!--v-toolbar class="mb-3">
 							<v-text-field hide-details prepend-icon="mdi-magnify" single-line color="red lighten-2" v-model="search"></v-text-field>
 
 							<v-spacer></v-spacer>
@@ -60,12 +36,73 @@
 								<v-icon right>mdi-unfold-more-horizontal</v-icon>
 							</v-btn>
 							
-						</v-toolbar>
+						</v-toolbar-->
 						<v-layout >
 							<v-container fluid grid-list-xl class="pa-0">
-							
-									<Appointment></Appointment>
-							
+								
+
+								<v-tabs height="64px" color="primary" grow>
+									<v-tab>
+										<v-icon left>mdi-account-outline</v-icon>
+										Mis Citas - Cliente
+									</v-tab>
+									<v-tab>
+										<v-icon left>mdi-account-group-outline</v-icon>
+										Mis Citas - Agente
+									</v-tab>
+									<v-tab-item>
+										<v-toolbar class="mb-3 mt-3" style="background-color:transparent!important;box-shadow:none!important;">
+											<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: {{this.client_appointments.length}}</h2>
+													
+											<v-spacer></v-spacer>
+											<span>
+												<v-menu bottom right >
+													<template v-slot:activator="{ on }">
+														<v-btn outlined v-on="on">
+															
+															<span >{{ filters[selected_filter]['value']}}</span>
+															<v-icon right>mdi-menu-down</v-icon>
+														</v-btn>
+													</template>
+													
+													<v-list>
+														<v-list-item  v-for="(filter, index) in filters" :key="index"  @click.native="selectFilter(index)">
+															<v-list-item-title>{{ filter['value'] }}</v-list-item-title>
+														</v-list-item>
+													</v-list>
+												</v-menu>
+											</span>
+										</v-toolbar>
+										<Appointment v-for="(client, index) in client_appointments" :key="client.id" :appointment="client" :index="index" v-on:cancelAppointment="cancelAppointment($event)">
+										</Appointment>
+									</v-tab-item>
+									<v-tab-item>
+										<v-toolbar class="mb-3 mt-3" style="background-color:transparent!important;box-shadow:none!important;">
+											<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: {{this.agent_appointments.length}} </h2>
+													
+											<v-spacer></v-spacer>
+											<span>
+												<v-menu bottom right >
+													<template v-slot:activator="{ on }">
+														<v-btn outlined v-on="on">
+															
+															<span >{{ filters[selected_filter]['value']}}</span>
+															<v-icon right>mdi-menu-down</v-icon>
+														</v-btn>
+													</template>
+													
+													<v-list>
+														<v-list-item  v-for="(filter, index) in filters" :key="index"  @click.native="selectFilter(index)">
+															<v-list-item-title>{{ filter['value'] }}</v-list-item-title>
+														</v-list-item>
+													</v-list>
+												</v-menu>
+											</span>
+										</v-toolbar>
+										<Appointment v-for="(agent, index) in agent_appointments" :key="agent.id" :appointment="agent" :index="index" v-on:cancelAppointment="cancelAppointment($event)">
+										</Appointment>
+									</v-tab-item>								
+								</v-tabs>
 							</v-container>
 						</v-layout>
 					</v-col>
@@ -83,6 +120,8 @@ export default {
 		Appointment
 	},
 	data: () => ({
+		client_appointments: [],
+		agent_appointments: [],
 		properties: true,
 		selected_gym:0,
 		search: '',
@@ -91,7 +130,7 @@ export default {
 		loading: false,
 		filters:[{
 			id: 1,
-			value: 'Todos'
+			value: 'Todas'
 		},
 		{
 			id: 2,
@@ -104,7 +143,9 @@ export default {
 	
 	}),
 	computed: {
-
+		getUser : function(){ 
+			return this.$store.getters.getUser
+		},
 		filteredProviders: function() {
 			let filtered = this.array_providers;
 			if (this.search) {
@@ -141,7 +182,8 @@ export default {
 
 	},
 	mounted () {
-		
+		this.client_appointments = this.getUser.client_appointments
+		this.agent_appointments = this.getUser.agent_appointments
 	}
 }
 </script>

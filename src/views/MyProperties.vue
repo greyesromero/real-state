@@ -278,6 +278,7 @@ export default {
 
 	},
 	mounted () {
+		console.log(this.getUser)
 		this.loading = true
 		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
 		.then(response => {

@@ -1,6 +1,6 @@
 <template>
 	<div>
-
+			<Loader :visible="loading"></Loader>
 		<section id="about-me" style="background:#fff !important">
 			<div class="py-6"></div>
 			<v-container class="text-center">
@@ -79,7 +79,7 @@
 									<v-text-field color="secondary" name="first_name" label="Nombres" outlined v-model="first_name" :rules="[v => !!v || 'Nombre es requerido']" required></v-text-field>
 									<v-text-field color="secondary" name="last_name" label="Apellidos" outlined v-model="last_name" :rules="[v => !!v || 'Apellido es requerido']" required></v-text-field>
 
-									<v-row>
+									<!--v-row>
 										<v-col cols="6">
 											<v-select
 												:items="gender_set"
@@ -105,7 +105,7 @@
 											</v-dialog>
 
 										</v-col>
-									</v-row>
+									</v-row-->
 									
 									
 									<v-text-field color="secondary" name="email" label="E-mail" outlined v-model="email" :rules="[v => !!v || 'E-mail es requerido']" required></v-text-field>
@@ -116,8 +116,8 @@
 							<!-- Métodos de Pago -->
 								<v-tab-item  class="mb-10">
 									<!--  Métodos de Pago -->
-									<EmptyPayment v-if="payment_options.length == 0" v-on:createPayment="createPayment($event)"></EmptyPayment>
-									<Payment v-for="(payment, index) in payment_options" v-if="payment_options.length>0" :payment="payment" :index="index" v-on:deletePayment="deletePayment($event)"></Payment>
+									<EmptyPayment v-if="payment_options == null" v-on:createPayment="createPayment($event)"></EmptyPayment>
+									<Payment v-if="payment_options != null" :payment="payment_options" v-on:deletePayment="deletePayment($event)"></Payment>
 									<!--  Factura -->
 									
 
@@ -143,11 +143,13 @@ import store from '../store'
 import moment from 'moment'
 import Payment from '../components/Payment.vue'
 import EmptyPayment from '../components/EmptyPayment.vue'
+import Loader from '../components/Loader.vue'
 import {mapState} from 'vuex'
 import axios from 'axios'
 
 export default {
   components: {
+	Loader,
 	Payment,
 	EmptyPayment
 	},
@@ -177,7 +179,7 @@ export default {
 		valid: true,
 		lazy:false,
 		suscribed: false,
-		payment_options: [],
+		payment_options: null,
 		counter: 2
 		
 		
@@ -256,64 +258,39 @@ export default {
 		},
 		//PAYMENT METHODS
 		createPayment(data) {
-			this.payment_options.push({
-				id: this.counter++,
-				card_holder: data.card_holder,
-				credit_card_token: data.credit_card_token.substring(15,19),
-				cvv: data.cvv,
-				type: data.type,
-				card_date: data.card_date,
-				tin: data.tin,
-				address: data.address,
-				invoice_name: ''
-			})
+			this.payment_options = data.credit_card.substring(15,19)
+		
 			
-			this.$store.dispatch('updatePayment', this.payment_options)
-			
-			/*this.$store.commit('changeLoadingState', true)
-			axios.patch('https://gudker-api.herokuapp.com/api/staff/'+this.doctor_id+'/',{
-				tin: data.tin,
-				credit_card_token:  data.credit_card_token.substring(15,19),
-				address: data.address
+			this.$store.commit('changeLoadingState', true)
+			axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
+				credit_card:  data.credit_card.substring(15,19),
 			})
 			.then(response => {
-				this.payment.push({
-					card_holder: data.card_holder,
-					card_number: data.credit_card_token.substring(15,19),
-					cvv: data.cvv,
-					type: data.type,
-					card_date: data.card_date,
-					tin: data.tin,
-					address: data.address
-				});
-				
+				this.$store.dispatch('updatePayment', this.payment_options)
 				this.$store.commit('changeLoadingState', false)
 			})
 			.catch(error => {
 				this.$store.commit('changeLoadingState', false)
 				console.log(error);
-			})*/
+			})
 			
 			
 		},
 		deletePayment(index) {
-		this.payment_options.splice(index, 1);
-			/*this.$store.commit('changeLoadingState', true)
-			axios.patch('https://gudker-api.herokuapp.com/api/staff/'+this.doctor_id+'/',{
-				tin: null,
-				credit_card_token:  null,
-				address: null
+		this.payment_options = null
+			this.$store.commit('changeLoadingState', true)
+			axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
+				credit_card:  null,
 			})
 			.then(response => {
-				this.payment.splice(index, 1);
-				
+				this.$store.dispatch('updatePayment', this.payment_options)
 				this.$store.commit('changeLoadingState', false)
 			})
 			.catch(error => {
 				this.$store.commit('changeLoadingState', false)
 				console.log(error);
-			})*/
-			this.$store.dispatch('updatePayment', this.payment_options)
+			})
+		
 			
 		},
 	},
@@ -326,6 +303,8 @@ export default {
 		this.subscription = this.getUser.active
 		this.gender = this.getUser.gender
 		this.email = this.getUser.email
+		this.payment_options = this.getUser.credit_card
+		this.$store.commit('changeLoadingState', false)
 			
 	}
 }

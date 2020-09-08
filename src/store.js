@@ -54,8 +54,8 @@ export default new Vuex.Store({
 		UPDATE_USER: (state, user ) => {
 			state.user.first_name = user.first_name
 			state.user.last_name = user.last_name
-			state.user.gender = user.gender
-			state.user.birth_date = user.birth_date
+			/*state.user.gender = user.gender
+			state.user.birth_date = user.birth_date*/
 			state.user.email = user.email
 			state.user.active = user.active
 		
@@ -64,7 +64,7 @@ export default new Vuex.Store({
 			state.user.image = image
 		},
 		UPDATE_USER_PAYMENTS: (state, payment) => {
-			state.user.payment_options = payment
+			state.user.credit_card = payment
 		},
 	
 	},

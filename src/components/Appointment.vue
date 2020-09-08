@@ -7,8 +7,8 @@
 			<v-icon color="white">mdi-calendar</v-icon>
 		</v-list-item-avatar>
 		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular " style="cursor:pointer;" @click="toDetail"> Propiedad: Casa Deluxe en Antigua Guatemala </v-list-item-title>
-			<v-list-item-subtitle  class="font-weight-regular">{{moment().locale('es').format("D [de] MMMM [de] YYYY [a las] hh:mm a")}}</v-list-item-subtitle>
+			<v-list-item-title class="title font-weight-regular " style="cursor:pointer;" @click="toDetail"> Propiedad: {{this.appointment.property.name}} </v-list-item-title>
+			<v-list-item-subtitle  class="font-weight-regular">{{moment(this.appointment.scheduled).locale('es').format("D [de] MMMM [de] YYYY [a las] hh:mm a")}}</v-list-item-subtitle>
 
 		</v-list-item-content>
 		
@@ -52,10 +52,16 @@
 			<v-expansion-panel-header>Más Información</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<div class="my-2">
-					<span>Teléfono: 30380592</span>		
+					<strong>Agente:</strong>		
+				</div>
+					<div class="my-2">
+					<span>Nombre: {{this.appointment.agent.first_name}} {{this.appointment.agent.last_name}}</span>		
 				</div>
 				<div class="my-2">
-					<span>Email: gabi@test.com</span>		
+					<span>Teléfono: {{this.appointment.agent.phone}}</span>		
+				</div>
+				<div class="my-2">
+					<span>Email: {{this.appointment.agent.email}}</span>		
 				</div>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
@@ -68,7 +74,7 @@
 import axios from 'axios'
 import moment from 'moment'
 export default {
-  props: ['news', 'index', 'view'],
+  props: ['appointment', 'index'],
 
   data: () => ({
 		edit_dialog: false,
@@ -84,6 +90,9 @@ export default {
 		  toDetail(){
 			  this.$router.push('/detail')
 		  }
+	},
+	mounted(){
+		console.log(this.appointment)
 	}
 
 }

@@ -922,8 +922,8 @@
 					construction_area: this.createForm.constructionArea,
 					rooms: this.createForm.rooms,
 					bathrooms: this.createForm.bathrooms,
-					amenities: this.selected
-					
+					amenities: this.selected,
+				
 				}).then(response => {
 				
 					
@@ -991,7 +991,7 @@
 					
 
 			},
-			deleteImage(){
+			deleteImage(index){
 				this.images.splice(index, 1);
 				
 			}

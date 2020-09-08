@@ -39,14 +39,14 @@
 							</v-time-picker>
 						</v-dialog>
 					</v-flex>
-					<v-flex xs12>
+					<!--v-flex xs12>
 						<v-textarea color="secondary" name="description" label="Descripción" outlined v-model="mensaje"></v-textarea>
-					</v-flex>
+					</v-flex-->
 				</v-layout>
 			</v-form>
 		</v-card-text>
 		<v-card-actions class="align-self-center align-content-center justify-center center align-center">
-			<v-btn type="submit" block color="secondary" large depressed @click="requestAppointment()">
+			<v-btn type="submit" block color="secondary" :disabled="checkUser" large depressed @click="requestAppointment()">
 				Agendar Cita
 			</v-btn>								
 		</v-card-actions>
@@ -133,13 +133,14 @@
 
 <script>
 import moment from 'moment'
-
+import axios from 'axios'
 export default {
 	name: 'schedule-form',
 	props: ['property'],
 	data() {
 		return {
 			today:  moment().format('YYYY-MM-DD'),
+			checkUser: false,
 			loading: false,
 			first_name: null,
 			last_name: null,
@@ -206,18 +207,45 @@ export default {
 					this.dialog_login = true
 					this.dialog_registro = false
 					this.dialog = true
+				
 				}else{
 				
 					this.dialog_login = false
 					this.dialog_registro = false
-					this.dialog = true
-					this.success_appointment = true
+					this.saveAppointment();
+					
 				
 
 					
 				}
 			}
 			
+		},
+		saveAppointment(){
+			this.loading_appointment = true
+			axios.post('https://hsrealestate-api.herokuapp.com/api/properties/appointments/',{
+				scheduled:  this.fecha + ' ' + this.open,
+				active: true,
+				property: this.property.id,
+				client: this.getUser.id,
+				agent: this.property.owner.id
+			})
+			.then(response => {
+				
+				this.$store.dispatch('getProfile', this.getUser.id).then(response => {
+						this.loading_appointment = false
+						this.dialog = true
+						this.success_appointment = true
+						this.fecha = null
+						this.open = null		
+				})
+			})
+			.catch(error => {
+				this.loading_appointment = false
+				console.log(error);
+			})
+		
+
 		},
 		token_validation: function () {
 		
@@ -260,8 +288,9 @@ export default {
 				.then(response => {
 
 					this.dialog_login = false
-					this.success_appointment = true	
-					this.loading = false		
+					
+					this.loading = false	
+					this.saveAppointment();	
 				})
 				.catch(err => {
 					this.msgError = 'Error de autenticación, intenta de nuevo.'
@@ -308,7 +337,11 @@ export default {
 		},
 	},
 	mounted(){
-		this.mensaje = 'Me interesa la propiedad '+this.property.name
+		if(this.getUser.id == this.property.owner.id){
+			this.checkUser = true
+		}else{
+			this.checkUser = false
+		}
 	}
 }
 </script>

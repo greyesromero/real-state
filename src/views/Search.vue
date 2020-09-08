@@ -7,7 +7,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
 				<div  class="center-container">
 					<v-container fill-height>
 						<v-layout align-center justify-center>
@@ -22,7 +22,7 @@
 				</div>
 			</v-container>
 			<v-container 
-				v-if="!loading"
+				v-if="!loading && properties"
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
@@ -243,12 +243,14 @@
 									
 									<v-carousel hide-delimiters
 									class="white--text align-end"
-									height="175px">
+									height="175px"
+									v-if="property.images.length!=0">
 										<v-carousel-item
 										v-for="(item,i) in property.images"
 										:key="i"
-										:src="item.src"
-										
+										transition="fade-transition"
+										:src="item.image"
+										lazy-src="../assets/logo.png"
 										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 					
 											<v-layout column justify-space-between fill-height px-5 py-5>
@@ -283,9 +285,49 @@
 											</v-layout>
 										</v-carousel-item>
 									</v-carousel>
+									<v-img
+										:src="'../assets/img/sin-imagen.jpg'"
+										gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
+										height="175px"
+										v-if="property.images.length == 0"
+										width="100%"
+										style="border-radius:5px"
+										>
+											<v-layout column justify-space-between fill-height px-5 py-5>
+													<v-layout row wrap>
+														<v-flex xs12 d-flex justify-start>
+																<v-chip
+																class="mx-1"
+																label
+																color="secondary"
+																text-color="white"
+																>
+																RENT
+															</v-chip>
+															<v-chip
+																class="mx-1"
+																color="primary"
+																label
+																text-color="white"
+																>
+																NEW
+															</v-chip>
+														</v-flex>
+														
+														
+													</v-layout>
+													<v-layout row wrap align-end>
+														
+														<v-flex xs12 d-flex justify-end>
+															<span class="text-truncante text-right title white--text">Q1000</span>
+															
+														</v-flex>
+													</v-layout>
+												</v-layout>
+										</v-img>
 						
 									<v-card-title>
-										<div class="text-truncate">{{property.title}}</div>
+										<div class="text-truncate">{{property.name}}</div>
 									</v-card-title>
 									<v-card-text>
 										2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
@@ -318,7 +360,7 @@
 										<v-btn
 										color="secondary"
 										text
-										router to = "/detail"
+										router :to="`/detail/`+ property.id "
 										>
 										MÁS INFORMACIÓN
 										</v-btn>
@@ -335,13 +377,15 @@
 						<v-flex xs12>
 							<v-pagination
 								v-model="page"
+								
+							
 								:length="Math.ceil(selected_properties.length/perPage)"
 							></v-pagination>
 						</v-flex>
 					</v-layout>
 				</div>
         	</v-container>
-			<div class="search-map-container grey lighten-2 hidden-sm-and-down">
+			<div class="search-map-container grey lighten-2 hidden-sm-and-down" v-if="visiblePages.length>0">
 				<gmap-map :center="center" :zoom="12" class="w-100 h-100">
 					<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
 							<v-card
@@ -355,7 +399,7 @@
 										class="white--text"
 										height="150px"
 										
-										:src="items[1].src"
+										:src="items[1].image"
 										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 						
 											<v-layout column justify-space-between fill-height px-5 py-5>
@@ -393,7 +437,7 @@
 											</v-layout>
 										</v-img>
 								<v-card-title class="justify-left">
-									<span class="title">{{ selected_title }}</span>
+									<span class="title">{{ visiblePages[selected_property].name }}</span>
 									
 								</v-card-title>
 								<v-card-text>
@@ -409,7 +453,7 @@
 										<v-btn
 										color="secondary"
 										text
-										router to = "/detail"
+										router :to="`/detail/`+ visiblePages[selected_property].id "
 										>
 										MÁS INFORMACIÓN
 										</v-btn>
@@ -433,6 +477,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   	name: 'search',
   	props: {
@@ -488,6 +533,7 @@ export default {
 		loading: false,
 		errored: false,
 		selected_title: null,
+		selected_property: 0,
 		selected_properties: [],
 		favorites_properties: [{
 				id: 1,
@@ -503,13 +549,13 @@ export default {
 				},
 				images:[
 					{
-						src: '../assets/img/house5.jpg',
+						image: '../assets/img/house5.jpg',
 					},
 					{
-						src: '../assets/img/house2.jpg',
+						image: '../assets/img/house2.jpg',
 					},
 					{
-						src: '../assets/img/house4.jpg',
+						image: '../assets/img/house4.jpg',
 					},
 				]
 
@@ -528,119 +574,20 @@ export default {
 				},
 				images:[
 					{
-						src: '../assets/img/house5.jpg',
+						image: '../assets/img/house5.jpg',
 					},
 					{
-						src: '../assets/img/house2.jpg',
+						image: '../assets/img/house2.jpg',
 					},
 					{
-						src: '../assets/img/house4.jpg',
+						image: '../assets/img/house4.jpg',
 					},
 				]
 
 			},], 
 
 		
-		properties: [{
-				id: 1,
-				title: 'Hermosa casa en Antigua G',
-				description: '',
-				image: '../assets/img/house5.jpg',
-				rooms: 1,
-				bathrooms: 2,
-				mts: 1200,
-				position: {
-					lat: 14.6319938,
-					lng: -90.5167931
-				},
-				images:[
-					{
-						src: '../assets/img/house5.jpg',
-					},
-					{
-						src: '../assets/img/house2.jpg',
-					},
-					{
-						src: '../assets/img/house4.jpg',
-					},
-				]
-
-			},
-			{
-				id: 2,
-				title: 'Villas Antigua',
-				description: '',
-				image: '../assets/img/house5.jpg',
-				rooms: 1,
-				bathrooms: 2,
-				mts: 1200,
-				position: {
-					lat: 14.54665,
-					lng:  -90.6247106
-				},
-				images:[
-					{
-						src: '../assets/img/house5.jpg',
-					},
-					{
-						src: '../assets/img/house2.jpg',
-					},
-					{
-						src: '../assets/img/house4.jpg',
-					},
-				]
-
-			},
-			{
-				id: 3,
-				title: 'Deluxe Panajachel',
-				description: '',
-				image: '../assets/img/house5.jpg',
-				rooms: 1,
-				bathrooms: 2,
-				mts: 1200,
-				position: {
-					lat:  14.6038435915842,
-					lng: -90.52177129981
-				},
-				images:[
-					{
-						src: '../assets/img/house5.jpg',
-					},
-					{
-						src: '../assets/img/house2.jpg',
-					},
-					{
-						src: '../assets/img/house4.jpg',
-					},
-				]
-
-			},
-			{
-				id: 4,
-				title: 'Bella Vista',
-				description: '',
-				image: '../assets/img/house5.jpg',
-				rooms: 1,
-				bathrooms: 2,
-				mts: 1200,
-				position: {
-					lat:  14.6002577,
-					lng: -90.520534
-				},
-				images:[
-					{
-						src: '../assets/img/house5.jpg',
-					},
-					{
-						src: '../assets/img/house2.jpg',
-					},
-					{
-						src: '../assets/img/house4.jpg',
-					},
-				]
-
-			}],
+		properties: [],
 		map: null,
 		marker: null,
 		infowindow: null,
@@ -693,13 +640,13 @@ export default {
 		}],
 		items: [
         	{
-				src: '../assets/img/house5.jpg',
+				image: '../assets/img/house5.jpg',
 			},
 			{
-				src: '../assets/img/house2.jpg',
+				image: '../assets/img/house2.jpg',
 			},
 				{
-				src: '../assets/img/house4.jpg',
+				image: '../assets/img/house4.jpg',
 			},
 		],
 		foo: 0,
@@ -713,6 +660,7 @@ export default {
 		busqueda: null,
 		}
 	},
+	
   	computed: {
 		getUser : function(){ 
 			return this.$store.getters.getUser
@@ -724,7 +672,13 @@ export default {
 			return this.ex4.filter(amenitie => amenitie.checked)
 		}
 	},
+	
 	watch: {
+		page : function(newVal, oldVal) {
+			//console.log('value changed from ' + oldVal + ' to ' + newVal);
+			this.infoWinOpen = false
+			this.selected_property = 0
+		},
      
       busqueda (val) {
         // Items have already been loaded
@@ -755,6 +709,9 @@ export default {
 		this.fetchProperties()
 	},
 	methods: {
+		test(){
+			console.log('hi')
+		},
 		applyFilters(){
 			console.log(this.selected)
 			console.log(this.range)
@@ -783,9 +740,10 @@ export default {
 			this.foo = parseInt(this.foo,10) - 1
 		},
 		toggleInfoWindow: function(marker, idx) {
+			
             this.infoWindowPos = marker.position;
 			this.infoContent = marker.infoText;
-			this.selected_title = marker.title
+			this.selected_property = idx
 
             //check if its the same marker that was selected if yes toggle
             if (this.currentMidx == idx) {
@@ -825,8 +783,27 @@ export default {
 		},
 		fetchProperties() {
 			if (this.errored) this.errored = false
-			this.selected_properties = this.properties
-			
+			this.loading = true
+			axios
+			.get('https://hsrealestate-api.herokuapp.com/api/properties/')
+			.then(response => {
+				this.selected_properties = response.data.map(function(obj){
+									obj.position = {
+										lat: obj.latitude,
+										lng: obj.longitude
+									};
+									return obj;
+								});
+				this.properties = response.data.map(function(obj){
+									obj.position = {
+										lat: obj.latitude,
+										lng: obj.longitude
+									};
+									return obj;
+								});
+				
+				this.loading = false
+			})
 		/*	this.loading = true
 			this.properties.push({
 				id: 1,
@@ -842,13 +819,13 @@ export default {
 				},
 				images:[
 					{
-						src: '../assets/img/house5.jpg',
+						image: '../assets/img/house5.jpg',
 					},
 					{
-						src: '../assets/img/house2.jpg',
+						image: '../assets/img/house2.jpg',
 					},
 					{
-						src: '../assets/img/house4.jpg',
+						image: '../assets/img/house4.jpg',
 					},
 				]
 

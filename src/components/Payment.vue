@@ -2,16 +2,16 @@
 <div>
 <v-card class="mt-3">
 	<!-- PAYMENT METHOD -->
-	<v-list-item>
+	<v-list-item v-if="payment">
 		<v-list-item-avatar color="secondary">
-			<span class="white--text display-1"><v-icon class="white--text font-weight-bold">mdi-credit-card</v-icon></span>
+			<span class="white--text display-1" ><v-icon class="white--text font-weight-bold">mdi-credit-card</v-icon></span>
 		</v-list-item-avatar>
 		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular left-align">{{this.payment.card_holder}}</v-list-item-title>
-			<v-list-item-subtitle>Fecha de Vencimiento: {{this.payment.card_date}}</v-list-item-subtitle>
+			<v-list-item-title  style="text-align:left!important;" class="title font-weight-regular left-align">**** **** **** {{this.getUser.credit_card}}</v-list-item-title>
+			<v-list-item-subtitle class="left-align" style="text-align:left!important;">{{this.getUser.first_name}} {{this.getUser.last_name}}</v-list-item-subtitle>
 		</v-list-item-content>
 		<v-list-item-content>
-			<v-list-item-title class="title font-weight-regular">**** **** **** {{this.payment.credit_card_token}}</v-list-item-title>
+			<v-list-item-title class="title font-weight-regular">05/22</v-list-item-title>
 		</v-list-item-content>
 		
 		
@@ -83,21 +83,27 @@
 
 <script>
 export default {
-	props: ['payment', 'index', 'view'],
+	props: ['payment'],
 	data: () => ({
 		edit_dialog: false,
 		delete_dialog: false,
 		loading: false,
 
 	}),
-	methods: {
-		deletePayment() {
-			this.$emit('deletePayment', this.index);
-			this.delete_dialog = false;
+	computed: {
+		getUser : function(){ 
+			return this.$store.getters.getUser
 		},
 	},
+	methods: {
+		deletePayment() {
+			this.$emit('deletePayment');
+			this.delete_dialog = false;
+		},
+		
+	},
 	mounted(){
-		console.log(this.payment)
+		
 	}
 }
 </script>
