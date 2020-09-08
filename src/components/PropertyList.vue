@@ -12,7 +12,7 @@
 				<v-list-item-content>
 					<v-list-item-title class="title font-weight-regular"> {{property.name}}</v-list-item-title>
 					<v-list-item-subtitle v-if="published == false"  class="font-weight-regular"><v-icon small>mdi-bell</v-icon>&nbsp;Sin Publicar</v-list-item-subtitle>
-					<v-list-item-subtitle v-if="published == true" class="font-weight-regular"><v-icon small color="secondary">mdi-bell</v-icon>&nbsp;Publicado: {{duration}} días</v-list-item-subtitle>
+					<v-list-item-subtitle v-if="published == true" class="font-weight-regular"><v-icon small color="secondary">mdi-bell</v-icon>&nbsp;Publicado hasta: {{new_date}}</v-list-item-subtitle>
 
 				</v-list-item-content>
 				
@@ -127,7 +127,7 @@ export default {
 	directives: {
       mask,
 	},
-  	props: ['property', 'index', 'view'],
+  	props: ['property', 'index'],
 	components: {
 		UpdateProperty,
 		EmptyCard
@@ -137,7 +137,7 @@ export default {
 		payment: null,
 		payment_options: [],
 		published: false,
-		
+		available_until: null,
 		publish_dialog: false,
 		edit_dialog: false,
 		delete_dialog: false,
@@ -154,6 +154,7 @@ export default {
 		lazy:false,
 		lazy_payment: false,
 		duration: null,
+		new_date: null,
 		
 		
 	}),
@@ -170,8 +171,30 @@ export default {
 	
 		confirmPublish(){
 			if (this.$refs.form.validate()){
-				this.published = true
-				this.publish_dialog=false
+				this.new_date = this.moment(new Date(),"DD-MM-YYYY").add(this.duration, 'days').format("YYYY-MM-DD H:mm:ss");
+				
+				this.loading = true
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/properties/'+this.property.id+'/',{
+					active_until: this.new_date
+				})
+				.then(response => {
+					
+					this.published = true
+					this.publish_dialog=false
+					this.$emit('confirmPublish',{
+						id: this.property.id,
+						date: this.new_date,
+						index: this.index
+					});
+					this.loading = false
+					
+				})
+				.catch(error => {
+					this.loading = false
+					console.log(error);
+				})
+				
+				
 			}
 			
 		
@@ -184,7 +207,7 @@ export default {
 		selectCard(data){
 			this.payment_options.push(data);
 			this.payment = data
-			this.$store.dispatch('updatePayment', this.payment_options)
+			this.$store.dispatch('updatePayment', this.data.credit_card)
 			console.log(this.payment_options)
 			
 		},
@@ -200,6 +223,19 @@ export default {
 				credit_card: this.getUser.credit_card
 			})
 		}
+
+		if(this.property.active_until != null){
+			let check = this.moment(new Date(),"DD-MM-YYYY H:mm").isSameOrAfter(this.moment(this.property.active_until,"DD-MM-YYYY H:mm").format("DD-MM-YYYY H:mm"))
+			if(check){
+				this.published = true
+				this.new_date = this.moment(this.property.active_until).format("DD-MM-YYYY H:mm")
+			}else{
+				this.published = false
+				this.new_date = null
+			}
+
+		}
+		
 
 		
 	

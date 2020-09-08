@@ -79,12 +79,12 @@
 				</div>
 
 				<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-					<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card_token" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
+					<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
 						<template slot='selection' slot-scope='{ item }'>
-							**** **** **** {{ item.credit_card_token }} 
+							**** **** **** {{ item.credit_card }} 
 						</template>
 						<template slot='item' slot-scope='{ item }'>
-							**** **** **** {{ item.credit_card_token }} 
+							**** **** **** {{ item.credit_card }} 
 						</template>
 					</v-select>	
 					<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
@@ -128,6 +128,7 @@ export default {
 			valid: true,
 			lazy:false,
 			duration: null,
+			new_date: null,
 		}
 	},
 	computed: {
@@ -143,7 +144,27 @@ export default {
 		},
 		confirmPublish(){
 			if (this.$refs.form.validate()){
+				this.new_date = this.moment(new Date(),"DD-MM-YYYY").add(this.duration, 'days').format("YYYY-MM-DD H:mm:ss");
 				this.publish_dialog=false
+				this.loading = true
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/properties/'+this.property.id+'/',{
+					active_until: this.new_date
+				})
+				.then(response => {
+					this.$emit('confirmPublish',{
+						id: this.property.id,
+						date: this.new_date,
+						index: this.index
+					});
+					this.loading = false
+					
+				})
+				.catch(error => {
+					this.loading = false
+					console.log(error);
+				})
+				
+				
 			}
 			
 		
@@ -156,8 +177,7 @@ export default {
 		selectCard(data){
 			this.payment_options.push(data);
 			this.payment = data
-			this.$store.dispatch('updatePayment', this.payment_options)
-			console.log(this.payment_options)
+			this.$store.dispatch('updatePayment', this.data.credit_card)
 			
 		},
 		resetPayment(){
@@ -166,7 +186,12 @@ export default {
 		}
 	},
 	mounted() {
-		this.payment_options = []
+		if(this.getUser.credit_card!=null){
+			this.payment_options.push({
+				id:1,
+				credit_card: this.getUser.credit_card
+			})
+		}
 	}
 }
 </script>

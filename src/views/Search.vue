@@ -22,6 +22,26 @@
 				</div>
 			</v-container>
 			<v-container 
+				v-if="visiblePages.length == 0"
+				fluid 
+				grid-list-md 
+				class="px-2 ma-0" 
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				<div  class="center-container">
+					<v-container fill-height>
+						<v-layout column align-center justify-center>
+						<h1 class="display-2">Sin Resultados</h1>
+						<p class="body-1 grey--text">No hay propiedades para mostrar</p>
+						<v-btn
+						color="primary"
+						outlined
+						@click="fetchProperties"
+						>Reintentar</v-btn>
+					</v-layout>
+					</v-container>
+				</div>
+			</v-container>
+			<v-container 
 				v-if="!loading && properties"
 				fluid 
 				grid-list-md 
@@ -261,16 +281,18 @@
 															label
 															color="secondary"
 															text-color="white"
+															v-if="property.rent_price>0"
 															>
-															RENT
+															RENTA
 														</v-chip>
 														<v-chip
 															class="mx-1"
 															color="primary"
 															label
 															text-color="white"
+															v-if="property.sale_price>0"
 															>
-															NEW
+															VENTA
 														</v-chip>
 													</v-flex>
 													
@@ -301,16 +323,18 @@
 																label
 																color="secondary"
 																text-color="white"
+																v-if="property.rent_price>0"
 																>
-																RENT
+																RENTA
 															</v-chip>
 															<v-chip
 																class="mx-1"
 																color="primary"
 																label
 																text-color="white"
+																v-if="property.sale_price>0"
 																>
-																NEW
+																VENTA
 															</v-chip>
 														</v-flex>
 														
@@ -330,27 +354,22 @@
 										<div class="text-truncate">{{property.name}}</div>
 									</v-card-title>
 									<v-card-text>
-										2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-										1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-										1000 mts<sup>2</sup>
-										<div>
+										{{property.rooms}} cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										{{property.bathrooms}} baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
+										{{property.construction_area}} mts<sup>2</sup>
+										<div v-if="property.amenities.length>0">
+								
 											<v-chip-group
 											
 											column
 											>
-												<v-chip   small>
-													<v-icon left small>mdi-wifi</v-icon>
-												WIFI</v-chip>
-												<v-chip   small>
-													<v-icon left small>mdi-paw</v-icon>
-												Mascotas</v-chip>
-												<v-chip   small>
-													<v-icon left small>mdi-spray-bottle</v-icon>
-												Limpieza</v-chip>
-												<v-chip   small>
-													<v-icon left small>mdi-air-conditioner</v-icon>
-												A/C</v-chip>
+												<v-chip  small v-for="amenity in property.amenities" :key="amenity.id">
+													<v-icon left small>{{buildAmenityIcon(amenity.name)}}</v-icon>
+												{{amenity.name}} </v-chip>
 											</v-chip-group>
+										</div>
+										<div v-if="property.amenities.length==0" class="mt-3">
+											<p>Sin servicios especificados.</p>
 										</div>
 										
 									</v-card-text>
@@ -365,8 +384,8 @@
 										MÁS INFORMACIÓN
 										</v-btn>
 										<v-spacer></v-spacer>
-										<v-btn icon>
-											<v-icon>mdi-heart</v-icon>
+										<v-btn icon @click="saveFavorite(property.id)">
+											<v-icon>{{checkFavorite(property.id)}}</v-icon>
 										</v-btn>
 										<v-btn icon>
 											<v-icon>mdi-share-variant</v-icon>
@@ -378,7 +397,7 @@
 							<v-pagination
 								v-model="page"
 								
-							
+								v-if="visiblePages.length>0"
 								:length="Math.ceil(selected_properties.length/perPage)"
 							></v-pagination>
 						</v-flex>
@@ -398,8 +417,9 @@
 								<v-img
 										class="white--text"
 										height="150px"
-										
-										:src="items[1].image"
+										v-if="visiblePages[selected_property].images.length!=0 "
+										:src="visiblePages[selected_property].images[0].image"
+										lazy-src="../assets/logo.png"
 										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
 						
 											<v-layout column justify-space-between fill-height px-5 py-5>
@@ -411,8 +431,9 @@
 															color="secondary"
 															text-color="white"
 															small
+															v-if="visiblePages[selected_property].rent_price>0"
 															>
-															RENT
+															RENTA
 														</v-chip>
 														<v-chip
 															class="mx-1"
@@ -420,8 +441,52 @@
 															label
 															text-color="white"
 															small
+															v-if="visiblePages[selected_property].sale_price>0"
 															>
-															NEW
+															VENTA
+														</v-chip>
+													</v-flex>
+												
+													
+												</v-layout>
+												<v-layout row wrap align-end>
+													
+													<v-flex xs12 d-flex justify-end>
+														<span class="text-truncante text-right title">Q1000</span>
+														
+													</v-flex>
+												</v-layout>
+											</v-layout>
+										</v-img>
+								<v-img
+										class="white--text"
+										height="150px"
+										v-if="visiblePages[selected_property].images.length==0 "
+										:src="'../assets/img/sin-imagen.jpg'"
+										gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
+						
+											<v-layout column justify-space-between fill-height px-5 py-5>
+												<v-layout row wrap>
+													<v-flex xs12 d-flex justify-start>
+														<v-chip
+															class="mx-1"
+															label
+															color="secondary"
+															text-color="white"
+															small
+															v-if="visiblePages[selected_property].rent_price>0"
+															>
+															RENTA
+														</v-chip>
+														<v-chip
+															class="mx-1"
+															color="primary"
+															label
+															text-color="white"
+															small
+															v-if="visiblePages[selected_property].sale_price>0"
+															>
+															VENTA
 														</v-chip>
 													</v-flex>
 												
@@ -471,6 +536,7 @@
 					<gmap-marker :key="i" v-for="(m,i) in visiblePages" :position="m.position" :clickable="true" @click="toggleInfoWindow(m,i)"></gmap-marker>
 				</gmap-map>
 			</div>
+			
       </section>
 	
    </div>
@@ -485,6 +551,19 @@ export default {
 	},
   data() {
     return {
+		map_center: {
+					lat: 14.6349,
+					lng: -90.5069,
+				},
+				map_options: {
+			zoomControl: true,
+			mapTypeControl: false,
+			scaleControl: false,
+			streetViewControl: false,
+			rotateControl: false,
+			fullscreenControl: false,
+			disableDefaultUi: true,
+		},
 		ex4: [{
 			id: 1,
 			name: 'A/C',
@@ -535,58 +614,7 @@ export default {
 		selected_title: null,
 		selected_property: 0,
 		selected_properties: [],
-		favorites_properties: [{
-				id: 1,
-				title: 'Villas Antigua',
-				description: '',
-				image: '../assets/img/house5.jpg',
-				rooms: 1,
-				bathrooms: 2,
-				mts: 1200,
-				position: {
-					lat: 14.54665,
-					lng:  -90.6247106
-				},
-				images:[
-					{
-						image: '../assets/img/house5.jpg',
-					},
-					{
-						image: '../assets/img/house2.jpg',
-					},
-					{
-						image: '../assets/img/house4.jpg',
-					},
-				]
-
-			},
-			{
-				id: 2,
-				title: 'Deluxe Panajachel',
-				description: '',
-				image: '../assets/img/house5.jpg',
-				rooms: 1,
-				bathrooms: 2,
-				mts: 1200,
-				position: {
-					lat:  14.6038435915842,
-					lng: -90.52177129981
-				},
-				images:[
-					{
-						image: '../assets/img/house5.jpg',
-					},
-					{
-						image: '../assets/img/house2.jpg',
-					},
-					{
-						image: '../assets/img/house4.jpg',
-					},
-				]
-
-			},], 
-
-		
+		favorites_properties: [], 		
 		properties: [],
 		map: null,
 		marker: null,
@@ -658,6 +686,7 @@ export default {
 		itemsLocation: [],
 		model: null,
 		busqueda: null,
+		
 		}
 	},
 	
@@ -706,11 +735,58 @@ export default {
       },
     },
 	mounted() {
+		
 		this.fetchProperties()
 	},
 	methods: {
-		test(){
-			console.log('hi')
+		checkFavorite(id){
+			let favorites = this.favorites_properties.find(x => x.id === id);
+			
+			if(favorites){
+				return 'mdi-heart'
+			}else{
+				return 'mdi-heart-outline'
+			}
+		},
+		saveFavorite(id){
+			axios
+			.post('https://hsrealestate-api.herokuapp.com/api/properties/favorite/',{
+				property: id,
+				user: this.getUser.id
+			})
+			.then(response => {
+				this.$store.dispatch('getProfile', this.getUser.id).then(response => {
+						/*this.favorites_properties = this.getUser.favorites_properties.map(function(obj){
+							obj.position = {
+								lat: obj.latitude,
+								lng: obj.longitude
+							};
+							return obj;
+						});*/
+						console.log(response)
+						console.log(this.getUser)		
+				})
+			}).catch(err => {
+				console.log({err})
+			})
+
+		},
+		buildAmenityIcon(amenityName) {
+			switch (amenityName) {
+				case 'Aire Acondicionado':
+				return 'mdi-air-conditioner'
+				case 'WiFi':
+				return 'mdi-wifi'
+				case 'Lavandería':
+				return 'mdi-dishwasher'
+				case 'Mascotas':
+				return 'mdi-paw'
+				case 'Basura':
+				return 'mdi-delete-empty'
+				case 'Calefacción':
+				return 'mdi-hvac'
+			
+			}
 		},
 		applyFilters(){
 			console.log(this.selected)
@@ -782,8 +858,21 @@ export default {
 			
 		},
 		fetchProperties() {
+			
+			this.favorites = false
 			if (this.errored) this.errored = false
 			this.loading = true
+			/*console.log(this.getUser)
+			if(this.getUser.favorites_properties){
+				
+				this.favorites_properties = this.getUser.favorites_properties.map(function(obj){
+					obj.position = {
+						lat: obj.latitude,
+						lng: obj.longitude
+					};
+					return obj;
+				});
+			}*/
 			axios
 			.get('https://hsrealestate-api.herokuapp.com/api/properties/')
 			.then(response => {

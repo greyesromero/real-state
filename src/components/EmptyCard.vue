@@ -5,14 +5,14 @@
     </v-btn>
 
 	<v-dialog v-model="new_patient_dialog" width="500">
-		<v-card>
+		<v-card :loading="loading">
 			<v-card-title>
 				
 				<span class="primary--text text-center">Crear Método de Pago</span>
 			</v-card-title>
 			<v-card-text class="mb-0">
 				<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-						<v-text-field color="secondary" name="credit_card_token" label="No. Tarjeta" outlined v-model.lazy="credit_card_token" v-mask="mask" required :rules="[v => (v || '' ).length >= 12 || 'La tarjeta de crédito debe poseer 12 dígitos']"></v-text-field>
+						<v-text-field color="secondary" name="credit_card" label="No. Tarjeta" outlined v-model.lazy="credit_card" v-mask="mask" required :rules="[v => (v || '' ).length >= 12 || 'La tarjeta de crédito debe poseer 12 dígitos']"></v-text-field>
 
 						<v-text-field color="secondary" name="card_holder" label="Nombre Titular" outlined v-model.lazy="card_holder" required :rules="[v => !!v || 'Titular es requerido']"></v-text-field>
 						<v-row >
@@ -92,14 +92,15 @@ export default {
 			valid: true,
 			lazy:false,
 			card_holder: null,
-			credit_card_token: null,
+			credit_card: null,
 			cvv: null,
 			type: 1,
 			card_date: null,
 			tin: null,
 			address: null,
 			payment: [],
-			counter: 0
+			counter: 0,
+			loading: false,
 		
 		}
 	},
@@ -119,17 +120,28 @@ export default {
 			this.error = false;
 			if (this.$refs.form.validate()){
 				this.loading = true
+				let final_card = this.credit_card.substring(15,19)
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
+						credit_card: final_card ,
+					})
+					.then(response => {
+						this.loading = false
+
+						this.$emit('selectCard', {
+							id: this.counter++,
+							card_holder: this.card_holder,
+							credit_card: final_card,
+							cvv: this.cvv,
+							card_date: this.card_date
+						});
+					})
+					.catch(error => {
+						this.loading =false
+						console.log(error);
+					})
 			
-				this.$emit('selectCard', {
-					id: this.counter++,
-					card_holder: this.card_holder,
-					credit_card_token: this.credit_card_token.substring(15,19),
-					cvv: this.cvv,
-					type: this.type,
-					card_date: this.card_date,
-					tin: this.tin,
-					address: this.address,
-				});
+			
+				
 
 				
 				

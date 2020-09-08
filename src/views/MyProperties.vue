@@ -20,7 +20,7 @@
 					</v-container>
 				</div>
 			</v-container>
-			<v-container v-if="properties" px-8>
+			<v-container v-if="!loading && properties" px-8>
 				<v-row>
 					
 					<!-- Info General -->
@@ -59,7 +59,7 @@
 											
 								</v-toolbar>
 								<v-layout v-if="filteredProperties.length>0" row wrap>
-									<PropertyList v-for="(property, index) in filteredProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)">
+									<PropertyList v-for="(property, index) in filteredProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)" v-on:confirmPublish="confirmPublish($event)">
 									</PropertyList>
 								</v-layout>
 								<v-pagination
@@ -87,7 +87,7 @@
 											
 								</v-toolbar>
 								<v-layout v-if="filteredManagedProperties.length>0" row wrap>
-									<PropertyList v-for="(property, index) in filteredManagedProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)">
+									<PropertyList v-for="(property, index) in filteredManagedProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)" v-on:confirmPublish="confirmPublish($event)">
 									</PropertyList>
 								</v-layout>
 								<v-pagination
@@ -191,11 +191,16 @@ export default {
 		},
 	},
 	methods: {
+		confirmPublish(data){
+			this.properties[data.index].active_until = data.active_until
+			
+
+		},
 		updateProperties(){
 			this.loading = true
 			axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
 			.then(response => {
-				
+				this.$store.dispatch('getProfile', this.getUser.id)
 				this.properties = response.data.owned_properties
 				this.managed_properties = response.data.managed_properties
 				this.loading = false

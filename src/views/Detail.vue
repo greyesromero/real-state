@@ -114,8 +114,9 @@
 									text-color="white"
 									color="secondary"
 									v-if="forRent"
+									
 									>
-									SE RENTA
+									RENTA
 								</v-chip>
 								<v-chip
 									v-if="forSale"
@@ -124,7 +125,7 @@
 									label
 									text-color="white"
 									>
-									SE VENDE
+									VENTA
 								</v-chip>
 							</v-flex>
 						</v-layout>
@@ -168,8 +169,9 @@
 									text-color="white"
 									color="secondary"
 									v-if="forRent"
+									
 									>
-									SE RENTA
+									RENTA
 								</v-chip>
 								<v-chip
 									v-if="forSale"
@@ -178,7 +180,7 @@
 									label
 									text-color="white"
 									>
-									SE VENDE
+									VENTA
 								</v-chip>
 							</v-flex>
 						</v-layout>
@@ -223,7 +225,7 @@
 									color="secondary"
 									v-if="forRent"
 									>
-									SE RENTA
+									RENTA
 								</v-chip>
 								<v-chip
 									v-if="forSale"
@@ -232,7 +234,7 @@
 									label
 									text-color="white"
 									>
-									SE VENDE
+									VENTA
 								</v-chip>
 							</v-flex>
 						</v-layout>
@@ -494,7 +496,7 @@
 				</v-container>
 				
 			</section>
-			<NewRecord v-if="isLoggedIn" :property="property" v-on:updateProperty="updateProperty($event)"></NewRecord>
+			<NewRecord v-if="isLoggedIn" :property="property" v-on:updateProperty="updateProperty($event)" v-on:confirmPublish="confirmPublish($event)"></NewRecord>
 			<v-overlay 
 				:value="galleryDialog"
 				color="white"
@@ -543,6 +545,7 @@ export default {
 		bathrooms:0,
 		land: 0,
 		construction: 0,
+		active_until: null,
 		coordinates: {
 			lat: 14.6349,
 			lng: -90.5069,
@@ -610,6 +613,12 @@ export default {
 				this.galleryDialog = true
 			}
 		},
+		confirmPublish(data){
+			this.active_until = data.active_until
+			console.log(data)
+			
+
+		},
 		updateProperty(){
 			this.loading = true
 			let params = this.$route.params ? Object.assign({}, this.$route.params): {};
@@ -665,6 +674,7 @@ export default {
 			this.coordinates.lng = response.data.longitude
 			this.amenities = response.data.amenities
 			this.images = response.data.images
+			this.active_until = response.data.active_until
 
 			if(response.data.sale_price == null || parseInt(response.data.sale_price) == 0){
 				this.forSale = false

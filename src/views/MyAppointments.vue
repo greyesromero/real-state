@@ -184,6 +184,7 @@ export default {
 	mounted () {
 		this.client_appointments = this.getUser.client_appointments
 		this.agent_appointments = this.getUser.agent_appointments
+		
 	}
 }
 </script>
