@@ -154,9 +154,9 @@ export default {
 					this.$emit('confirmPublish',{
 						id: this.property.id,
 						date: this.new_date,
-						index: this.index
 					});
 					this.loading = false
+					this.$refs.form.reset()
 					
 				})
 				.catch(error => {
@@ -177,7 +177,7 @@ export default {
 		selectCard(data){
 			this.payment_options.push(data);
 			this.payment = data
-			this.$store.dispatch('updatePayment', this.data.credit_card)
+			this.$store.dispatch('updatePayment', data.credit_card)
 			
 		},
 		resetPayment(){

@@ -88,7 +88,7 @@ export default {
 	}),
   	methods: {
 		  toDetail(){
-			  this.$router.push('/detail')
+			  this.$router.push('/detail/'+this.appointment.property.id)
 		  }
 	},
 	mounted(){

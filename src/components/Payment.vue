@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
 	props: ['payment'],
 	data: () => ({
@@ -97,8 +98,20 @@ export default {
 	},
 	methods: {
 		deletePayment() {
-			this.$emit('deletePayment');
-			this.delete_dialog = false;
+			this.loading = true
+			axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
+				credit_card:  null,
+			})
+			.then(response => {
+				this.loading = false
+				this.$emit('deletePayment');
+				this.delete_dialog = false;
+			})
+			.catch(error => {
+				this.loading = false
+				console.log(error);
+			})
+			
 		},
 		
 	},

@@ -22,7 +22,7 @@
 				</div>
 			</v-container>
 			<v-container 
-				v-if="visiblePages.length == 0"
+				v-if="!loading && visiblePages.length == 0"
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
@@ -707,6 +707,7 @@ export default {
 			//console.log('value changed from ' + oldVal + ' to ' + newVal);
 			this.infoWinOpen = false
 			this.selected_property = 0
+			
 		},
      
       busqueda (val) {
@@ -739,36 +740,70 @@ export default {
 		this.fetchProperties()
 	},
 	methods: {
-		checkFavorite(id){
-			let favorites = this.favorites_properties.find(x => x.id === id);
+		  getById(id, myArray) {
+				return myArray.filter(function(obj) {
+				if(obj.id == id) {
+					return obj
+				}
+				})[0]
+			},
+		checkFavorite(property_id){
+			let get_my_obj = this.getById(property_id,this.favorites_properties);
+		
+		
 			
-			if(favorites){
+			if(get_my_obj){
 				return 'mdi-heart'
 			}else{
 				return 'mdi-heart-outline'
 			}
 		},
 		saveFavorite(id){
-			axios
-			.post('https://hsrealestate-api.herokuapp.com/api/properties/favorite/',{
-				property: id,
-				user: this.getUser.id
-			})
-			.then(response => {
-				this.$store.dispatch('getProfile', this.getUser.id).then(response => {
-						/*this.favorites_properties = this.getUser.favorites_properties.map(function(obj){
-							obj.position = {
-								lat: obj.latitude,
-								lng: obj.longitude
-							};
-							return obj;
-						});*/
-						console.log(response)
-						console.log(this.getUser)		
+			let get_my_obj = this.favorites_properties.findIndex(x => x.id === id);
+			
+			console.log(get_my_obj)
+			if(get_my_obj>=0){
+				
+				axios
+				.delete('https://hsrealestate-api.herokuapp.com/api/properties/favorite/'+this.favorites_properties[get_my_obj].favorite_id+'/')
+				.then(response => {
+					
+					this.favorites_properties.splice(get_my_obj, 1);
+				}).catch(err => {
+					console.log({err})
 				})
-			}).catch(err => {
-				console.log({err})
-			})
+			}else{
+				axios
+					.post('https://hsrealestate-api.herokuapp.com/api/properties/favorite/',{
+						property: id,
+						user: this.getUser.id
+					})
+					.then(response => {
+						this.favorites_properties = []
+						this.$store.dispatch('getProfile', this.getUser.id).then(r => {
+								if(this.getUser.favorite_properties!=null){
+									this.getUser.favorite_properties.forEach((value, index) => {
+										let arrayProperty = value.property
+										arrayProperty['favorite_id'] = value.id
+										this.favorites_properties.push(arrayProperty);
+									});
+									
+									this.favorites_properties = this.favorites_properties.map(function(obj){
+														obj.position = {
+															lat: obj.latitude,
+															lng: obj.longitude
+														};
+
+														
+														return obj;
+													});
+								}	
+						})
+					}).catch(err => {
+						console.log({err})
+					})
+			}
+			
 
 		},
 		buildAmenityIcon(amenityName) {
@@ -803,11 +838,17 @@ export default {
 		},
 		changeArray(){
 			if(this.favorites){
+				this.page = 1
+				this.selected_property = 0
 				this.selected_properties = this.favorites_properties
 			}
 			else{
+				this.page = 1
+				this.selected_property = 0
 				this.selected_properties = this.properties
 			}
+
+			console.log(this.selected_properties)
 		},
 		increment () {
 			this.foo = parseInt(this.foo,10) + 1
@@ -862,17 +903,28 @@ export default {
 			this.favorites = false
 			if (this.errored) this.errored = false
 			this.loading = true
-			/*console.log(this.getUser)
-			if(this.getUser.favorites_properties){
-				
-				this.favorites_properties = this.getUser.favorites_properties.map(function(obj){
-					obj.position = {
-						lat: obj.latitude,
-						lng: obj.longitude
-					};
-					return obj;
-				});
-			}*/
+			this.$store.dispatch('getProfile', this.getUser.id).then(r => {
+				if(this.getUser.favorite_properties!=null){
+					this.getUser.favorite_properties.forEach((value, index) => {
+						let arrayProperty = value.property
+						arrayProperty['favorite_id'] = value.id
+						this.favorites_properties.push(arrayProperty);
+					});
+					
+					this.favorites_properties = this.favorites_properties.map(function(obj){
+										obj.position = {
+											lat: obj.latitude,
+											lng: obj.longitude
+										};
+
+										
+										return obj;
+									});
+				}
+			})
+			
+
+			
 			axios
 			.get('https://hsrealestate-api.herokuapp.com/api/properties/')
 			.then(response => {

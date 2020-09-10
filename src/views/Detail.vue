@@ -127,6 +127,16 @@
 									>
 									VENTA
 								</v-chip>
+								<v-chip
+									v-if="isLoggedIn && getUser.id == property.owner.id && new_date != null"
+									class="ma-2"
+									color="primary"
+									label
+									text-color="white"
+									>
+									<v-icon small left color="yellow">mdi-star</v-icon>&nbsp;
+									Activa hasta {{this.new_date}}
+								</v-chip>
 							</v-flex>
 						</v-layout>
 						<v-layout row wrap align-end mx-5>
@@ -182,6 +192,16 @@
 									>
 									VENTA
 								</v-chip>
+								<v-chip
+									v-if="isLoggedIn && getUser.id == property.owner.id && new_date != null"
+									class="ma-2"
+									color="primary"
+									label
+									text-color="white"
+									>
+									<v-icon small left color="yellow">mdi-star</v-icon>&nbsp;
+									Activa hasta {{this.new_date}}
+								</v-chip>
 							</v-flex>
 						</v-layout>
 						<v-layout row wrap align-end pb-6>
@@ -236,6 +256,16 @@
 									>
 									VENTA
 								</v-chip>
+								<v-chip
+									v-if="isLoggedIn && getUser.id == property.owner.id && new_date != null"
+									class="ma-2"
+									color="primary"
+									label
+									text-color="white"
+									>
+									<v-icon small left color="yellow">mdi-star</v-icon>&nbsp;
+									Activa hasta {{this.new_date}}
+								</v-chip>
 							</v-flex>
 						</v-layout>
 						<v-layout row wrap align-end pb-6>
@@ -271,6 +301,16 @@
 											text-color="white"
 											>
 											NEW
+										</v-chip>
+										<v-chip
+											v-if="isLoggedIn && getUser.id == property.owner.id && new_date != null"
+											class="ma-2"
+											color="primary"
+											label
+											text-color="white"
+											>
+											<v-icon small left color="yellow">mdi-star</v-icon>&nbsp;
+											Activa hasta {{this.new_date}}
 										</v-chip>
 									</v-flex>
 								</v-layout>
@@ -532,6 +572,8 @@ export default {
 		NewRecord	
 	},
 	data: () => ({
+		published: false,
+		new_date: null,
 		forRent: false,
 		forSale: false,
 		galleryDialog: false,
@@ -614,8 +656,11 @@ export default {
 			}
 		},
 		confirmPublish(data){
-			this.active_until = data.active_until
 			console.log(data)
+			this.active_until = data.date
+			this.new_date = data.date
+			console.log(this.active_until)
+			console.log(this.new_date)
 			
 
 		},
@@ -688,8 +733,21 @@ export default {
 				this.forRent = true
 			}
 			
-			console.log(this.forRent)
-			console.log(this.forSale)
+			if(this.property.active_until != null){
+				let A = moment(this.property.active_until);
+				let B = moment(new Date());
+				
+				let check = A.diff(B, 'days');
+				
+				if(check > 0){
+					this.published = true
+					this.new_date = this.moment(this.property.active_until).format("YYYY-MM-DD HH:mm")
+				}else{
+					this.published = false
+					this.new_date = null
+				}
+
+			}
 			
 			
 		})

@@ -187,6 +187,7 @@ export default {
 						index: this.index
 					});
 					this.loading = false
+					this.$refs.form.reset()
 					
 				})
 				.catch(error => {
@@ -205,10 +206,11 @@ export default {
 			this.days = 0
 		},
 		selectCard(data){
+			
 			this.payment_options.push(data);
 			this.payment = data
-			this.$store.dispatch('updatePayment', this.data.credit_card)
-			console.log(this.payment_options)
+			this.$store.dispatch('updatePayment', data.credit_card)
+			
 			
 		},
 		resetPayment(){
@@ -225,10 +227,14 @@ export default {
 		}
 
 		if(this.property.active_until != null){
-			let check = this.moment(new Date(),"DD-MM-YYYY H:mm").isSameOrAfter(this.moment(this.property.active_until,"DD-MM-YYYY H:mm").format("DD-MM-YYYY H:mm"))
-			if(check){
+			let A = moment(this.property.active_until);
+			let B = moment(new Date());
+			
+		 	let check = A.diff(B, 'days');
+			
+			if(check > 0){
 				this.published = true
-				this.new_date = this.moment(this.property.active_until).format("DD-MM-YYYY H:mm")
+				this.new_date = this.moment(this.property.active_until).format("YYYY-MM-DD HH:mm")
 			}else{
 				this.published = false
 				this.new_date = null

@@ -193,7 +193,7 @@ export default {
 			}
 			return dateArray;
 		},
-		deleteSchedule(index){
+		Schedule(index){
 			this.schedule_array.splice(index,1)
 		},
 		createSchedule() {

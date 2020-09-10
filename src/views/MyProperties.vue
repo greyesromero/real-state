@@ -192,7 +192,7 @@ export default {
 	},
 	methods: {
 		confirmPublish(data){
-			this.properties[data.index].active_until = data.active_until
+			this.properties[data.index].active_until = data.date
 			
 
 		},

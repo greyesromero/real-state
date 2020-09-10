@@ -61,7 +61,7 @@
 
 <script>
 import { mask } from 'vue-the-mask'
-
+import axios from 'axios'
 export default {
 	directives: {
       mask,
@@ -96,21 +96,40 @@ export default {
 		lazy:false,
 		
 	}),
+	computed: {
+		getUser : function(){ 
+			return this.$store.getters.getUser
+		},
+	},
 	methods: {
 		createPayment() {
 			if (this.$refs.form.validate()){
-				this.$emit('createPayment', {
-					card_holder: this.card_holder,
-					credit_card: this.credit_card_token,
-					cvv: this.cvv,
-					type: this.type,
-					card_date: this.card_date,
-					tin: this.tin,
-					address: this.address,
-					invoice_name: this.invoice_name
-				});
-				this.payment_dialog = false;
-				this.$refs.form.reset()
+				this.loading = true
+				let final_card = this.credit_card_token.substring(15,19)
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
+					credit_card:  final_card,
+				})
+				.then(response => {
+					this.$emit('createPayment', {
+						card_holder: this.card_holder,
+						credit_card: final_card,
+						cvv: this.cvv,
+						type: this.type,
+						card_date: this.card_date,
+						tin: this.tin,
+						address: this.address,
+						invoice_name: this.invoice_name
+					});
+					this.payment_dialog = false;
+					this.$refs.form.reset()
+					this.loading = false
+				})
+				.catch(error => {
+					this.loading = false
+					console.log(error);
+				})
+			
+				
 			}
 		},
 		getCardType(){

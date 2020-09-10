@@ -258,40 +258,13 @@ export default {
 		},
 		//PAYMENT METHODS
 		createPayment(data) {
-			this.payment_options = data.credit_card.substring(15,19)
-		
-			
-			this.$store.commit('changeLoadingState', true)
-			axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
-				credit_card:  data.credit_card.substring(15,19),
-			})
-			.then(response => {
-				this.$store.dispatch('updatePayment', this.payment_options)
-				this.$store.commit('changeLoadingState', false)
-			})
-			.catch(error => {
-				this.$store.commit('changeLoadingState', false)
-				console.log(error);
-			})
-			
+			this.payment_options = data.credit_card
+			this.$store.dispatch('updatePayment', data.credit_card)
 			
 		},
 		deletePayment(index) {
-		this.payment_options = null
-			this.$store.commit('changeLoadingState', true)
-			axios.patch('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/',{
-				credit_card:  null,
-			})
-			.then(response => {
-				this.$store.dispatch('updatePayment', this.payment_options)
-				this.$store.commit('changeLoadingState', false)
-			})
-			.catch(error => {
-				this.$store.commit('changeLoadingState', false)
-				console.log(error);
-			})
-		
-			
+			this.payment_options = null
+			this.$store.dispatch('updatePayment', this.payment_options)
 		},
 	},
 	created(){
