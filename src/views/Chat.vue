@@ -1,87 +1,135 @@
 <template>
-	<section id="contact" class="grey lighten-3">
-		 <v-layout wrap >
-      <v-flex md4 xs12 class="side" v-if="mobile_bar">
-           <v-card
+	<div>
+	<section>
+			<v-container 
+				v-if="loading"
+				fluid 
+				grid-list-md 
+				class="px-2 ma-0" 
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				<div  class="center-container">
+					<v-container fill-height>
+						<v-layout align-center justify-center>
+						<v-progress-circular
+							:size="48"
+							:width="4"
+							color="primary lighten-1"
+							indeterminate
+						></v-progress-circular>
+						</v-layout>
+					</v-container>
+				</div>
 				
-					class="mx-auto"
-					style="height:100%!important;"
-				>
-				
-					 <v-list three-line>
-						<template v-for="(item, index) in items">
+			</v-container>
+				<v-container 
+				v-if="!loading && conversations.length == 0"
+				fluid 
+				grid-list-md 
+				class="px-2 ma-0" 
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				<div  class="center-container">
+					<v-container fill-height>
+						<v-layout column align-center justify-center>
+						<h1 class="display-2">Sin Resultados</h1>
+						<p class="body-1 grey--text">Aún no tienes mensajes</p>
 						
-						<v-list-item
-							
-							:key="item.title"
-							@click="selectChat(index)"
-						>
-							<v-list-item-avatar>
-							<v-img :src="item.avatar"></v-img>
-							</v-list-item-avatar>
-				
-							<v-list-item-content>
-							<v-list-item-title v-html="item.title"></v-list-item-title>
-							<v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
-							</v-list-item-content>
-						</v-list-item>
-						<v-divider></v-divider>
-						</template>
-					</v-list>
-				</v-card>
-         
-      </v-flex>
-      <v-flex xs12 md8 class="contenido" v-if="!mobile" >
-         <v-layout column justify-space-between fill-height>
-			  <v-card
-				color="grey lighten-4"
-				flat
-			
-				tile
-			>
-				<v-toolbar dense>
-				<v-btn icon @click="mobile = true, mobile_bar = true" class=" hidden-sm-and-up">
-					<v-icon>mdi-arrow-left-circle</v-icon>
-				</v-btn>
-				<v-toolbar-title>{{items[selected_chat].title}} </v-toolbar-title>
+					</v-layout>
+					</v-container>
+				</div>
+			</v-container>
 
-				<v-spacer></v-spacer>
-
-				
-				<v-btn icon>
-					<v-icon>mdi-dots-vertical</v-icon>
-				</v-btn>
-				</v-toolbar>
-			</v-card>
-            <v-card id="chat" flat style="overflow-x:hidden!important;overflow-y:scroll!important;height:100%!important;">
-              	<section  class="discussion px-5 py-5">
-					 	<template  v-for="(msg, index) in items[selected_chat].messages">
-					  		<div :class="'bubble last '+msg.type">{{ msg.msg}} </div>
-					  </template>
-				</section>
-            </v-card>
-            <v-card class="white px-5">
-                <v-text-field
-						
-						v-model="message"
-						:append-outer-icon=" 'mdi-send'"
-						:prepend-icon="icon"
-						filled
-						clear-icon="mdi-close-circle"
-						clearable
-						label="Escribe un mensaje ..."
-						type="text"
-						@click:append="toggleMarker"
-						@click:append-outer="sendMessage"
-						@click:prepend="changeIcon"
-						@click:clear="clearMessage"
-          ></v-text-field>
-            </v-card>
-         </v-layout>
-      </v-flex>
-   </v-layout>
+	</section>
+	<section v-if="!loading && conversations.length>0" id="contact" class="grey lighten-3">
 	
-	</section>	
+		<v-layout wrap >
+			<v-flex md4 xs12 class="side" v-if="mobile_bar">
+				<v-card
+						
+							class="mx-auto"
+							style="height:100%!important;"
+						>
+						
+							<v-list three-line>
+								<template v-for="(item, index) in conversations">
+								
+								<v-list-item
+									
+									:key="item.id"
+									@click="selectChat(index)"
+								>
+									<v-list-item-avatar>
+									<v-img :src="'../assets/img/sin-imagen.jpg'"></v-img>
+									</v-list-item-avatar>
+						
+									<v-list-item-content>
+									<v-list-item-title v-html="item.name"></v-list-item-title>
+									<v-list-item-subtitle></v-list-item-subtitle>
+									</v-list-item-content>
+									<v-list-item-icon>
+										<v-btn icon >
+											<v-icon>mdi-trash-can</v-icon>
+										</v-btn>
+									</v-list-item-icon>
+								</v-list-item>
+								<v-divider ></v-divider>
+								</template>
+							</v-list>
+						</v-card>
+				
+			</v-flex>
+			<v-flex xs12 md8 class="contenido" v-if="!mobile" >
+				<v-layout column justify-space-between fill-height>
+					<v-card
+						color="grey lighten-4"
+						flat
+					
+						tile
+					>
+						<v-toolbar dense>
+						<v-btn icon @click="mobile = true, mobile_bar = true" class=" hidden-sm-and-up">
+							<v-icon>mdi-arrow-left-circle</v-icon>
+						</v-btn>
+						<v-toolbar-title>{{conversations[selected_conversation].name}} </v-toolbar-title>
+
+						<v-spacer></v-spacer>
+
+						
+						<v-btn icon>
+							<v-icon>mdi-dots-vertical</v-icon>
+						</v-btn>
+						</v-toolbar>
+					</v-card>
+					<v-card id="chat" flat style="overflow-x:hidden!important;overflow-y:scroll!important;height:100%!important;">
+						<section v-if="conversations[selected_conversation].messages.length!=0" class="discussion px-5 py-5">
+								<template v-for="(msg, index) in conversations[selected_conversation].messages" >
+									<div class="bubble last recipient" :key="msg.id" v-if="getUser.id == msg.user">{{ msg.message}} </div>
+									<div class="bubble last sender" :key="msg.id" v-if="getUser.id != msg.user">{{ msg.message}} </div>
+							</template>
+						</section>
+					</v-card>
+					<v-card class="white px-5">
+						<v-text-field
+								
+								v-model="message"
+								:append-outer-icon=" 'mdi-send'"
+								:prepend-icon="icon"
+								filled
+								clear-icon="mdi-close-circle"
+								clearable
+								label="Escribe un mensaje ..."
+								type="text"
+								@click:append="toggleMarker"
+								@click:append-outer="sendMessage"
+								@click:prepend="changeIcon"
+								@click:clear="clearMessage"
+				></v-text-field>
+					</v-card>
+				</v-layout>
+			</v-flex>
+		</v-layout>
+	
+	</section>
+	</div>	
 </template>
 
 <script>
@@ -91,12 +139,17 @@ export default {
 	components: {
 		PropertyList
 	},
+	props: {
+        id: Number
+	},
 	data: () => ({
+		selected_conversation: 0,
+		conversations: [],
 		mobile: false,
 		mobile_bar: true,
 		properties: true,
 		selected_gym:0,
-		selected_chat: 0,
+		selected_conversation: 0,
 		search: '',
 		properties:[],
 		loading: false,
@@ -197,6 +250,12 @@ export default {
 	
 	}),
 	computed: {
+		getUser : function(){ 
+			return this.$store.getters.getUser
+		},
+		isLoggedIn : function(){ 
+			return this.$store.getters.isLoggedIn
+		},
 		size () {
 			const size = {xs:'x-small',sm:'small',lg:'large',xl:'x-large'}[this.$vuetify.breakpoint.name];
 			return size
@@ -219,7 +278,7 @@ export default {
 	},
 	methods: {
 		selectChat(index){
-			this.selected_chat = index
+			this.selected_conversation = index
 			if(this.size == 'x-small' || this.size == 'small'){
 				this.mobile = false
 				this.mobile_bar = false
@@ -229,7 +288,7 @@ export default {
 			this.marker = !this.marker
 		},
 		sendMessage () {
-			this.items[this.selected_chat].messages.push({
+			this.items[this.selected_conversation].messages.push({
 				msg: this.message,
 				type: 'recipient'
 			})
@@ -327,6 +386,7 @@ export default {
 	},
 	mounted () {
 
+	
 		
 		this.properties.push({
 			image: '../assets/img/house4.jpg',
@@ -338,6 +398,26 @@ export default {
 		if(this.size == 'x-small' || this.size == 'small'){
 			this.mobile = true
 		}
+
+		this.loading = true
+		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
+		.then(response => {
+			this.conversations = response.data.conversations
+			if(this.conversations.length>0){
+				if(this.id){
+					let index = this.conversations.findIndex(x => x.id === this.id);
+					this.selected_conversation = index
+				}else{
+					this.selected_conversation = 0
+				}
+			}
+			
+			this.loading = false
+		})
+		.catch(error => {
+			this.loading = false
+			console.log(error);
+		})
 
 		
 	}

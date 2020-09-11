@@ -382,7 +382,15 @@
 					<v-flex xs12 md4>
 						<section>
 							<v-container grid-list-md pa-0 px-0>
-								<ScheduleForm :property="property"/>
+								<v-card-title class="font-weight-bold" v-if="property.rent_price>0">
+									Q {{property.rent_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ precio renta</span>
+								</v-card-title>
+								<v-card-title class="font-weight-bold" v-if="property.sale_price>0">
+									Q {{property.sale_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ precio venta</span>
+								</v-card-title>
+								<v-divider></v-divider>
+								<p class="grey--text text--darken-3 my-4">Te interesa esta propiedad? Agenda una cita</p>
+								<ScheduleForm v-for="(agent,index) in agents" :property="property" :agent="agent" :index="index" :key="agent.id"/>
 							</v-container>
 						</section>
 				
@@ -563,13 +571,15 @@ import SearchForm from '../components/SearchForm.vue'
 import DetailGallery from '../components/DetailGallery.vue'
 import ScheduleForm from  '../components/ScheduleForm.vue'
 import NewRecord from '../components/NewRecord.vue'
+import Agent from '../components/Agent.vue'
 export default {
 	components: {
 		Loader,
 		DetailGallery,
 		SearchForm,
 		ScheduleForm,
-		NewRecord	
+		NewRecord,
+		Agent	
 	},
 	data: () => ({
 		published: false,
@@ -594,6 +604,8 @@ export default {
 		},
 		images:[],
 		toggle_exclusive: 0,
+		owner: [],
+		agents: [],
 		items: [
 			{
 				src: '../assets/img/house5.jpg',
@@ -626,7 +638,9 @@ export default {
 		},
 	},
 	methods: {
-		
+		saveConversation(){
+
+		},
 		buildAmenityIcon(amenityName) {
 			switch (amenityName) {
 				case 'Aire Acondicionado':
@@ -681,6 +695,7 @@ export default {
 				this.coordinates.lng = response.data.longitude
 				this.amenities = response.data.amenities
 				this.images = response.data.images
+				
 				if(response.data.sale_price == null || parseInt(response.data.sale_price) == 0){
 					this.forSale = false
 				}else{
@@ -692,6 +707,8 @@ export default {
 				}else{
 					this.forRent = true
 				}
+
+				
 				
 			})
 			.catch(error => {
@@ -703,6 +720,7 @@ export default {
 	},
 	mounted() {
 		this.loading = true
+		
 		let params = this.$route.params ? Object.assign({}, this.$route.params): {};
 		axios.get('https://hsrealestate-api.herokuapp.com/api/properties/'+params.id+'/')
 		.then(response => {
@@ -720,7 +738,10 @@ export default {
 			this.amenities = response.data.amenities
 			this.images = response.data.images
 			this.active_until = response.data.active_until
+			this.agents = response.data.agents
+			this.owner = response.data.owner
 
+			this.agents.push(this.owner)
 			if(response.data.sale_price == null || parseInt(response.data.sale_price) == 0){
 				this.forSale = false
 			}else{

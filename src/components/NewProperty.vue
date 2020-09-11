@@ -975,7 +975,8 @@
 					construction_area: this.createForm.constructionArea,
 					rooms: this.createForm.rooms,
 					bathrooms: this.createForm.bathrooms,
-					amenities: this.selected
+					amenities: this.selected,
+					active: true
 					
 				}).then(response => {
 				

@@ -97,7 +97,7 @@
 							<v-card-actions>
 								<div class="flex-grow-1"></div>
 								<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
-								<v-btn  @click="delete_dialog = false" color="primary" dark>
+								<v-btn  @click="deleteProperty()" color="primary" dark>
 									<v-icon left>mdi-trash-can</v-icon>
 									Borrar
 								</v-btn>
@@ -127,7 +127,7 @@ export default {
 	directives: {
       mask,
 	},
-  	props: ['property', 'index'],
+  	props: ['property', 'index', 'type'],
 	components: {
 		UpdateProperty,
 		EmptyCard
@@ -216,7 +216,29 @@ export default {
 		resetPayment(){
 			this.$refs.form.reset()
 			this.publish_dialog = false
-		}
+		},
+		deleteProperty(){
+			  	this.loading = true
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/properties/'+this.property.id+'/',{
+					active: false
+				})
+				.then(response => {
+					this.delete_dialog = false
+					this.loading = false
+					
+					if(this.type == 1 ){
+						this.$emit('deleteProperty', this.property.id);
+					}else{
+						this.$emit('deleteManagedProperty', this.property.id);
+					}
+					
+				})
+				.catch(error => {
+					this.delete_dialog = false
+					this.loading = false
+					console.log(error);
+				})
+		  }
 	},
 	mounted(){
 		if(this.getUser.credit_card!=null){

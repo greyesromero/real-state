@@ -1,56 +1,108 @@
 <template>
 <div>
-	<v-card :loading="loading_appointment" class="mx-auto" tile flat>
-		<v-card-title class="font-weight-bold" v-if="property.rent_price>0">
-			Q {{property.rent_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ precio renta</span>
-		</v-card-title>
-		<v-card-title class="font-weight-bold" v-if="property.sale_price>0">
-			Q {{property.sale_price}} <span class="ml-2 body-1 grey--text text--darken-2">/ precio venta</span>
-		</v-card-title>
-	
-		<v-divider></v-divider>
-		<v-card-text class="pb-0">
+	<v-list-item >
+        <v-list-item-avatar>
+		  	<img z-index="0" v-if="agent.image==null"  class="profile-picture" :src="'../assets/img/sin-imagen.jpg'" alt="alt" lazy-src="../assets/logo.png">
+			<img z-index="0" v-if="agent.image!=null"  class="profile-picture" :src="agent.image" alt="alt" lazy-src="../assets/logo.png">
+        </v-list-item-avatar>
 
-			<p class="grey--text text--darken-3 mb-6">Te interesa esta propiedad? Agenda una cita</p>
-			<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-				<v-layout row wrap>
-					<v-flex xs6>
-						<v-dialog ref="fecha" v-model="fecha_dialog" :return-value.sync="fecha" persistent width="290px" class="">
-							<template v-slot:activator="{ on }">
-								<v-text-field color="secondary" v-model="fecha" label="Fecha" v-on="on" outlined :rules="[v => !!v || 'Fecha es requerida']" required></v-text-field>
-							</template>
-							<v-date-picker color="secondary" v-if="fecha_dialog" v-model="fecha" full-width 
-							:min="today"  locale="es-MX">
-								<v-spacer></v-spacer>
-								<v-btn text color="secondary" @click="fecha_dialog = false">Cancelar</v-btn>
-								<v-btn text color="secondary" @click="$refs.fecha.save(fecha)">OK</v-btn>
-							</v-date-picker>
-						</v-dialog>
-					</v-flex>
-					<v-flex xs6>
-						<v-dialog  ref="open" v-model="open_dialog" :return-value.sync="open" persistent width="290px">
-							<template v-slot:activator="{ on }">
-								<v-text-field color="secondary" v-model="open" label="Hora" readonly v-on="on" outlined required :rules="[v => !!v || 'Hora es requerida']"></v-text-field>
-							</template>
-							<v-time-picker color="secondary" v-if="open_dialog" v-model="open" full-width>
-								<v-spacer></v-spacer>
-								<v-btn text color="secondary" @click="open_dialog = false">Cancelar</v-btn>
-								<v-btn text color="secondary" @click="$refs.open.save(open)">OK</v-btn>
-							</v-time-picker>
-						</v-dialog>
-					</v-flex>
-					<!--v-flex xs12>
-						<v-textarea color="secondary" name="description" label="Descripción" outlined v-model="mensaje"></v-textarea>
-					</v-flex-->
-				</v-layout>
-			</v-form>
-		</v-card-text>
-		<v-card-actions class="align-self-center align-content-center justify-center center align-center">
-			<v-btn type="submit" block color="secondary" :disabled="checkUser" large depressed @click="requestAppointment()">
-				Agendar Cita
-			</v-btn>								
-		</v-card-actions>
-	</v-card>
+        <v-list-item-content>
+          <v-list-item-title>{{agent.first_name}} {{agent.last_name}}</v-list-item-title>
+        </v-list-item-content>
+
+        <v-list-item-icon>
+		  	
+			<v-dialog v-model="messaging_dialog" max-width="500px" persistent>
+				<template v-slot:activator="{on}">
+					<v-btn color="secondary" icon :disabled="checkUser" v-on="on">
+						<v-icon>mdi-message-text</v-icon>
+					</v-btn>
+				</template>
+				<v-card :loading="loading_messaging" class="px-5" tile flat>
+					<v-card-text class="py-5">
+						<v-layout justify="center" row wrap>
+						<v-form v-model="valid_messaging" :lazy-validation="lazy_messaging"  ref="form_messaging"  class="w-100">
+							<p class="font-weight-bold display-1 black--text" align="center">Enviar Mensaje</p>
+							<p class="grey--text text--darken-3">Comunícate con <strong> {{this.agent.first_name}} {{this.agent.last_name}} </strong> para más información</p>
+
+							
+								<v-text-field v-model.lazy="message_name" outlined color="secondary" label="Asunto"  :rules="[v => !!v || 'Asunto es requerido']" required></v-text-field>
+								<v-textarea color="secondary" name="message" label="Escribe un mensaje ..." outlined v-model.lazy="message_chat" required :rules="[v => !!v || 'Mensaje es requerido']"></v-textarea>					
+
+							
+						</v-form>
+						</v-layout>
+					</v-card-text>
+					<v-card-actions class="align-self-center align-content-center justify-center center align-center">
+						<v-btn text large @click="closeMessaging()">
+							Cancelar
+						</v-btn>
+						<v-btn type="submit" color="secondary" :disabled="checkUser" large @click="sendMessage()">
+							Enviar Mensaje
+						</v-btn>								
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+			<v-dialog v-model="appointment_dialog" max-width="500px" persistent>
+				<template v-slot:activator="{on}">
+					<v-btn color="secondary" icon v-on="on" :disabled="checkUser" >
+						<v-icon>mdi-calendar-clock</v-icon>
+					</v-btn>
+				</template>
+				<v-card :loading="loading_appointment" class="px-5" tile flat>
+		
+					<v-card-text class="py-5">
+
+
+						<v-form v-model="valid" :lazy-validation="lazy"  ref="form" class="mx-4 p-0">
+							<p class="font-weight-bold display-1 black--text" align="center">Agendar Cita</p>
+							<p class="grey--text text--darken-3">Selecciona fecha y hora para agendar una visita a la propiedad</p>
+
+							<v-layout row wrap>
+								<v-flex xs12 >
+									<v-dialog ref="fecha" v-model="fecha_dialog" :return-value.sync="fecha" persistent width="290px" class="">
+										<template v-slot:activator="{ on }">
+											<v-text-field color="secondary" v-model="fecha" label="Fecha" v-on="on" outlined :rules="[v => !!v || 'Fecha es requerida']" required></v-text-field>
+										</template>
+										<v-date-picker color="secondary" v-if="fecha_dialog" v-model="fecha" full-width 
+										:min="today"  locale="es-MX">
+											<v-spacer></v-spacer>
+											<v-btn text color="secondary" @click="fecha_dialog = false">Cancelar</v-btn>
+											<v-btn text color="secondary" @click="$refs.fecha.save(fecha)">OK</v-btn>
+										</v-date-picker>
+									</v-dialog>
+								</v-flex>
+								<v-flex xs12>
+									<v-dialog  ref="open" v-model="open_dialog" :return-value.sync="open" persistent width="290px">
+										<template v-slot:activator="{ on }">
+											<v-text-field color="secondary" v-model="open" label="Hora" readonly v-on="on" outlined required :rules="[v => !!v || 'Hora es requerida']"></v-text-field>
+										</template>
+										<v-time-picker color="secondary" v-if="open_dialog" v-model="open" full-width>
+											<v-spacer></v-spacer>
+											<v-btn text color="secondary" @click="open_dialog = false">Cancelar</v-btn>
+											<v-btn text color="secondary" @click="$refs.open.save(open)">OK</v-btn>
+										</v-time-picker>
+									</v-dialog>
+								</v-flex>
+								<!--v-flex xs12>
+									<v-textarea color="secondary" name="description" label="Descripción" outlined v-model="mensaje"></v-textarea>
+								</v-flex-->
+							</v-layout>
+						</v-form>
+					</v-card-text>
+					<v-card-actions class="align-self-center align-content-center justify-center center align-center">
+						<v-btn text large @click="closeModal()">
+							Cancelar
+						</v-btn>
+						<v-btn type="submit" color="secondary" :disabled="checkUser" large @click="requestAppointment()">
+							Agendar Cita
+						</v-btn>								
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+        </v-list-item-icon>
+	</v-list-item>
+	
 	<!-- Dialogo para usuario sin sesion -->
 	<v-dialog v-model="dialog" persistent max-width="600" timeout = "2000">
 		<v-card :loading="loading">
@@ -117,6 +169,7 @@
 							
 						</v-card-text>
 					</v-card>
+				
 				</v-row>
 			</v-card-text>
 			<v-card-actions>
@@ -136,10 +189,17 @@ import moment from 'moment'
 import axios from 'axios'
 export default {
 	name: 'schedule-form',
-	props: ['property'],
+	props: ['property','agent'],
 	data() {
 		return {
 			today:  moment().format('YYYY-MM-DD'),
+			messaging_dialog: false,
+			message_name: null,
+			loading_messaging: false,
+			appointment_dialog: false,
+			lazy_messaging: false,
+			valid_messaging: true,
+			message_chat: null,
 			checkUser: false,
 			loading: false,
 			first_name: null,
@@ -198,6 +258,49 @@ export default {
 		},
 	},
 	methods: {
+		closeMessaging(){
+			this.messaging_dialog = false
+			this.$refs.form_messaging.reset()
+		},
+		sendMessage(){
+			if (this.$refs.form_messaging.validate()) {
+				let users = []
+				users.push(this.getUser.id)
+				users.push(this.agent.id)
+				this.loading_messaging = true
+				axios.post('https://hsrealestate-api.herokuapp.com/api/messaging/conversations/',{
+					users: users,
+					name: this.message_name,
+					active: true
+				})
+				.then(response => {
+					let conversation_id = response.data.id
+					axios.post('https://hsrealestate-api.herokuapp.com/api/messaging/',{
+						user: this.getUser.id,
+						conversation: conversation_id,
+						message: this.message_chat
+					})
+					.then(r => {
+						this.loading_messaging = false
+						this.$router.push({name: 'chat', params: {id: conversation_id}})
+						
+					})	
+					.catch(error => {
+						this.loading_messaging = false
+						console.log(error);
+					})
+					
+				})	
+				.catch(error => {
+					this.loading_messaging = false
+					console.log(error);
+				})
+			}
+		},
+		closeModal(){
+			this.appointment_dialog = false
+			this.$refs.form.reset()
+		},
 		requestAppointment(){
 			if (this.$refs.form.validate()) {
 				
@@ -237,7 +340,8 @@ export default {
 						this.dialog = true
 						this.success_appointment = true
 						this.fecha = null
-						this.open = null		
+						this.open = null	
+						this.appointment_dialog = false	
 				})
 			})
 			.catch(error => {
@@ -288,7 +392,7 @@ export default {
 				.then(response => {
 
 					this.dialog_login = false
-					
+					this.dialog = false
 					this.loading = false	
 					this.saveAppointment();	
 				})
@@ -337,6 +441,7 @@ export default {
 		},
 	},
 	mounted(){
+		
 		if(this.getUser.id == this.property.owner.id){
 			this.checkUser = true
 		}else{

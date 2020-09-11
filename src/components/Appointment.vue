@@ -33,7 +33,7 @@
 						<v-card-actions>
 							<div class="flex-grow-1"></div>
 							<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
-							<v-btn  @click="delete_dialog = false" color="primary" dark>
+							<v-btn  @click="cancelAppointment();" color="primary" dark>
 								<v-icon left>mdi-close-circle</v-icon>
 								Confirmar
 							</v-btn>
@@ -74,7 +74,7 @@
 import axios from 'axios'
 import moment from 'moment'
 export default {
-  props: ['appointment', 'index'],
+  props: ['appointment', 'index', 'type'],
 
   data: () => ({
 		edit_dialog: false,
@@ -89,6 +89,27 @@ export default {
   	methods: {
 		  toDetail(){
 			  this.$router.push('/detail/'+this.appointment.property.id)
+		  },
+		  cancelAppointment(){
+			  	this.loading = true
+				axios.patch('https://hsrealestate-api.herokuapp.com/api/properties/appointments/'+this.appointment.property.id+'/',{
+					active: false
+				})
+				.then(response => {
+					this.delete_dialog = false
+					this.loading = false
+					if(this.type == 1 ){
+						this.$emit('cancelClientAppointment', this.index);
+					}else{
+						this.$emit('cancelAppointment', this.index);
+					}
+					
+				})
+				.catch(error => {
+					this.delete_dialog = false
+					this.loading = false
+					console.log(error);
+				})
 		  }
 	},
 	mounted(){

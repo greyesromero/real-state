@@ -116,7 +116,8 @@ let router = new Router({
 			meta: { 
 				requiresAuth: true,
 				hideNavigation: true
-			}
+			},
+			props: true,
 			
 		},
 	]

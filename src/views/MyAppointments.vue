@@ -21,7 +21,7 @@
 					</v-container>
 				</div>
 			</v-container>
-			<v-container  v-if="properties" px-8>
+			<v-container  v-if="!loading" px-8>
 				
 				<v-row>
 						
@@ -73,7 +73,7 @@
 												</v-menu>
 											</span>
 										</v-toolbar>
-										<Appointment v-for="(client, index) in client_appointments" :key="client.id" :appointment="client" :index="index" v-on:cancelAppointment="cancelAppointment($event)">
+										<Appointment v-for="(client, index) in client_appointments" :type="'1'" :key="client.id" :appointment="client" :index="index" v-on:cancelAppointment="cancelAppointment($event)" v-on:cancelClientAppointment="cancelClientAppointment($event)">
 										</Appointment>
 									</v-tab-item>
 									<v-tab-item>
@@ -99,7 +99,7 @@
 												</v-menu>
 											</span>
 										</v-toolbar>
-										<Appointment v-for="(agent, index) in agent_appointments" :key="agent.id" :appointment="agent" :index="index" v-on:cancelAppointment="cancelAppointment($event)">
+										<Appointment v-for="(agent, index) in agent_appointments" :type="'2'" :key="agent.id" :appointment="agent" :index="index" v-on:cancelAppointment="cancelAppointment($event)" v-on:cancelClientAppointment="cancelClientAppointment($event)">
 										</Appointment>
 									</v-tab-item>								
 								</v-tabs>
@@ -176,14 +176,30 @@ export default {
 		
 		
 		},
+		cancelClientAppointment(index){
+			this.client_appointments.splice(index, 1);
+		},
+		cancelAppointment(index){
+			this.agent_appointments.splice(index, 1);
+		}
 	},
 	created() {
 	
 
 	},
 	mounted () {
-		this.client_appointments = this.getUser.client_appointments
-		this.agent_appointments = this.getUser.agent_appointments
+		this.loading = true
+		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
+		.then(response => {
+			this.client_appointments = response.data.client_appointments.filter(item => item.active == true )
+			this.agent_appointments = response.data.agent_appointments.filter(item => item.active == true )
+			this.loading = false
+		})
+		.catch(error => {
+			this.loading = false
+			console.log(error);
+		})
+		
 		
 	}
 }

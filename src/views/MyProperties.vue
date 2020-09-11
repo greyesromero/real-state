@@ -59,7 +59,7 @@
 											
 								</v-toolbar>
 								<v-layout v-if="filteredProperties.length>0" row wrap>
-									<PropertyList v-for="(property, index) in filteredProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)" v-on:confirmPublish="confirmPublish($event)">
+									<PropertyList v-for="(property, index) in filteredProperties" :key="property.id" :type="'1'" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)" v-on:confirmPublish="confirmPublish($event)" v-on:deleteProperty="deleteProperty($event)">
 									</PropertyList>
 								</v-layout>
 								<v-pagination
@@ -87,7 +87,7 @@
 											
 								</v-toolbar>
 								<v-layout v-if="filteredManagedProperties.length>0" row wrap>
-									<PropertyList v-for="(property, index) in filteredManagedProperties" :key="property.id" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)" v-on:confirmPublish="confirmPublish($event)">
+									<PropertyList v-for="(property, index) in filteredManagedProperties" :key="property.id" :type="'2'" :property="property" :index="index"  v-on:createPayment="createPayment($event)" v-on:updateProperties="updateProperties($event)" v-on:confirmPublish="confirmPublish($event)" v-on:deleteManagedProperty="deleteManagedProperty($event)">
 									</PropertyList>
 								</v-layout>
 								<v-pagination
@@ -277,19 +277,27 @@ export default {
 			})*/
 			
 		},
+		deleteProperty(id){
+			let index = this.properties.findIndex(x => x.id === id);
+			this.properties.splice(index, 1);
+		},
+		deleteManagedProperty(id){
+			let index = this.managed_properties.findIndex(x => x.id === id);
+			this.managed_properties.splice(index, 1);
+		}
 	},
 	created() {
 	
 
 	},
 	mounted () {
-		console.log(this.getUser)
+		
 		this.loading = true
 		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
 		.then(response => {
-			
-			this.properties = response.data.owned_properties
-			this.managed_properties = response.data.managed_properties
+			console.log(response.data)
+			this.properties = response.data.owned_properties.filter(item => item.active == true )
+			this.managed_properties = response.data.managed_properties.filter(item => item.active == true )
 			this.loading = false
 		})
 		.catch(error => {
