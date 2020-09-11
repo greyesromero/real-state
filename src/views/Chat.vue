@@ -57,8 +57,8 @@
 									:key="item.id"
 									@click="selectChat(index)"
 								>
-									<v-list-item-avatar>
-									<v-img :src="'../assets/img/sin-imagen.jpg'"></v-img>
+									<v-list-item-avatar color="primary">
+									<v-icon class="white--text">mdi-chat</v-icon>
 									</v-list-item-avatar>
 						
 									<v-list-item-content>
@@ -66,9 +66,30 @@
 									<v-list-item-subtitle></v-list-item-subtitle>
 									</v-list-item-content>
 									<v-list-item-icon>
-										<v-btn icon >
-											<v-icon>mdi-trash-can</v-icon>
-										</v-btn>
+										<!-- DELETE -->
+										<v-dialog v-model="delete_dialog" max-width="500" persistent>
+											<template v-slot:activator="{on}">
+												<v-btn icon v-on="on">
+													<v-icon>mdi-trash-can</v-icon>
+												</v-btn>
+											</template>
+											<v-card :loading="delete_loading">
+												<v-card-title class="headline" primary-title>
+													Seguro que deseas eliminar la conversación?
+												</v-card-title>
+												<v-card-text>
+													Esta acción es permanente.
+												</v-card-text>
+												<v-card-actions>
+													<div class="flex-grow-1"></div>
+													<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
+													<v-btn @click="deleteConversation(item.id,index)" color="primary" dark>
+														<v-icon left>mdi-close</v-icon>
+														Borrar
+													</v-btn>
+												</v-card-actions>
+											</v-card>
+										</v-dialog>
 									</v-list-item-icon>
 								</v-list-item>
 								<v-divider ></v-divider>
@@ -103,7 +124,9 @@
 						<section v-if="conversations[selected_conversation].messages.length!=0" class="discussion px-5 py-5">
 								<template v-for="(msg, index) in conversations[selected_conversation].messages" >
 									<div class="bubble last recipient" :key="msg.id" v-if="getUser.id == msg.user">{{ msg.message}} </div>
+
 									<div class="bubble last sender" :key="msg.id" v-if="getUser.id != msg.user">{{ msg.message}} </div>
+									
 							</template>
 						</section>
 					</v-card>
@@ -112,7 +135,7 @@
 								
 								v-model="message"
 								:append-outer-icon=" 'mdi-send'"
-								:prepend-icon="icon"
+							
 								filled
 								clear-icon="mdi-close-circle"
 								clearable
@@ -145,6 +168,8 @@ export default {
 	data: () => ({
 		selected_conversation: 0,
 		conversations: [],
+		delete_dialog: false,
+		delete_loading: false,
 		mobile: false,
 		mobile_bar: true,
 		properties: true,
@@ -156,7 +181,7 @@ export default {
 		payment: [],
 		password: 'Password',
       show: false,
-      message: 'Hey!',
+      message: '',
       marker: true,
       iconIndex: 0,
       icons: [
@@ -287,12 +312,35 @@ export default {
 		toggleMarker () {
 			this.marker = !this.marker
 		},
-		sendMessage () {
-			this.items[this.selected_conversation].messages.push({
-				msg: this.message,
-				type: 'recipient'
+		deleteConversation (id,index) {
+			this.delete_loading = true
+			axios.delete('https://hsrealestate-api.herokuapp.com/api/messaging/'+id+'/')
+			.then(response => {
+					this.delete_loading = false
+					this.conversations.splice(index, 1);
+			})	
+			.catch(error => {
+				this.delete_loading = false
+				console.log(error);
 			})
-			this.resetIcon()
+		
+			
+		},
+		sendMessage () {
+			axios.post('https://hsrealestate-api.herokuapp.com/api/messaging/',{
+				user: this.getUser.id,
+				conversation: this.conversations[this.selected_conversation].id,
+				message: this.message
+			})
+			.then(response => {
+					this.conversations[this.selected_conversation].messages.push(response.data)
+					this.message = ''
+			})	
+			.catch(error => {
+				
+				console.log(error);
+			})
+		
 			this.clearMessage()
 			var container = this.$el.querySelector("#chat");
 			container.scrollTop = container.scrollHeight;
