@@ -300,8 +300,11 @@
 												<v-layout row wrap align-end>
 													
 													<v-flex xs12 d-flex justify-end>
-														<span class="text-truncante text-right title">Q1000</span>
-														
+														<span class="text-truncante text-right title" v-if="(property.rent_price == 0 || property.rent_price == null) && property.sale_price > 0">Q{{property.sale_price}}</span>
+														<span class="text-truncante text-right title" v-if="(property.sale_price == 0 || property.sale_price == null) && property.rent_price > 0">Q{{property.rent_price}}/mes</span>
+														<span class="text-truncante text-right title" v-if="property.sale_price > 0 && property.rent_price > 0">Q{{property.rent_price}}/mes</span>
+														<span class="text-truncante text-right title" v-if="(property.sale_price == 0 || property.sale_price == null) && (property.rent_price == 0 || property.rent_price == null)">Q - Sin Precio</span>
+
 													</v-flex>
 												</v-layout>
 											</v-layout>
@@ -343,8 +346,11 @@
 													<v-layout row wrap align-end>
 														
 														<v-flex xs12 d-flex justify-end>
-															<span class="text-truncante text-right title white--text">Q1000</span>
-															
+															<span class="text-truncante text-right title" v-if="(property.rent_price == 0 || property.rent_price == null) && property.sale_price > 0">Q{{property.sale_price}}</span>
+															<span class="text-truncante text-right title" v-if="(property.sale_price == 0 || property.sale_price == null) && property.rent_price > 0">Q{{property.rent_price}}/mes</span>
+															<span class="text-truncante text-right title" v-if="property.sale_price > 0 && property.rent_price > 0">Q{{property.rent_price}}/mes</span>
+															<span class="text-truncante text-right title" v-if="(property.sale_price == 0 || property.sale_price == null) && (property.rent_price == 0 || property.rent_price == null)">Q - Sin Precio</span>
+
 														</v-flex>
 													</v-layout>
 												</v-layout>
@@ -452,7 +458,10 @@
 												<v-layout row wrap align-end>
 													
 													<v-flex xs12 d-flex justify-end>
-														<span class="text-truncante text-right title">Q1000</span>
+														<span class="text-truncante text-right title" v-if="(visiblePages[selected_property].rent_price == 0 || visiblePages[selected_property].rent_price == null) && visiblePages[selected_property].sale_price > 0">Q{{visiblePages[selected_property].sale_price}}</span>
+														<span class="text-truncante text-right title" v-if="(visiblePages[selected_property].sale_price == 0 || visiblePages[selected_property].sale_price == null) && visiblePages[selected_property].rent_price > 0">Q{{visiblePages[selected_property].rent_price}}/mes</span>
+														<span class="text-truncante text-right title" v-if="visiblePages[selected_property].sale_price > 0 && visiblePages[selected_property].rent_price > 0">Q{{visiblePages[selected_property].rent_price}}/mes</span>
+														<span class="text-truncante text-right title" v-if="(visiblePages[selected_property].sale_price == 0 || visiblePages[selected_property].sale_price == null) && visiblePages[selected_property].rent_price == 0 || visiblePages[selected_property].rent_price == null">Q - Sin Precio</span>
 														
 													</v-flex>
 												</v-layout>
@@ -495,7 +504,11 @@
 												<v-layout row wrap align-end>
 													
 													<v-flex xs12 d-flex justify-end>
-														<span class="text-truncante text-right title">Q1000</span>
+														<span class="text-truncante text-right title" v-if="(visiblePages[selected_property].rent_price == 0 || visiblePages[selected_property].rent_price == null) && visiblePages[selected_property].sale_price > 0">Q{{visiblePages[selected_property].sale_price}}</span>
+														<span class="text-truncante text-right title" v-if="(visiblePages[selected_property].sale_price == 0 || visiblePages[selected_property].sale_price == null) && visiblePages[selected_property].rent_price > 0">Q{{visiblePages[selected_property].rent_price}}/mes</span>
+														<span class="text-truncante text-right title" v-if="visiblePages[selected_property].sale_price > 0 && visiblePages[selected_property].rent_price > 0">Q{{visiblePages[selected_property].rent_price}}/mes</span>
+														<span class="text-truncante text-right title" v-if="(visiblePages[selected_property].sale_price == 0 || visiblePages[selected_property].sale_price == null) && visiblePages[selected_property].rent_price == 0 || visiblePages[selected_property].rent_price == null">Q - Sin Precio</span>
+														
 														
 													</v-flex>
 												</v-layout>

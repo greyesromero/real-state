@@ -733,8 +733,8 @@
 				rooms: 0,
 				bathrooms: 0,
 				landArea: null,
-				purchasePrice: null,
-				rentPrice: null,
+				purchasePrice: 0,
+				rentPrice: 0,
 				minimumContractLength: null,
 				priceNegotiable: false,
 				modalDate: false,
@@ -976,7 +976,8 @@
 					rooms: this.createForm.rooms,
 					bathrooms: this.createForm.bathrooms,
 					amenities: this.selected,
-					active: true
+					active: true,
+					active_until: this.moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
 					
 				}).then(response => {
 				
