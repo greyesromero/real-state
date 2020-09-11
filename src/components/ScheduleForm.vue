@@ -12,7 +12,7 @@
 
         <v-list-item-icon>
 		  	
-			<v-dialog v-model="messaging_dialog" max-width="500px" persistent>
+			<v-dialog v-model="messaging_dialog" max-width="500px" persistent v-if="isLoggedIn">
 				<template v-slot:activator="{on}">
 					<v-btn color="secondary" icon :disabled="checkUser" v-on="on">
 						<v-icon>mdi-message-text</v-icon>
