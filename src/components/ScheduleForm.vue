@@ -23,10 +23,10 @@
 						<v-layout justify="center" row wrap>
 						<v-form v-model="valid_messaging" :lazy-validation="lazy_messaging"  ref="form_messaging"  class="w-100">
 							<p class="font-weight-bold display-1 black--text" align="center">Enviar Mensaje</p>
-							<p class="grey--text text--darken-3">Comunícate con <strong> {{this.agent.first_name}} {{this.agent.last_name}} </strong> para más información</p>
+							<p class="grey--text text--darken-3">¿Te interesa esta propiedad? Envía un mensaje a <strong> {{this.agent.first_name}} {{this.agent.last_name}} </strong> para más información</p>
 
 							
-								<v-text-field v-model.lazy="message_name" outlined color="secondary" label="Asunto"  :rules="[v => !!v || 'Asunto es requerido']" required></v-text-field>
+								<!--v-text-field v-model.lazy="message_name" outlined color="secondary" label="Asunto"  :rules="[v => !!v || 'Asunto es requerido']" required></v-text-field-->
 								<v-textarea color="secondary" name="message" label="Escribe un mensaje ..." outlined v-model.lazy="message_chat" required :rules="[v => !!v || 'Mensaje es requerido']"></v-textarea>					
 
 							
@@ -270,7 +270,7 @@ export default {
 				this.loading_messaging = true
 				axios.post('https://hsrealestate-api.herokuapp.com/api/messaging/conversations/',{
 					users: users,
-					name: this.message_name,
+					name: this.property.name,
 					active: true
 				})
 				.then(response => {

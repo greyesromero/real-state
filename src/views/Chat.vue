@@ -63,15 +63,15 @@
 						
 									<v-list-item-content>
 									<v-list-item-title v-html="item.name"></v-list-item-title>
-									<v-list-item-subtitle></v-list-item-subtitle>
+									<v-list-item-subtitle>{{item.messages[item.messages.length-1].message}} </v-list-item-subtitle>
 									</v-list-item-content>
 									<v-list-item-icon>
 										<!-- DELETE -->
 										<v-dialog v-model="delete_dialog" max-width="500" persistent>
 											<template v-slot:activator="{on}">
-												<v-btn icon v-on="on">
+												<!--v-btn icon v-on="on">
 													<v-icon>mdi-trash-can</v-icon>
-												</v-btn>
+												</v-btn-->
 											</template>
 											<v-card :loading="delete_loading">
 												<v-card-title class="headline" primary-title>
