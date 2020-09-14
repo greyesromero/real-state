@@ -947,14 +947,14 @@ export default {
 										lng: obj.longitude
 									};
 									return obj;
-								});
+								}).filter(item => item.active == true );
 				this.properties = response.data.map(function(obj){
 									obj.position = {
 										lat: obj.latitude,
 										lng: obj.longitude
 									};
 									return obj;
-								});
+								}).filter(item => item.active == true );
 				
 				this.loading = false
 			})
