@@ -58,12 +58,13 @@
 									@click="selectChat(index)"
 								>
 									<v-list-item-avatar color="primary">
-									<v-icon class="white--text">mdi-chat</v-icon>
+										<img z-index="0" v-if="removeUserInSesion(item.users).image == null"  class="profile-picture" :src="'../assets/img/sin-imagen.jpg'" alt="alt" lazy-src="../assets/logo.png">
+										<img z-index="0" v-if="removeUserInSesion(item.users).image!=null"  class="profile-picture" :src="removeUserInSesion(item.users).first_name.image" alt="alt" lazy-src="../assets/logo.png">
 									</v-list-item-avatar>
 						
 									<v-list-item-content>
 									<v-list-item-title v-html="item.name"></v-list-item-title>
-									<v-list-item-subtitle>{{item.messages[item.messages.length-1].message}} </v-list-item-subtitle>
+									<v-list-item-subtitle>{{removeUserInSesion(item.users).first_name}} {{removeUserInSesion(item.users).last_name}}: {{item.messages[item.messages.length-1].message}} </v-list-item-subtitle>
 									</v-list-item-content>
 									<v-list-item-icon>
 										<!-- DELETE -->
@@ -110,7 +111,7 @@
 						<v-btn icon @click="mobile = true, mobile_bar = true" class=" hidden-sm-and-up">
 							<v-icon>mdi-arrow-left-circle</v-icon>
 						</v-btn>
-						<v-toolbar-title>{{conversations[selected_conversation].name}} </v-toolbar-title>
+						<v-toolbar-title>{{removeUserInSesion(conversations[selected_conversation].users).first_name}} {{removeUserInSesion(conversations[selected_conversation].users).last_name}} - {{conversations[selected_conversation].name}} </v-toolbar-title>
 
 						<v-spacer></v-spacer>
 
@@ -302,6 +303,12 @@ export default {
 		}
 	},
 	methods: {
+		removeUserInSesion(users){
+			var lists = users.filter(x => {
+				return x.id != this.getUser.id;
+			})
+			return lists[0]
+		},
 		selectChat(index){
 			this.selected_conversation = index
 			if(this.size == 'x-small' || this.size == 'small'){
@@ -451,6 +458,7 @@ export default {
 		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
 		.then(response => {
 			this.conversations = response.data.conversations
+			
 			if(this.conversations.length>0){
 				if(this.id){
 					let index = this.conversations.findIndex(x => x.id === this.id);
