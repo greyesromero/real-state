@@ -1037,8 +1037,16 @@
 			this.createForm.name = this.property.name
 			this.createForm.description = this.property.description
 			this.createForm.address = this.property.address
-			this.coordinates.lat = this.property.latitude
-			this.coordinates.lng = this.property.longitude
+			this.coordinates = {
+				lat: this.property.latitude,
+				lng: this.property.longitude
+			}
+
+			this.map_center = {
+				lat: this.property.latitude,
+				lng: this.property.longitude
+			}
+			
 			this.createForm.rooms = this.property.rooms
 			this.createForm.bathrooms = this.property.bathrooms
 			if(this.property.land_area == null || this.property.land_area == 0){

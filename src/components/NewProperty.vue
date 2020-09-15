@@ -1002,7 +1002,7 @@
 							
 							this.resetForm()
 							this.$emit('closeDialog')
-							this.$router.push('/detail/'+this.property_id)
+							this.$router.push('/my-properties')
 							this.property_id =  null
 
 						}));
@@ -1013,7 +1013,7 @@
 						this.e1= 1
 						this.resetForm()
 						this.$emit('closeDialog')
-						this.$router.push('/detail/'+this.property_id)
+						this.$router.push('/my-properties')
 						this.loading = false					
 					}
 				})

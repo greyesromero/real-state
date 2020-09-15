@@ -35,12 +35,12 @@
 						</v-col>
 						<v-col cols="12" md="4">
 							<v-flex :class="[$vuetify.breakpoint.smAndDown ? ' text-center' : ' text-right']">
-									<v-btn icon color="black">
+									<!--v-btn icon color="black">
 									<v-icon>mdi-share-variant</v-icon>
 									</v-btn>
 									<v-btn icon color="black">
 									<v-icon>mdi-heart-outline</v-icon>
-									</v-btn>
+									</v-btn-->
 								</v-flex>
 						</v-col>
 					</v-row>
@@ -544,7 +544,7 @@
 				</v-container>
 				
 			</section>
-			<NewRecord v-if="isLoggedIn" :property="property" v-on:updateProperty="updateProperty($event)" v-on:confirmPublish="confirmPublish($event)"></NewRecord>
+			<NewRecord v-if="isLoggedIn && property.owner.id == getUser.id" :property="property" v-on:updateProperty="updateProperty($event)" v-on:confirmPublish="confirmPublish($event)"></NewRecord>
 			<v-overlay 
 				:value="galleryDialog"
 				color="white"

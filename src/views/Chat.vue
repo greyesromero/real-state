@@ -64,7 +64,7 @@
 						
 									<v-list-item-content>
 									<v-list-item-title v-html="item.name"></v-list-item-title>
-									<v-list-item-subtitle>{{removeUserInSesion(item.users).first_name}} {{removeUserInSesion(item.users).last_name}}: {{item.messages[item.messages.length-1].message}} </v-list-item-subtitle>
+									<v-list-item-subtitle>{{item.messages[item.messages.length-1].message}} </v-list-item-subtitle>
 									</v-list-item-content>
 									<v-list-item-icon>
 										<!-- DELETE -->
