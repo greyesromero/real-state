@@ -222,7 +222,7 @@
 					</v-img>
 				</v-container>
 			</section>
-			<section id="none_gallery"  v-if="images.length==0" class="d-none d-sm-flex">
+			<section id="none_gallery"  v-if="images.length==0">
 				<v-container
 					fluid
 					grid-list-md
@@ -275,11 +275,11 @@
 					</v-img>
 				</v-container>
 			</section>
-			<section id="slider_gallery"  class="d-flex d-sm-none">
+			<section id="slider_gallery"  class="d-flex d-sm-none" v-if="images.length > 0">
 				<v-container>
 					<v-carousel hide-delimiters>
 						<v-carousel-item
-						v-for="(item,i) in property.images"
+						v-for="(item,i) in images"
 						:key="i"
 						:src="item.image"
 						>
