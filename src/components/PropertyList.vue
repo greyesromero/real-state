@@ -4,7 +4,7 @@
 	 
 			<!-- APPOINTMENT -->
 			<v-list-item class="colored_border">
-				<v-list-item-avatar color="primary">
+				<v-list-item-avatar color="primary" class=" hidden-sm-and-down">
 						<img class="profile-picture" v-if="property.images.length>0" :src="property.images[0].image" alt="alt" lazy-src="../assets/logo.png">
 						<img z-index="0" v-if="property.images.length==0"  class="profile-picture" :src="'../assets/img/sin-imagen.jpg'" alt="alt" lazy-src="../assets/logo.png">
 
@@ -19,91 +19,126 @@
 				
 				
 				<v-list-item-icon class="justify-center align-self-center">
+					<div class="d-flex d-sm-none">
+						<v-menu top :close-on-click="true">
+							<template v-slot:activator="{ on, attrs }">
+								<v-btn icon v-on="on">
+									<v-icon>mdi-dots-vertical</v-icon>
+								</v-btn>
+							</template>
+
+							<v-list>
+								<v-list-item
+								
+								router  :to="`/detail/`+property.id"
+								>
+								<v-list-item-title><v-icon left>mdi-eye</v-icon>Consultar</v-list-item-title>
+								</v-list-item>
+								<v-list-item
+								
+									@click="publish_dialog = true">
+									<v-list-item-title><v-icon left>mdi-bell-plus</v-icon>Publicar</v-list-item-title>
+								</v-list-item>
+								<v-list-item
+								
+									@click="dialog_fullscreen = true">
+									<v-list-item-title><v-icon left>mdi-square-edit-outline</v-icon>Actualizar</v-list-item-title>
+								</v-list-item>
+								<v-list-item
+								
+									@click="delete_dialog = true">
+									<v-list-item-title><v-icon left>mdi-trash-can</v-icon>Eliminar</v-list-item-title>
+								</v-list-item>
+							</v-list>
+						</v-menu>
+					</div>
 					<!-- Publish -->
-					<v-dialog v-model="publish_dialog" max-width="500" persistent>
+					<div class="d-none d-sm-flex">
+						<v-dialog v-model="publish_dialog" max-width="500" persistent>
+								<template v-slot:activator="{on}">
+									<v-btn color="primary" icon v-on="on">
+										<v-icon>mdi-bell-plus</v-icon>
+									</v-btn>
+								</template>
+								<v-card :loading="loading">
+									<v-toolbar style="box-shadow:none!important;">
+
+											<v-toolbar-title><span class="primary--text text-center title">Publicar Propiedad</span></v-toolbar-title>
+
+											<v-spacer></v-spacer>
+
+											<EmptyCard v-if="payment_options.length == 0" class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
+											
+									</v-toolbar>
+						
+
+								<v-card-text>
+									<div class="mb-2">
+										Selecciona un método de pago y duración de anuncio para publicar la proppiedad
+									</div>
+
+									<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
+										<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
+											<template slot='selection' slot-scope='{ item }'>
+												**** **** **** {{ item.credit_card }} 
+											</template>
+											<template slot='item' slot-scope='{ item }'>
+												**** **** **** {{ item.credit_card }} 
+											</template>
+										</v-select>	
+										<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
+										</v-text-field>						
+									</v-form>
+								</v-card-text>
+								
+								<v-card-actions>
+									<div class="flex-grow-1"></div>
+									<v-btn @click="resetPayment()" text>Cancelar</v-btn>
+									<v-btn @click="confirmPublish()" color="secondary" class="white--text">
+										Crear
+									</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
+						<!-- Consulta -->
+						<v-btn color="primary" icon router  :to="`/detail/`+property.id">
+							<v-icon>mdi-eye</v-icon>
+						</v-btn>
+						<!-- Update -->
+						<v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
 							<template v-slot:activator="{on}">
 								<v-btn color="primary" icon v-on="on">
-									<v-icon>mdi-bell-plus</v-icon>
+									<v-icon>mdi-square-edit-outline</v-icon>
+								</v-btn>
+							</template>
+							<UpdateProperty v-on:closeDialog="closeDialog($event)" :original_property="property"></UpdateProperty>
+						</v-dialog>
+
+						<!-- Delete -->
+						<v-dialog v-model="delete_dialog" max-width="500" persistent>
+							<template v-slot:activator="{on}">
+								<v-btn color="primary" icon v-on="on">
+									<v-icon>mdi-trash-can</v-icon>
 								</v-btn>
 							</template>
 							<v-card :loading="loading">
-								<v-toolbar style="box-shadow:none!important;">
-
-										<v-toolbar-title><span class="primary--text text-center title">Publicar Propiedad</span></v-toolbar-title>
-
-										<v-spacer></v-spacer>
-
-										<EmptyCard v-if="payment_options.length == 0" class="align-end" v-on:selectCard="selectCard($event)"></EmptyCard>
-										
-								</v-toolbar>
-					
-
-							<v-card-text>
-								<div class="mb-2">
-									Selecciona un método de pago y duración de anuncio para publicar la proppiedad
-								</div>
-
-								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
-									<v-select color="secondary" label="Metodo de Pago" :items="payment_options" v-model="payment" item-text="credit_card" item-value="id" outlined  return-object required :rules="[v => !!v || 'Metodo de pago es requerido']">
-										<template slot='selection' slot-scope='{ item }'>
-											**** **** **** {{ item.credit_card }} 
-										</template>
-										<template slot='item' slot-scope='{ item }'>
-											**** **** **** {{ item.credit_card }} 
-										</template>
-									</v-select>	
-									<v-text-field color="secondary" name="duration" label="Duración Publicación" suffix="días" outlined v-model.lazy="duration" required :rules="[v => !!v || 'Duración es requerida']">
-									</v-text-field>						
-								</v-form>
-							</v-card-text>
-							
-							<v-card-actions>
-								<div class="flex-grow-1"></div>
-								<v-btn @click="resetPayment()" text>Cancelar</v-btn>
-								<v-btn @click="confirmPublish()" color="secondary" class="white--text">
-									Crear
-								</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
-					<!-- Consulta -->
-					<v-btn color="primary" icon router  :to="`/detail/`+property.id">
-						<v-icon>mdi-eye</v-icon>
-					</v-btn>
-					<!-- Update -->
-					<v-dialog v-model="dialog_fullscreen" fullscreen hide-overlay transition="dialog-bottom-transition">
-						<template v-slot:activator="{on}">
-							<v-btn color="primary" icon v-on="on">
-								<v-icon>mdi-square-edit-outline</v-icon>
-							</v-btn>
-						</template>
-						<UpdateProperty v-on:closeDialog="closeDialog($event)" :original_property="property"></UpdateProperty>
-					</v-dialog>
-
-					<!-- Delete -->
-					<v-dialog v-model="delete_dialog" max-width="500" persistent>
-						<template v-slot:activator="{on}">
-							<v-btn color="primary" icon v-on="on">
-								<v-icon>mdi-trash-can</v-icon>
-							</v-btn>
-						</template>
-						<v-card :loading="loading">
-							<v-card-title class="headline" primary-title>
-								¿Seguro que deseas borrar el registro?
-							</v-card-title>
-							<v-card-text>
-								Esta acción es permanente.
-							</v-card-text>
-							<v-card-actions>
-								<div class="flex-grow-1"></div>
-								<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
-								<v-btn  @click="deleteProperty()" color="primary" dark>
-									<v-icon left>mdi-trash-can</v-icon>
-									Borrar
-								</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
+								<v-card-title class="headline" primary-title>
+									¿Seguro que deseas borrar el registro?
+								</v-card-title>
+								<v-card-text>
+									Esta acción es permanente.
+								</v-card-text>
+								<v-card-actions>
+									<div class="flex-grow-1"></div>
+									<v-btn @click="delete_dialog = false" text>Cancelar</v-btn>
+									<v-btn  @click="deleteProperty()" color="primary" dark>
+										<v-icon left>mdi-trash-can</v-icon>
+										Borrar
+									</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
+					</div>
 				</v-list-item-icon>
 				<!-- ACTIONS -->
 				

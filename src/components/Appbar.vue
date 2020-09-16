@@ -19,20 +19,24 @@
 				</v-toolbar-title>		
 				
 				<v-spacer></v-spacer>
-				<v-btn color="primary" dark outlined rounded router @click="searchProperty()" class="mr-3 hidden-sm-and-down">
-				<v-icon left dark>mdi-magnify</v-icon>
-				Buscar Propiedad
-				</v-btn>
-				<v-btn color="secondary" dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()" class="hidden-sm-and-down">
-				<v-icon left dark>mdi-home-plus-outline</v-icon>
-				Nueva Propiedad
-				</v-btn>
-				<v-btn color="primary" icon dark outlined rounded router @click="searchProperty()" class="mr-3 hidden-sm-and-up">
-				<v-icon dark>mdi-magnify</v-icon>
-				</v-btn>
-				<v-btn color="secondary" icon dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()" class="hidden-sm-and-up">
-				<v-icon dark>mdi-home-plus-outline</v-icon>
-				</v-btn>
+				<div class="d-none d-sm-flex">
+					<v-btn color="primary" dark outlined rounded router @click="searchProperty()" class="mr-3 ">
+					<v-icon left dark>mdi-magnify</v-icon>
+					Buscar Propiedad
+					</v-btn>
+					<v-btn color="secondary" dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()" class="">
+					<v-icon left dark>mdi-home-plus-outline</v-icon>
+					Nueva Propiedad
+					</v-btn>
+				</div>
+				<div class="d-flex d-sm-none">
+					<v-btn color="primary" icon dark outlined rounded router @click="searchProperty()" class="mr-3 ">
+					<v-icon dark>mdi-magnify</v-icon>
+					</v-btn>
+					<v-btn color="secondary" icon dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()" class="">
+					<v-icon dark>mdi-home-plus-outline</v-icon>
+					</v-btn>
+				</div>
 				<!--v-menu
 					v-if="isLoggedIn"
 						close-on-click>
