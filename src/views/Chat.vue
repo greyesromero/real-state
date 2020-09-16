@@ -59,7 +59,7 @@
 								>
 									<v-list-item-avatar color="primary">
 										<img z-index="0" v-if="removeUserInSesion(item.users).image == null"  class="profile-picture" :src="'../assets/img/sin-imagen.jpg'" alt="alt" lazy-src="../assets/logo.png">
-										<img z-index="0" v-if="removeUserInSesion(item.users).image!=null"  class="profile-picture" :src="removeUserInSesion(item.users).first_name.image" alt="alt" lazy-src="../assets/logo.png">
+										<img z-index="0" v-if="removeUserInSesion(item.users).image!=null"  class="profile-picture" :src="removeUserInSesion(item.users).image" alt="alt" lazy-src="../assets/logo.png">
 									</v-list-item-avatar>
 						
 									<v-list-item-content>

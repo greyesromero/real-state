@@ -12,7 +12,7 @@
 
         <v-list-item-icon>
 		  	
-			<v-dialog v-model="messaging_dialog" max-width="500px" persistent v-if="isLoggedIn">
+			<v-dialog v-model="messaging_dialog" max-width="500px" persistent>
 				<template v-slot:activator="{on}">
 					<v-btn color="secondary" icon :disabled="checkUser" v-on="on">
 						<v-icon>mdi-message-text</v-icon>
@@ -37,7 +37,7 @@
 						<v-btn text large @click="closeMessaging()">
 							Cancelar
 						</v-btn>
-						<v-btn type="submit" color="secondary" :disabled="checkUser" large @click="sendMessage()">
+						<v-btn type="submit" color="secondary" :disabled="checkUser" large @click="requestMessage()">
 							Enviar Mensaje
 						</v-btn>								
 					</v-card-actions>
@@ -246,8 +246,11 @@ export default {
 			],
 			success_register: false,
 			success_appointment: false,
-			message_register: null
+			message_register: null,
+			type: null,
 		}
+		
+		
 	},
 	computed: {
 		getUser : function(){ 
@@ -301,7 +304,32 @@ export default {
 			this.appointment_dialog = false
 			this.$refs.form.reset()
 		},
+		requestMessage(){
+			this.type = 1
+			if (this.$refs.form_messaging.validate()) {
+				
+				if(!this.isLoggedIn){
+					this.message = ``;
+					 
+					this.dialog_login = true
+					this.dialog_registro = false
+					this.dialog = true
+				
+				}else{
+				
+					this.dialog_login = false
+					this.dialog_registro = false
+					this.sendMessage();
+					
+				
+
+					
+				}
+			}
+			
+		},
 		requestAppointment(){
+			this.type = 2
 			if (this.$refs.form.validate()) {
 				
 				if(!this.isLoggedIn){
@@ -394,7 +422,12 @@ export default {
 					this.dialog_login = false
 					this.dialog = false
 					this.loading = false	
-					this.saveAppointment();	
+					if(this.type == 1){
+						this.sendMessage();	
+					}else{
+						this.saveAppointment();	
+					}
+					
 				})
 				.catch(err => {
 					this.msgError = 'Error de autenticación, intenta de nuevo.'

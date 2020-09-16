@@ -19,13 +19,19 @@
 				</v-toolbar-title>		
 				
 				<v-spacer></v-spacer>
-				<v-btn color="primary" dark outlined rounded router @click="searchProperty()" class="mr-3">
+				<v-btn color="primary" dark outlined rounded router @click="searchProperty()" class="mr-3 hidden-sm-and-down">
 				<v-icon left dark>mdi-magnify</v-icon>
 				Buscar Propiedad
 				</v-btn>
-				<v-btn color="secondary" dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()">
+				<v-btn color="secondary" dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()" class="hidden-sm-and-down">
 				<v-icon left dark>mdi-home-plus-outline</v-icon>
 				Nueva Propiedad
+				</v-btn>
+				<v-btn color="primary" icon dark outlined rounded router @click="searchProperty()" class="mr-3 hidden-sm-and-up">
+				<v-icon dark>mdi-magnify</v-icon>
+				</v-btn>
+				<v-btn color="secondary" icon dark v-if="isLoggedIn" outlined  rounded router @click="newProperty()" class="hidden-sm-and-up">
+				<v-icon dark>mdi-home-plus-outline</v-icon>
 				</v-btn>
 				<!--v-menu
 					v-if="isLoggedIn"

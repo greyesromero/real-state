@@ -279,9 +279,9 @@
 				<v-container>
 					<v-carousel hide-delimiters>
 						<v-carousel-item
-						v-for="(item,i) in images"
+						v-for="(item,i) in property.images"
 						:key="i"
-						:src="item.src"
+						:src="item.image"
 						>
 							<v-container fill-height>
 								<v-layout row wrap align-start px-6>
@@ -415,8 +415,8 @@
 							>
 								<v-card
 									:loading="loading"
-									:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-12' : 'mx-5 my-12']"
-									:style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '225px'}"
+									:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-12' : 'mx-1 my-12']"
+									:style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '250px'}"
 									
 									>
 										

@@ -733,13 +733,13 @@
 				rooms: 0,
 				bathrooms: 0,
 				landArea: null,
-				purchasePrice: 0,
-				rentPrice: 0,
+				purchasePrice: null,
+				rentPrice: null,
 				minimumContractLength: null,
 				priceNegotiable: false,
 				modalDate: false,
 				fecha: null,
-				date: new Date().toISOString().substr(0, 10),
+				date: null,
 				dateNegotiable: false,
 				commission: 0,
 				stepTwoValid: false,
@@ -961,6 +961,8 @@
 				formData.append('address', this.createForm.address);
 				
 				formData.append('amenities', this.selected);*/
+				let rent_price = (this.createForm.rentPrice == null) ? 0 : this.createForm.rentPrice 
+				let purchase_price = (this.createForm.purchasePrice == null) ? 0 : this.createForm.purchasePrice 
 				axios.post('https://hsrealestate-api.herokuapp.com/api/properties/',  {
 					name: this.createForm.name,
 					description: this.createForm.description,
@@ -969,8 +971,8 @@
 					latitude: this.coordinates.lat,
 					longitude: this.coordinates.lng,
 					owner: this.getUser.id,
-					sale_price: this.createForm.purchasePrice,
-					rent_price: this.createForm.rentPrice,
+					sale_price: purchase_price,
+					rent_price: rent_price,
 					land_area: this.createForm.landArea,
 					construction_area: this.createForm.constructionArea,
 					rooms: this.createForm.rooms,
@@ -1003,6 +1005,7 @@
 							this.resetForm()
 							this.$emit('closeDialog')
 							this.$router.push('/my-properties')
+							window.location.reload()
 							this.property_id =  null
 
 						}));
@@ -1014,6 +1017,7 @@
 						this.resetForm()
 						this.$emit('closeDialog')
 						this.$router.push('/my-properties')
+						window.location.reload()
 						this.loading = false					
 					}
 				})

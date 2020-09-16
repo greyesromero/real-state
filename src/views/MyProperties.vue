@@ -30,12 +30,12 @@
 							<v-container fluid grid-list-xl class="pa-0">
 								
 
-							<v-tabs height="64px" color="primary" grow>
-							<v-tab>
+							<v-tabs height="64px" color="primary" centered grow>
+							<v-tab :class="[$vuetify.breakpoint.smAndDown ? 'caption' : 'body-1']">
 								<v-icon left>mdi-home-city</v-icon>
 								Mis Propiedades
 							</v-tab>
-							<v-tab>
+							<v-tab :class="[$vuetify.breakpoint.smAndDown ? 'caption' : 'body-1']">
 								<v-icon left>mdi-home-group</v-icon>
 								Propiedades Administradas
 							</v-tab>

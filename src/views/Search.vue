@@ -7,7 +7,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
+				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
 				<div  class="center-container">
 					<v-container fill-height>
 						<v-layout align-center justify-center>
@@ -21,26 +21,7 @@
 					</v-container>
 				</div>
 			</v-container>
-			<v-container 
-				v-if="!loading && visiblePages.length == 0"
-				fluid 
-				grid-list-md 
-				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '100%' : '100%'}">
-				<div  class="center-container">
-					<v-container fill-height>
-						<v-layout column align-center justify-center>
-						<h1 class="display-2">Sin Resultados</h1>
-						<p class="body-1 grey--text">No hay propiedades para mostrar</p>
-						<v-btn
-						color="primary"
-						outlined
-						@click="fetchProperties"
-						>Reintentar</v-btn>
-					</v-layout>
-					</v-container>
-				</div>
-			</v-container>
+			
 			<v-container 
 				v-if="!loading && properties"
 				fluid 
@@ -248,7 +229,7 @@
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
-					<v-layout row wrap  justify="space-around" align-center align-content-center> 
+					<v-layout row wrap  justify="space-around" align-center align-content-center v-if="visiblePages.length > 0"> 
 						<v-flex 
 							xs12
 							md6
@@ -408,6 +389,22 @@
 							></v-pagination>
 						</v-flex>
 					</v-layout>
+					<v-layout row wrap  justify="space-around" align-center align-content-center v-if="visiblePages.length == 0">
+							<div  class="center-container">
+								<v-container fill-height>
+									<v-layout column align-center justify-center>
+										<h1 class="display-2">Sin Resultados</h1>
+										<p class="body-1 grey--text">No hay propiedades para mostrar</p>
+										<v-btn
+										color="primary"
+										outlined
+										@click="fetchProperties"
+										>Reintentar</v-btn>
+									</v-layout>
+								</v-container>
+								
+							</div>
+					</v-layout>
 				</div>
         	</v-container>
 			<div class="search-map-container grey lighten-2 hidden-sm-and-down" v-if="visiblePages.length>0">
@@ -549,7 +546,9 @@
 					<gmap-marker :key="i" v-for="(m,i) in visiblePages" :position="m.position" :clickable="true" @click="toggleInfoWindow(m,i)"></gmap-marker>
 				</gmap-map>
 			</div>
-			
+			<div class="search-map-container grey lighten-2 hidden-sm-and-down" v-if="visiblePages.length==0">
+				<gmap-map :center="center" :zoom="12" class="w-100 h-100"></gmap-map>
+			</div>
       </section>
 	
    </div>

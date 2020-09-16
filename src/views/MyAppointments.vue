@@ -41,18 +41,18 @@
 							<v-container fluid grid-list-xl class="pa-0">
 								
 
-								<v-tabs height="64px" color="primary" grow>
-									<v-tab>
+								<v-tabs height="64px" color="primary" centered grow >
+									<v-tab :class="[$vuetify.breakpoint.smAndDown ? 'caption' : 'body-1']">
 										<v-icon left>mdi-account-outline</v-icon>
 										Mis Citas - Cliente
 									</v-tab>
-									<v-tab>
+									<v-tab :class="[$vuetify.breakpoint.smAndDown ? 'caption' : 'body-1']">
 										<v-icon left>mdi-account-group-outline</v-icon>
 										Mis Citas - Agente
 									</v-tab>
 									<v-tab-item>
 										<v-toolbar class="mb-3 mt-3" style="background-color:transparent!important;box-shadow:none!important;">
-											<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: {{this.client_appointments.length}}</h2>
+											<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: {{this.filteredClientAppointments.length}}</h2>
 													
 											<v-spacer></v-spacer>
 											<span>
@@ -73,12 +73,12 @@
 												</v-menu>
 											</span>
 										</v-toolbar>
-										<Appointment v-for="(client, index) in client_appointments" :type="'1'" :key="client.id" :appointment="client" :index="index" v-on:cancelAppointment="cancelAppointment($event)" v-on:cancelClientAppointment="cancelClientAppointment($event)">
+										<Appointment v-for="(client, index) in filteredClientAppointments" :type="'1'" :key="client.id" :appointment="client" :index="index" v-on:cancelAppointment="cancelAppointment($event)" v-on:cancelClientAppointment="cancelClientAppointment($event)">
 										</Appointment>
 									</v-tab-item>
 									<v-tab-item>
 										<v-toolbar class="mb-3 mt-3" style="background-color:transparent!important;box-shadow:none!important;">
-											<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: {{this.agent_appointments.length}} </h2>
+											<h2 class="text-left headline-1 font-weight-regular text--darken-1 mt-5 mb-5">Total Citas: {{this.filteredAgentAppointments.length}} </h2>
 													
 											<v-spacer></v-spacer>
 											<span>
@@ -86,20 +86,20 @@
 													<template v-slot:activator="{ on }">
 														<v-btn outlined v-on="on">
 															
-															<span >{{ filters[selected_filter]['value']}}</span>
+															<span >{{ filters_agent[selected_filter_agent]['value']}}</span>
 															<v-icon right>mdi-menu-down</v-icon>
 														</v-btn>
 													</template>
 													
 													<v-list>
-														<v-list-item  v-for="(filter, index) in filters" :key="index"  @click.native="selectFilter(index)">
+														<v-list-item  v-for="(filter, index) in filters_agent" :key="index"  @click.native="selectFilterAgent(index)">
 															<v-list-item-title>{{ filter['value'] }}</v-list-item-title>
 														</v-list-item>
 													</v-list>
 												</v-menu>
 											</span>
 										</v-toolbar>
-										<Appointment v-for="(agent, index) in agent_appointments" :type="'2'" :key="agent.id" :appointment="agent" :index="index" v-on:cancelAppointment="cancelAppointment($event)" v-on:cancelClientAppointment="cancelClientAppointment($event)">
+										<Appointment v-for="(agent, index) in filteredAgentAppointments" :type="'2'" :key="agent.id" :appointment="agent" :index="index" v-on:cancelAppointment="cancelAppointment($event)" v-on:cancelClientAppointment="cancelClientAppointment($event)">
 										</Appointment>
 									</v-tab-item>								
 								</v-tabs>
@@ -127,8 +127,21 @@ export default {
 		search: '',
 		array_providers:[],
 		selected_filter: 0,
+		selected_filter_agent: 0,
 		loading: false,
 		filters:[{
+			id: 1,
+			value: 'Todas'
+		},
+		{
+			id: 2,
+			value: 'Pasadas'
+		},
+		{
+			id: 3,
+			value: 'Pendientes'
+		}],
+		filters_agent:[{
 			id: 1,
 			value: 'Todas'
 		},
@@ -146,14 +159,38 @@ export default {
 		getUser : function(){ 
 			return this.$store.getters.getUser
 		},
-		filteredProviders: function() {
-			let filtered = this.array_providers;
-			if (this.search) {
-				filtered = this.array_providers.filter(
-				m => m.name.toLowerCase().indexOf(this.search) > -1
-				);
+		filteredClientAppointments: function() {
+			let today = new Date();
+			let index = this.selected_filter
+			let filtered = this.client_appointments
+			if(index == 1){
+				filtered = this.client_appointments.filter((d) => {
+					return new Date(d.scheduled).getTime() < today.getTime();
+				});
 			}
-
+			if(index == 2){
+				filtered = this.client_appointments.filter((d) => {
+					return new Date(d.scheduled).getTime() >= today.getTime();
+				});
+			}
+		
+			
+			return filtered;
+		},
+		filteredAgentAppointments: function() {
+			let today = new Date();
+			let index = this.selected_filter_agent
+			let filtered = this.agent_appointments
+			if(index == 1){
+				filtered = this.agent_appointments.filter((d) => {
+					return new Date(d.scheduled).getTime() < today.getTime();
+				});
+			}
+			if(index == 2){
+				filtered = this.agent_appointments.filter((d) => {
+					return new Date(d.scheduled).getTime() >= today.getTime();
+				});
+			}
 		
 			
 			return filtered;
@@ -173,6 +210,12 @@ export default {
 		},
 		selectFilter(index) {
 			this.selected_filter = index;	
+			
+		
+		
+		},
+		selectFilterAgent(index) {
+			this.selected_filter_agent = index;	
 		
 		
 		},

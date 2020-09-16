@@ -50,7 +50,7 @@
 	<v-expansion-panels>
 		<v-expansion-panel>
 			<v-expansion-panel-header>Más Información</v-expansion-panel-header>
-			<v-expansion-panel-content>
+			<v-expansion-panel-content v-if="type==1">
 				<div class="my-2">
 					<strong>Agente:</strong>		
 				</div>
@@ -62,6 +62,20 @@
 				</div>
 				<div class="my-2">
 					<span>Email: {{this.appointment.agent.email}}</span>		
+				</div>
+			</v-expansion-panel-content>
+			<v-expansion-panel-content v-if="type==2">
+				<div class="my-2">
+					<strong>Cliente:</strong>		
+				</div>
+					<div class="my-2">
+					<span>Nombre: {{this.appointment.client.first_name}} {{this.appointment.client.last_name}}</span>		
+				</div>
+				<div class="my-2">
+					<span>Teléfono: {{this.appointment.client.phone}}</span>		
+				</div>
+				<div class="my-2">
+					<span>Email: {{this.appointment.client.email}}</span>		
 				</div>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
