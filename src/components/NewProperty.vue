@@ -8,7 +8,7 @@
 			<v-toolbar-title>Nueva Propiedad</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<v-btn color="secondary" @click="saveProperty()" v-if="e1==8">Confirmar Propiedad</v-btn>
+				<v-btn color="secondary" @click="saveProperty()" v-if="e1==7">Confirmar Propiedad</v-btn>
 			</v-toolbar-items>
 			</v-toolbar>
 			<v-stepper v-model="e1" class="elevation-0">
@@ -26,8 +26,8 @@
 				<v-stepper-step step="6" :complete="e1 > 6">Fotos</v-stepper-step>
 				<v-divider></v-divider>
 				<v-stepper-step step="7" :complete="e1 > 7">Precio y disponibilidad</v-stepper-step>
-				<v-divider></v-divider>
-				<v-stepper-step step="8" :complete="e1 > 8">Agentes</v-stepper-step>
+				<!--v-divider></v-divider>
+				<v-stepper-step step="8" :complete="e1 > 8">Agentes</v-stepper-step-->
 			</v-stepper-header>
 				
 			<v-stepper-items >
@@ -454,6 +454,7 @@
 							
 									color="primary"
 									@click="nextStep(e1)"
+									v-if="e1!=7"
 									>
 									Siguiente
 									</v-btn>

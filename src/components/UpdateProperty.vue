@@ -8,7 +8,7 @@
 			<v-toolbar-title>Actualizar Propiedad</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<v-btn color="secondary" @click="updateProperty()" v-if="e1==7">Actualizar Propiedad</v-btn>
+				<v-btn color="secondary" @click="updateProperty()" v-if="e1==6">Actualizar Propiedad</v-btn>
 			</v-toolbar-items>
 			</v-toolbar>
 			<v-stepper v-model="e1" class="elevation-0">
@@ -25,8 +25,8 @@
 				<v-stepper-step step="5" :complete="e1 > 5">Fotos</v-stepper-step>
 				<v-divider></v-divider>
 				<v-stepper-step step="6" :complete="e1 > 6">Precio y disponibilidad</v-stepper-step>
-				<v-divider></v-divider>
-				<v-stepper-step step="7" :complete="e1 > 7">Agentes</v-stepper-step>
+				<!--v-divider></v-divider>
+				<v-stepper-step step="7" :complete="e1 > 7">Agentes</v-stepper-step-->
 			</v-stepper-header>
 				
 			<v-stepper-items >
@@ -425,6 +425,7 @@
 									
 									color="primary"
 									@click="nextStep(e1)"
+									v-if="e1!=6"
 									>
 									Siguiente
 									</v-btn>
