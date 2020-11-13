@@ -14,14 +14,14 @@
 						<v-overlay
 						class="position-absolute touch-action-auto w-100 h-100"
 						:dark="false"
-						opacity="0.3"
+						opacity="0.4"
 						:value="true"
 						z-index="1">	
 						<v-container fluid grid-list-md pt-12 mt-12>
 							<div class="text-center " 						
 							:class="[$vuetify.breakpoint.smAndDown ? 'pt-1 mt-1' : 'pt-12  mt-12']"
 							>
-								<h1 class="display-2 white--text">Descubre el lugar perfecto para ti</h1>
+								<h1 class="display-2 white--text">HS: Tu espacio a un click de distancia</h1>
 							</div>
 							<div class="mt-5">
 								<v-row
@@ -34,6 +34,9 @@
 									>
 										<v-btn>
 										Renta
+										</v-btn>
+										<v-btn>
+										Compra
 										</v-btn>
 										<v-btn>
 											Venta
@@ -52,235 +55,73 @@
 				
 			</v-row>
 		</section>
-		<!--section id="explora" style="background:#fff !important" v-if="properties">
-			<div class="py-3"></div>
+		<section id="explora" style="background:#fff !important">
+			<div class="py-5"></div>
 			<v-container class="text-center">
-				<v-responsive
-					class="mx-auto title font-weight-light px-5 "
-					max-width="820">
-					<span align="center"
-					:class="[$vuetify.breakpoint.smAndDown ? 'headline' : 'display-1']"
-
-					class=" font-weight-regular mt-5">
-						Explora la ciudad
-					</span>	
-					<p class="mt-5">
-					Explore fotos originales del vecindario, imágenes de drones, reseñas de residentes e información local para ver si las casas o apartamentos en alquiler son adecuados para usted.
-
-					</p>
-				</v-responsive>	
-
-				<!--v-row>
-					<v-col cols="12" sm="3" md="3">
-						<v-card
-							:loading="loading"
-							class="mx-auto my-12"
-							max-width="374"
-							>
-							<v-img
-							class="white--text align-end"
-							height="200px"
-							src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-							>
-							<v-card-title>Antigua Guatemala</v-card-title>
-							</v-img>
-						
-							<v-card-text>
-								<v-row
-								align="center"
-								class="mx-0"
-								>
-								<v-rating
-									:value="4.5"
-									color="amber"
-									dense
-									half-increments
-									readonly
-									size="14"
-								></v-rating>
-						
-								<div class="grey--text ml-4">4.5 (413)</div>
-								</v-row>
-						
-								<div class="mt-2">Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
-							</v-card-text>
-						
-							<v-divider class="mx-4"></v-divider>
-						
+     		<v-flex>
+				<v-carousel hide-delimiters>
+					<v-carousel-item>
+						<v-layout row>
+							<v-flex sm3 v-for="(card,index) in cards.slice(0,8)" :key="index" pl-2 pr-2>
+								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+												params: { location: {name:card.title}}}">
+										<v-img
+											:src="card.src"
+											class="white--text align-end"
+											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+											height="200px"
+										>
+											<v-card-title v-text="card.title"></v-card-title>
+										</v-img>
 							
-						
-							<v-card-actions>
-								<v-btn
-								color="primary lighten-2"
-								text
-								>
-								VER MÁS
-								</v-btn>
-							</v-card-actions>
-						</v-card>
-					
-						
-					</v-col>
-					
-					
-				</v-row>
-	
-      <v-slide-group
-        v-model="model"
-       
-        multiple
-        show-arrows
-		mobile-breakpoint
-      >
-        <v-slide-item
-          v-for="n in properties"
-          :key="n.id"
-          v-slot:default="{ active, toggle }"
-        >
-			<v-card
-				:loading="loading"
-				:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-12' : 'mx-5 my-12']"
-				:style="{'max-width': $vuetify.breakpoint.smAndUp ? '275px' : '225px'}"
-				
-				>
-					
-					<v-carousel hide-delimiters
-					class="white--text align-end"
-					height="175px"
-					v-if="n.images.length!=0">
-						<v-carousel-item
-						v-for="(item,i) in n.images"
-						:key="i"
-						:src="item.image"
-						
-						gradient="rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.25),rgba(0,0,0,0.3),rgba(0,0,0,0.9)">
-	
-							<v-layout column justify-space-between fill-height px-5 py-5>
-								<v-layout row wrap>
-									<v-flex xs12 d-flex justify-start>
-											<v-chip
-											class="mx-1"
-											label
-											color="secondary"
-											text-color="white"
-											>
-											RENT
-										</v-chip>
-										<v-chip
-											class="mx-1"
-											color="primary"
-											label
-											text-color="white"
-											>
-											NEW
-										</v-chip>
-									</v-flex>
-									
-									
-								</v-layout>
-								<v-layout row wrap align-end>
-									
-									<v-flex xs12 d-flex justify-end>
-										<span class="text-truncante text-right title">Q1000</span>
 										
-									</v-flex>
-								</v-layout>
-							</v-layout>
-						</v-carousel-item>
-					</v-carousel>
-					<v-img
-					:src="'../assets/img/sin-imagen.jpg'"
-					gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
-					height="175px"
-					v-if="n.images.length == 0"
-					width="100%"
-					style="border-radius:5px"
-					>
-						<v-layout column justify-space-between fill-height px-5 py-5>
-								<v-layout row wrap>
-									<v-flex xs12 d-flex justify-start>
-											<v-chip
-											class="mx-1"
-											label
-											color="secondary"
-											text-color="white"
-											>
-											RENT
-										</v-chip>
-										<v-chip
-											class="mx-1"
-											color="primary"
-											label
-											text-color="white"
-											>
-											NEW
-										</v-chip>
-									</v-flex>
-									
-									
-								</v-layout>
-								<v-layout row wrap align-end>
-									
-									<v-flex xs12 d-flex justify-end>
-										<span class="text-truncante text-right title white--text">Q1000</span>
-										
-									</v-flex>
-								</v-layout>
-							</v-layout>
-					</v-img>
-		
-					<v-card-title>
-						<div class="text-truncate">{{n.name}}</div>
-					</v-card-title>
-					<v-card-text>
-						2 cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
-						1 baño<span class="font-weight-bold" aria-hidden="true"> ·</span>
-						1000 mts<sup>2</sup>
-						<div>
-							<v-chip-group
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-carousel-item>
+					<v-carousel-item>
+						<v-layout row>
+							<v-flex sm3 v-for="(card,index) in cards.slice(8,16)" :key="index" pl-2 pr-2>
+								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+												params: { location: {name:card.title}}}">
+										<v-img
+											:src="card.src"
+											class="white--text align-end"
+											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+											height="200px"
+										>
+											<v-card-title v-text="card.title"></v-card-title>
+										</v-img>
 							
-							column
-							>
-								<v-chip   small>
-									<v-icon left small>mdi-wifi</v-icon>
-								WIFI</v-chip>
-								<v-chip   small>
-									<v-icon left small>mdi-paw</v-icon>
-								Mascotas</v-chip>
-								<v-chip   small>
-									<v-icon left small>mdi-spray-bottle</v-icon>
-								Limpieza</v-chip>
-								<v-chip   small>
-									<v-icon left small>mdi-air-conditioner</v-icon>
-								A/C</v-chip>
-							</v-chip-group>
-						</div>
+										
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-carousel-item>
+					<v-carousel-item>
+						<v-layout row>
+							<v-flex sm3 v-for="(card,index) in cards.slice(16,22)" :key="index" pl-2 pr-2>
+								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+									params: { location: {name:card.title}}}">
+									<v-img
+										:src="card.src"
+										class="white--text align-end"
+										gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+										height="200px"
+									>
+										<v-card-title v-text="card.title"></v-card-title>
+									</v-img>
 						
-					</v-card-text>
-		
-					<v-divider class="mx-4"></v-divider>
-					<v-card-actions>
-						<v-btn
-						color="secondary"
-						text
-						router :to="`/detail/`+n.id"
-						>
-						MÁS INFORMACIÓN
-						</v-btn>
-						<v-spacer></v-spacer>
-						<v-btn icon>
-							<v-icon>mdi-heart</v-icon>
-						</v-btn>
-						<v-btn icon>
-							<v-icon>mdi-share-variant</v-icon>
-						</v-btn>
-					</v-card-actions>
-			</v-card>
-        </v-slide-item>
-      </v-slide-group>
+									
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-carousel-item>
+				</v-carousel>
+				</v-flex>
 			</v-container>
-			<div class="py-3"></div>
-		</section-->
+			<div class="py-5"></div>
+		</section>
 		<v-divider></v-divider>
 		<section id="features" class="grey lighten-5">
 			<div class="py-10"></div>
@@ -291,7 +132,7 @@
 					<span align="center"
 					:class="[$vuetify.breakpoint.smAndDown ? 'headline' : 'display-1']"
 					class=" font-weight-regular mt-5 ">
-						¿Cómo funciona?
+						Tu inmueble a un solo click de distancia
 					</span>	
 				</v-responsive>	
 				<v-row>
@@ -299,10 +140,11 @@
 						v-for="({ icon, title, text }, i) in features"
 						:key="i"
 						cols="12"
-						md="4"
+						md="6"
+						class="pa-3 d-flex flex-column"
 					>
 						<v-card
-							class="py-12 px-4 elevation-2"
+							class="py-12 px-4 elevation-2 flex d-flex flex-column"
 							color="white"
 							flat
 						>
@@ -409,53 +251,67 @@ export default {
 	items: [
         {
 			src: '../assets/img/house5.jpg',
+
 		},
 		{
 			src: '../assets/img/house2.jpg',
 		},
-			{
+		{
 			src: '../assets/img/house4.jpg',
-		}],
-		stats: [{
-			name:'yoga',
-			image:'yoga'
 		},
 		{
-			name:'crossfit',
-			image:'crossfit'
-		},
-		{
-			name:'baile',
-			image:'baile'
-		},
-		{
-			name:'calistenia',
-			image:'calistenia'
-		},
-	
-		{
-			name:'functional',
-			image:'funtional'
-		},
-		{
-			name:'box',
-			image:'box'
-		}],
+			src: '../assets/img/house4.jpg',
+		}
+	],
+	cards: [
+				{ id:1, title: 'Petén', src: '../assets/img/departamentos/peten.jpg', flex: 3 },
+				{ id:2, title: 'Izabal', src: '../assets/img/departamentos/izabal.jpg', flex: 3 },
+				{ id:3, title: 'Alta Verapaz', src: '../assets/img/departamentos/alta_verapaz.jpg', flex: 3 },
+				{ id:4, title: 'Quiché', src: '../assets/img/departamentos/quiche.jpg', flex: 3 },
+				{ id:5, title: 'Huehuetenango', src: '../assets/img/departamentos/huehuetenango.jpg', flex: 3 },
+				{ id:6, title: 'Escuintla', src: '../assets/img/departamentos/escuintla.jpg', flex: 3 },
+				{ id:7, title: 'San Marcos', src: '../assets/img/departamentos/san_marcos.jpg', flex: 3 },
+				{ id:8, title: 'Jutiapa', src: '../assets/img/departamentos/jutiapa.jpg', flex: 3 },
+				{ id:9, title: 'Baja Verapaz', src: '../assets/img/departamentos/baja_verapaz.jpg', flex: 3 },
+				{ id:10, title: 'Zacapa', src: '../assets/img/departamentos/zacapa.jpg', flex: 3 },
+				{ id:11, title: 'Suchitepéquez', src: '../assets/img/departamentos/suchitepequez.jpg', flex: 3 },
+				{ id:12, title: 'Chiquimula', src: '../assets/img/departamentos/chiquimula.jpg', flex: 3 },
+				{ id:13, title: 'Guatemala', src: '../assets/img/departamentos/guatemala.jpg', flex: 3 },
+				{ id:14, title: 'Jalapa', src: '../assets/img/departamentos/jalapa.jpg', flex: 3 },
+				{ id:15, title: 'Chimaltenango', src: '../assets/img/departamentos/chimaltenango.jpg', flex: 3 },
+				{ id:16, title: 'Quetzaltenango', src: '../assets/img/departamentos/quetzaltenango.jpg', flex: 3 },
+				{ id:17, title: 'El Progreso', src: '../assets/img/departamentos/el_progreso.jpg', flex: 3 },
+				{ id:18, title: 'Retalhuleu', src: '../assets/img/departamentos/retalhuleu.jpg', flex: 3 },
+				{ id:19, title: 'Sololá', src: '../assets/img/departamentos/solola.jpg', flex: 3 },
+				{ id:20, title: 'Totonicapán', src: '../assets/img/departamentos/totonicapan.jpg', flex: 3 },
+				{ id:21, title: 'Sacatepéquez', src: '../assets/img/departamentos/sacatepequez.jpg', flex: 3 },
+				{ id:22, title: 'Santa Rosa', src: '../assets/img/departamentos/santa_rosa.jpg', flex: 3 },
+
+			],
+			
 		features: [
 		{
-			icon: 'mdi-map-marker-radius',
-			title: 'Encuentra una casa',
-			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
-		},
-		{
-			icon: 'mdi-calendar-clock',
-			title: 'Agenda una cita',
-			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
+			icon: 'mdi-account-star',
+			title: '¿Quiénes Somos?',
+			text: ' Somos una plataforma digital, que reune a todos las partes involucradas en la industria de bienes y raíces con el objetivo de facilitar los procesos en la búsqueda, venta y/o alquiler de propiedades en Guatemala, brindando una herramienta para promocionar y buscar inmuebles de manera práctica, segura y confiable; todo en el mismo lugar  ¡La propiedad que buscas está aquí, publicala o encuéntrala!',
 		},
 		{
 			icon: 'mdi-home-city-outline',
-			title: 'Conoce el barrio',
-			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
+			title: '¿Estás buscando alquilar o comprar un inmueble?',
+			text: 'En HS encuentras el espacio perfecto para ti. Encontrar una propiedad, es el inicio de algo nuevo y lleno de historias; por eso, nos encargamos de hacer que cada inmueble que se publica en HS brille con luz propia y encuentre a su próximo inquilino o futuro dueño ideal. ',
+		},
+		{
+			icon: 'mdi-briefcase-account',
+			title: '¿Tienes propiedades o eres un agente inmobiliario? ',
+			text: `En HS todos podemos dedicarnos a los bienes raíces. Publica tu(s) propiedad(es) y recibe solicitud de clientes interesados, estadísticas de views, obtiene leads y más herramientas para manejar todos tus inmuebles en el mismo lugar con la capacidad de actualizar en tiempo real para que todos puedan verlo en ese instante. 
+
+				¿Por qué pagar un gran porcentaje de comisión cuando puedes a través de un pequeño Fee obtener excelentes resultados en tus ventas además de una herramienta tecnológica para manejarlo todo?`,
+		},
+		{
+			
+			icon: 'mdi-map-marker-radius',
+			title: '¿Buscas algo más especifico?',
+			text: 'Contáctanos para conocer más de los reglamentos o solicitar ayuda personalizada. Envía un correo electrónico a hola@hsguatemala.com para más información.',
 		},
 		],
 	}),
@@ -484,7 +340,7 @@ export default {
 		
 	},
 	created(){
-		
+	
 	}
 
 }

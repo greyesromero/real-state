@@ -59,7 +59,7 @@
 								</v-flex>
 							<v-flex xs12 md12 d-flex justify-start v-if="location">
 								
-								<h3>{{location}}</h3>
+								<h3>{{location.name}}</h3>
 							</v-flex>
 							
 						</v-layout>
@@ -229,22 +229,20 @@
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
-					<v-layout row wrap  justify="space-around" align-center align-content-center v-if="visiblePages.length > 0"> 
-						<v-flex 
-							xs12
-							md6
-							:key="property.id"
-							v-for="(property,i) in visiblePages">
+					<v-row class="ma-2">
+      					<v-col md="6" xs="12" class="pa-3 d-flex flex-column" :key="property.id" v-for="(property,i) in visiblePages">
+						
 							<v-card
 								:loading="loading"
 								:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-1' : 'mx-1 my-1']"
-								
+								class="flex d-flex flex-column"
 								style="cursor:pointer;"
+								router :to="`/detail/`+ property.id "
 								>
 									
 									<v-carousel hide-delimiters
 									class="white--text align-end"
-									height="175px"
+									height="300px"
 									v-if="property.images.length!=0">
 										<v-carousel-item
 										v-for="(item,i) in property.images"
@@ -294,7 +292,7 @@
 									<v-img
 										:src="'../assets/img/sin-imagen.jpg'"
 										gradient="rgba(0,0,0,0.2), rgba(0,0,0,0.2)"
-										height="175px"
+										height="300px"
 										v-if="property.images.length == 0"
 										width="100%"
 										style="border-radius:5px"
@@ -338,7 +336,7 @@
 										</v-img>
 						
 									<v-card-title>
-										<div class="text-truncate">{{property.name}}</div>
+										<div>{{property.name}}</div>
 									</v-card-title>
 									<v-card-text>
 										{{property.rooms}} cuartos<span class="font-weight-bold" aria-hidden="true"> ·</span>
@@ -379,16 +377,16 @@
 										</v-btn>
 									</v-card-actions>
 							</v-card>
-						</v-flex>
-						<v-flex xs12>
+						</v-col>
+						<v-col cols="12">
 							<v-pagination
 								v-model="page"
 								
 								v-if="visiblePages.length>0"
 								:length="Math.ceil(selected_properties.length/perPage)"
 							></v-pagination>
-						</v-flex>
-					</v-layout>
+						</v-col>
+					</v-row>
 					<v-layout row wrap  justify="space-around" align-center align-content-center v-if="visiblePages.length == 0">
 							<div  class="center-container">
 								<v-container fill-height>
@@ -559,7 +557,7 @@ import axios from 'axios'
 export default {
   	name: 'search',
   	props: {
-        location: String
+        location: Object
 	},
   data() {
     return {

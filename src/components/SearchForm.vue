@@ -11,7 +11,19 @@
 			justify="center"
 			
 			>
-			<v-col cols="9">
+			<v-col cols=1>
+					<v-btn
+					d-flex
+				icon
+				depressed
+				block 
+				class="btn-xl rounded"
+				color="primary" x-large>
+				<v-icon>mdi-map-marker</v-icon>
+				
+				</v-btn>
+			</v-col>
+			<v-col cols="11">
 			  <!--v-text-field
 			  prepend-inner-icon="mdi-map-marker"
 				flat
@@ -20,7 +32,21 @@
 				solo
 				
 				></v-text-field-->
-				<v-autocomplete
+				
+				<v-card>
+				
+					<gmap-autocomplete
+					 
+						ref="autocomplete"
+						@place_changed="setPlace"
+						:options="autocompleteOptions"
+						:placeholder="'¿En qué área/lugar buscas tu propiedad?'"
+						:value="searchAddressInput"
+					
+						class="py-3 px-3 w-100"></gmap-autocomplete>
+				</v-card>
+				
+			<!--v-autocomplete
 					v-model="model"
 					:items="items"
 					:loading="isLoading"
@@ -68,20 +94,7 @@
 						<v-icon>mdi-coin</v-icon>
 						</v-list-item-action>
 					</template>
-				</v-autocomplete>
-			</v-col>
-		
-			<v-col cols="3">
-				<v-btn
-				router :to="{ name: 'search', 
-           					params: { location: model }}"
-				depressed
-				block 
-				class="btn-xl"
-				color="primary">
-				Buscar
-				
-				</v-btn>
+				</v-autocomplete-->
 			</v-col>
 		</v-row>
 	</v-responsive>
@@ -97,6 +110,10 @@ export default {
 		items: [],
 		model: null,
 		search: null,
+		searchAddressInput:'',
+		autocompleteOptions: {
+			componentRestrictions: { country: 'gt' }
+		},
 		
 	}),
 	 watch: {
@@ -127,6 +144,13 @@ export default {
       },
     },
 	methods:{
+		setPlace(place) {
+			
+			if (!place) return
+			console.log(place)
+			this.$router.push({name: 'search', params: {location: place }})
+
+		},
 		showSearch(){
 			console.log(this.model)
 			this.$router.push({name: 'search', params: {foo: 1}})

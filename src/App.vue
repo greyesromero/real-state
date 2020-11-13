@@ -2,8 +2,7 @@
 <v-app>
 	 <AppBar />
 	<v-content class="white">
-		<router-view></router-View>
-		
+		<router-view :key="$route.fullPath"></router-View>
 	</v-content>
 	<Footer v-if="!$route.meta.hideNavigation"/>
 </v-app>
