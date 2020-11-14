@@ -112,8 +112,10 @@ export default {
 		search: null,
 		searchAddressInput:'',
 		autocompleteOptions: {
-			componentRestrictions: { country: 'gt' }
+			componentRestrictions: { country: 'gt' },
+			
 		},
+		
 		
 	}),
 	 watch: {

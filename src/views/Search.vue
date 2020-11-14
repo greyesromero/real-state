@@ -54,12 +54,8 @@
 									<v-icon >mdi-cog</v-icon>	FILTROS
 								</v-btn>
 							</v-flex>
-							<v-flex xs12 md12 d-flex justify-start v-if="location">
-							<span class="body-2">{{selected_properties.length}} propiedades en</span>
-								</v-flex>
-							<v-flex xs12 md12 d-flex justify-start v-if="location">
-								
-								<h3>{{location.name}}</h3>
+							<v-flex xs12 md12 d-flex justify-start v-if="selected_location">
+							<span class="body-2">{{selected_properties.length}} propiedades en <h3>{{selected_location.name}}</h3></span>
 							</v-flex>
 							
 						</v-layout>
@@ -78,13 +74,12 @@
 							<v-card-text>
 								<v-form v-model="valid" :lazy-validation="lazy"  ref="form">
 									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
-										<v-subheader class="title" style="padding-left:0px!important;">Ubicación</v-subheader>
 											
 										<v-spacer></v-spacer>
 									<v-switch color="secondary" class="mt-5" v-model="owner" label="Trato directo con dueño"></v-switch>
 
 									</v-toolbar>
-									<v-container fluid>
+									<!--v-container fluid>
 										<v-flex xs12>
 											<v-autocomplete
 												v-model="model"
@@ -141,7 +136,7 @@
 												</template>
 											</v-autocomplete>
 										</v-flex>
-									</v-container>
+									</v-container-->
 									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
 										<v-subheader class="title" style="padding-left:0px!important;">Tipo</v-subheader>
 											
@@ -406,6 +401,17 @@
 				</div>
         	</v-container>
 			<div class="search-map-container grey lighten-2 hidden-sm-and-down" v-if="visiblePages.length>0">
+				<div id="myAutocomplete" class="position-absolute white w-100 mt-2" style="z-index:99!important;top:0;">
+					<gmap-autocomplete
+					 
+						ref="autocomplete"
+						@place_changed="setPlace"
+						:options="autocompleteOptions"
+						:placeholder="'Ingresa una ubicación'"
+						:value="searchAddressInput"
+						:select-first-on-enter="true"
+						class="address-input form-control my-3 mx-3 py-1" style="width:95%"></gmap-autocomplete>
+				</div>
 				<gmap-map :center="center" :zoom="12" class="w-100 h-100">
 					<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
 							<v-card
@@ -562,10 +568,14 @@ export default {
   data() {
     return {
 		map_center: {
-					lat: 14.6349,
-					lng: -90.5069,
-				},
-				map_options: {
+			lat: 14.6349,
+			lng: -90.5069,
+		},
+		autocompleteOptions: {
+			componentRestrictions: { country: 'gt' },
+			
+      	},
+		map_options: {
 			zoomControl: true,
 			mapTypeControl: false,
 			scaleControl: false,
@@ -696,6 +706,9 @@ export default {
 		itemsLocation: [],
 		model: null,
 		busqueda: null,
+		searchAddressInput: '',
+		selected_location: null,
+		currentPlace: null
 		
 		}
 	},
@@ -709,7 +722,10 @@ export default {
 		},
 		selected: function() {
 			return this.ex4.filter(amenitie => amenitie.checked)
-		}
+		},
+		isLoggedIn : function(){ 
+			return this.$store.getters.isLoggedIn
+		},
 	},
 	
 	watch: {
@@ -748,8 +764,42 @@ export default {
 	mounted() {
 		
 		this.fetchProperties()
+		this.geolocation()
 	},
 	methods: {
+		 geolocation : function() {
+
+			if(this.location){
+				let place = this.location
+				this.selected_location = place
+				 this.center = {
+					lat: place.geometry.location.lat(),
+					lng: place.geometry.location.lng(),
+				};
+			}
+			else{
+				navigator.geolocation.getCurrentPosition((position) => {
+					console.log(position)
+					this.center = {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}; 
+					
+				});
+			}
+			
+		},
+		
+		setPlace(place) {
+		
+		 this.selected_location = place
+        if (!place) return
+
+        this.center = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        };
+      },
 		  getById(id, myArray) {
 				return myArray.filter(function(obj) {
 				if(obj.id == id) {
@@ -913,25 +963,27 @@ export default {
 			this.favorites = false
 			if (this.errored) this.errored = false
 			this.loading = true
-			this.$store.dispatch('getProfile', this.getUser.id).then(r => {
-				if(this.getUser.favorite_properties!=null){
-					this.getUser.favorite_properties.forEach((value, index) => {
-						let arrayProperty = value.property
-						arrayProperty['favorite_id'] = value.id
-						this.favorites_properties.push(arrayProperty);
-					});
-					
-					this.favorites_properties = this.favorites_properties.map(function(obj){
-										obj.position = {
-											lat: obj.latitude,
-											lng: obj.longitude
-										};
+			if(this.isLoggedIn){
+				this.$store.dispatch('getProfile', this.getUser.id).then(r => {
+					if(this.getUser.favorite_properties!=null){
+						this.getUser.favorite_properties.forEach((value, index) => {
+							let arrayProperty = value.property
+							arrayProperty['favorite_id'] = value.id
+							this.favorites_properties.push(arrayProperty);
+						});
+						
+						this.favorites_properties = this.favorites_properties.map(function(obj){
+											obj.position = {
+												lat: obj.latitude,
+												lng: obj.longitude
+											};
 
-										
-										return obj;
-									});
-				}
-			})
+											
+											return obj;
+										});
+					}
+				})
+			}
 			
 
 			

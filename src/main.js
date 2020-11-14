@@ -40,6 +40,7 @@ Vue.use(VueGoogleMaps, {
 
 		//// If you want to set the version, you can do so:
 		// v: '3.26',
+		
 	},
 
 	//// If you intend to programmatically custom event listener code
