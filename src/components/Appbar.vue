@@ -152,6 +152,7 @@
 				<v-divider></v-divider>
 
 				<v-list v-if="!isLoggedIn" class="mx-5">
+					
 					<v-list-item router to="/">
 						<v-list-item-icon>
 								<v-icon>mdi-home</v-icon>
@@ -166,9 +167,16 @@
 							</v-list-item-icon>
 						<v-list-item-content>
 								
-							<v-list-item-title>Buscar casa</v-list-item-title>
+							<v-list-item-title>Buscar propiedad</v-list-item-title>
 						</v-list-item-content>
-					</v-list-item>			
+					</v-list-item>
+					<v-divider></v-divider>	
+					<v-list-item router to="/login">
+						
+						<v-list-item-content>
+							<v-list-item-title>Inicia sesión o regístrate</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>		
 				</v-list>
 
 				<v-list v-if="isLoggedIn" class="mx-5">
@@ -181,42 +189,59 @@
 							<v-list-item-title>Inicio</v-list-item-title>
 						</v-list-item-content>
 					</v-list-item>
-					<v-list-item router to="/search">
-						<v-list-item-icon>
-								<v-icon>mdi-home-search</v-icon>
-							</v-list-item-icon>
-						<v-list-item-content>
-								
-							<v-list-item-title>Buscar casa</v-list-item-title>
-						</v-list-item-content>
-					</v-list-item>
 					<v-list-item to="/profile">
 							<v-list-item-icon>
 								<v-icon>mdi-account</v-icon>
 							</v-list-item-icon>
 						<v-list-item-title>Mi Perfil</v-list-item-title>
 					</v-list-item>
-					<v-list-item to="/my-properties">
-							<v-list-item-icon>
-								<v-icon>mdi-home-group</v-icon>
+					<v-list-item router to="/search">
+						<v-list-item-icon>
+								<v-icon>mdi-home-search</v-icon>
 							</v-list-item-icon>
-						<v-list-item-title>Mis Propiedades</v-list-item-title>
+						<v-list-item-content>
+								
+							<v-list-item-title>Buscar Inmueble</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+					
+					<v-list-item to="/my-properties">
+						 <v-tooltip left>
+							<template #activator="{ on }">
+								<v-list-item-icon>
+									<v-icon>mdi-home-group</v-icon>
+								</v-list-item-icon>
+								
+								<v-list-item-title v-on="on">Mis Propiedades</v-list-item-title>
+							</template>
+        					<span>Administra aquí las propiedades que tengas activas o </br>elegidas en favoritos </span>
+						</v-tooltip>						
 					</v-list-item>
 					
 					<v-list-item to="/my-appointments">
-							<v-list-item-icon>
-								<v-icon>mdi-calendar</v-icon>
-							</v-list-item-icon>
-						<v-list-item-title>Mis Citas</v-list-item-title>
+						<v-tooltip left>
+							<template #activator="{ on }">
+								<v-list-item-icon>
+									<v-icon>mdi-calendar</v-icon>
+								</v-list-item-icon>
+								
+								<v-list-item-title v-on="on">Mis Citas</v-list-item-title>
+							</template>
+        					<span>Coordina aquí las citas para que visiten tus propiedades o </br> puedan tu visitar las propiedades de tu interés</span>
+						</v-tooltip>
 					</v-list-item>
 					<v-list-item to="/chat">
-							<v-list-item-icon>
-								<v-icon>mdi-message</v-icon>
-							</v-list-item-icon>
-						<v-list-item-title>Mis Mensajes</v-list-item-title>
+						<v-tooltip left>
+							<template #activator="{ on }">
+								<v-list-item-icon>
+									<v-icon>mdi-message</v-icon>
+								</v-list-item-icon>
+								
+								<v-list-item-title v-on="on">Mis Mensajes</v-list-item-title>
+							</template>
+        					<span>Revisa aquí si te escribieron pidiendo información.</span>
+						</v-tooltip>
 					</v-list-item>
-						
-					
 					<v-divider></v-divider>
 					<v-list-item @click="logout">
 						<v-list-item-icon>

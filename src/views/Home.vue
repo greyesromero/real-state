@@ -55,7 +55,7 @@
 				
 			</v-row>
 		</section>
-		<section id="explora" style="background:#fff !important">
+		<section id="explora" style="background:#fff !important" class='d-none d-sm-flex'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
      		<v-flex>
@@ -122,6 +122,29 @@
 			</v-container>
 			<div class="py-5"></div>
 		</section>
+		<section id="explora_mobile" style="background:#fff !important" class='d-flex d-sm-none'>
+			<div class="py-5"></div>
+			<v-container class="text-center">
+     			<v-layout row>
+					<v-flex xs6 v-for="(card,index) in cards" :key="index" pl-2 pr-2>
+						<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+										params: { location: {name:card.title}}}">
+								<v-img
+									:src="card.src"
+									class="white--text align-end"
+									gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+									height="200px"
+								>
+									<v-card-title :class="[$vuetify.breakpoint.smAndDown ? 'body-1' : 'title']" v-text="card.title"></v-card-title>
+								</v-img>
+					
+								
+						</v-card>
+					</v-flex>
+				</v-layout>
+			</v-container>
+			<div class="py-5"></div>
+		</section>
 		<v-divider></v-divider>
 		<section id="features" class="grey lighten-5">
 			<div class="py-10"></div>
@@ -144,9 +167,10 @@
 						class="pa-3 d-flex flex-column"
 					>
 						<v-card
-							class="py-12 px-4 elevation-2 flex d-flex flex-column"
+							class="py-4 px-4 elevation-2 flex d-flex flex-column"
 							color="white"
 							flat
+							
 						>
 		
 							<div>
@@ -165,12 +189,162 @@
 							v-text="title"
 							></v-card-title>
 							<v-card-text
-							class="body-1 text-center"
-							v-text="text"
+							class="body-1 text-justify"
+							v-html="text"
 							></v-card-text>
 						</v-card>
 					</v-col>
 				</v-row>
+			</v-container>
+			<div class="py-10"></div>
+		</section>
+		<v-divider></v-divider>
+		<section id="stories" class="white">
+			<div class="py-10"></div>
+				<v-container class="text-center">
+					<span align="center"
+					:class="[$vuetify.breakpoint.smAndDown ? 'headline' : 'display-1']"
+					class=" font-weight-regular">
+						Historias de éxito
+					</span>
+     				<v-flex>
+						<v-carousel hide-delimiters class="my-10">
+							<v-carousel-item>
+								<v-layout row px-12>
+									<v-flex sm6 xs12>
+										<v-card
+											class="px-4 elevation-0"
+											color="white"
+											
+											flat>
+											<v-card-text
+											class="title font-weight-light text-justify black--text px-3"
+											:class="[$vuetify.breakpoint.smAndDown ? 'py-3' : 'py-12']">
+											<v-img
+											src="assets/img/comillas.png"
+											height="50px"
+											width="50px"
+											class="my-3"></v-img>
+											“No sabía que mover mis propiedades en Guatemala podia ser tan sencillo hasta que descubrí que en HS me ahorro mucho y obtengo al cliente ideal. Ahora me dedico a los Bienes Raíces” – Lucía Delgado
+											</v-card-text>
+											<v-card-actions>
+											<v-btn
+											color="secondary"
+											outlined
+											router to = "/login"
+											>
+											Publicar Propiedad
+											</v-btn>
+											
+										</v-card-actions>
+										</v-card>
+									</v-flex>
+									<v-flex sm6 xs12 :style="{display: $vuetify.breakpoint.smAndUp ? 'block' : 'none'}">
+										
+										<v-img
+											src="assets/img/historia_exito_1.png"
+											height="400px"
+											width="500px"
+											class="px-10"
+										>
+										</v-img>
+									</v-flex>
+								</v-layout>
+							</v-carousel-item>
+							<v-carousel-item>
+								<v-layout row px-12 py-12>
+									<v-flex sm6 xs12>
+										<v-card
+											class="py-4 px-4 elevation-0"
+											color="white"
+											
+											flat>
+											<v-card-text
+											class="font-weight-light text-justify black--text"
+											:class="[$vuetify.breakpoint.smAndDown ? 'title py-3' : 'title py-12']">
+											<v-img
+											src="assets/img/comillas.png"
+											height="50px"
+											width="50px"
+											class="my-3"></v-img>
+											“Busqué apartamento por tres meses y cuando encontré HS me enamoré de la plataforma” – Oscar Valdéz
+											</v-card-text>
+											<v-card-actions>
+												<v-btn
+												color="secondary"
+												outlined
+												router to = "/login"
+												>
+												Publicar Propiedad
+												</v-btn>
+												
+											</v-card-actions>
+										</v-card>
+									</v-flex>
+									<v-flex sm6 xs12 :style="{display: $vuetify.breakpoint.smAndUp ? 'block' : 'none'}">
+										
+										<v-img
+											src="assets/img/historia_exito_2.jpg"
+											height="400px"
+											width="500px"
+											class="px-10"
+										>
+										</v-img>
+									</v-flex>
+								</v-layout>
+							</v-carousel-item>
+						</v-carousel>
+					</v-flex>
+				</v-container>
+			<div class="py-5"></div>
+		</section>
+		<v-divider></v-divider>
+		<section id="features" class="white" light>
+			<div class="py-10"></div>
+			<v-container class="text-center">
+				<v-responsive
+					class="mx-auto title font-weight-light px-5 mb-10"
+					max-width="820">
+					<span align="center"
+					:class="[$vuetify.breakpoint.smAndDown ? 'headline' : 'display-1']"
+					class=" font-weight-regular mt-5 ">
+						Te tenemos cubierto
+					</span>	
+				</v-responsive>	
+				<v-row>
+					<v-col cols="12" sm="6" md="6">
+						<v-card
+							class="px-4 elevation-0"
+							color="white"
+							flat>
+							<v-card-text
+							class="title font-weight-light text-justify black--text px-3"
+							>
+							
+							Sabemos lo importante que es tu seguridad, y pensamos siempre en ti. Ya sea publicando tu espacio o buscando el lugar perfecto para comprar o alquilar, en HS hemos creado opciones seguras y confiables para que tu experiencia sea la mejor.
+							</v-card-text>
+						</v-card>
+					</v-col>
+					<v-col cols="12" sm="6" md="6">
+						<v-card
+							class="px-4 elevation-0"
+							color="white"
+							flat>
+							<v-card-text
+							class="title font-weight-light text-justify black--text px-3"
+							>
+							
+							<ul>
+								<li>Por seguridad, no utilizamos contraseñas sino tokens</li>
+								<li>En nuestro sitio no existe publicidad invasiva</li>
+								<li>El Sistema funciona 24 horas al día, 365 días del año</li>
+								<li>Los cobros son seguros</li>
+							</ul>
+							</v-card-text>
+						</v-card>
+					</v-col>
+				</v-row>
+				
 			</v-container>
 			<div class="py-10"></div>
 		</section>
@@ -311,7 +485,7 @@ export default {
 			
 			icon: 'mdi-map-marker-radius',
 			title: '¿Buscas algo más especifico?',
-			text: 'Contáctanos para conocer más de los reglamentos o solicitar ayuda personalizada. Envía un correo electrónico a hola@hsguatemala.com para más información.',
+			text: 'Contáctanos para conocer más de los reglamentos o solicitar ayuda personalizada. Envía un correo electrónico a <a href="#">hola@hsguatemala.com</a> para más información.',
 		},
 		],
 	}),
