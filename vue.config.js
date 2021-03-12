@@ -7,6 +7,6 @@ module.exports = {
             historyApiFallback: true
         }
     },
-
+    lintOnSave: false
 
 }
