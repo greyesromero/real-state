@@ -55,7 +55,7 @@
 				
 			</v-row>
 		</section>
-		<section id="explora" style="background:#fff !important" class='d-none d-sm-flex'>
+		<!--section id="explora" style="background:#fff !important" class='d-none d-sm-flex'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
      		<v-flex>
@@ -144,7 +144,7 @@
 				</v-layout>
 			</v-container>
 			<div class="py-5"></div>
-		</section>
+		</section-->
 		<v-divider></v-divider>
 		<section id="features" class="grey lighten-5">
 			<div class="py-10"></div>
