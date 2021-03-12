@@ -931,7 +931,6 @@
 					if(this.upload_image.length>0){
 						let axiosRequests= [];
 						this.upload_image.forEach((value, index) => {
-							console.log(value)
 							let formData = new FormData();
 							formData.append('property', this.property.id)
 							formData.append('image', value)

@@ -1,11 +1,12 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ],
-  configureWebpack: {
-    devServer: {
-      historyApiFallback: true
-    }
-  },
+    "transpileDependencies": [
+        "vuetify"
+    ],
+    configureWebpack: {
+        devServer: {
+            historyApiFallback: true
+        }
+    },
+    lintOnSave: false
 
 }

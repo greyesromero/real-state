@@ -779,7 +779,6 @@ export default {
 			}
 			else{
 				navigator.geolocation.getCurrentPosition((position) => {
-					console.log(position)
 					this.center = {
 						lat: position.coords.latitude,
 						lng: position.coords.longitude
@@ -821,7 +820,6 @@ export default {
 		saveFavorite(id){
 			let get_my_obj = this.favorites_properties.findIndex(x => x.id === id);
 			
-			console.log(get_my_obj)
 			if(get_my_obj>=0){
 				
 				axios
@@ -884,11 +882,6 @@ export default {
 			}
 		},
 		applyFilters(){
-			console.log(this.selected)
-			console.log(this.range)
-			console.log(this.selected_type)
-			console.log(this.owner)
-			console.log(this.model)
 			if(this.favorites){
 				console.log('Filtros se aplicaran a favoritos')
 			}
@@ -908,7 +901,6 @@ export default {
 				this.selected_properties = this.properties
 			}
 
-			console.log(this.selected_properties)
 		},
 		increment () {
 			this.foo = parseInt(this.foo,10) + 1

@@ -149,12 +149,10 @@ export default {
 		setPlace(place) {
 			
 			if (!place) return
-			console.log(place)
 			this.$router.push({name: 'search', params: {location: place }})
 
 		},
 		showSearch(){
-			console.log(this.model)
 			this.$router.push({name: 'search', params: {foo: 1}})
 			this.$router.push('/search')
 

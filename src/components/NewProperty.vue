@@ -837,13 +837,11 @@
 			},
 			vremoved(file, xhr, error) {
 				this.removedFile = true
-				console.log(this.upload_image)
 				var found = this.upload_image.findIndex(function(post, index) {
 					if(post.name == file.name)
 						return true;
 				});
 				this.upload_image.splice(found, 1);
-				console.log(this.upload_image)
 				// window.toastr.warning('', 'Event : vdropzone-removedFile')
 			},
 			buildAmenityIcon(amenityName) {
@@ -989,7 +987,6 @@
 					if(this.upload_image.length>0){
 						let axiosRequests= [];
 						this.upload_image.forEach((value, index) => {
-							console.log(value)
 							let formData = new FormData();
 							formData.append('property', this.property_id)
 							formData.append('image', value)

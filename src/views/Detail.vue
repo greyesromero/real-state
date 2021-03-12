@@ -670,11 +670,8 @@ export default {
 			}
 		},
 		confirmPublish(data){
-			console.log(data)
 			this.active_until = data.date
 			this.new_date = data.date
-			console.log(this.active_until)
-			console.log(this.new_date)
 			
 
 		},

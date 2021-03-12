@@ -295,7 +295,6 @@ export default {
 		this.loading = true
 		axios.get('https://hsrealestate-api.herokuapp.com/api/users/'+this.getUser.id+'/')
 		.then(response => {
-			console.log(response.data)
 			this.properties = response.data.owned_properties.filter(item => item.active == true )
 			this.managed_properties = response.data.managed_properties.filter(item => item.active == true )
 			this.loading = false
