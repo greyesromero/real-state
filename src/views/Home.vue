@@ -55,7 +55,7 @@
 				
 			</v-row>
 		</section>
-		<!--section id="explora" style="background:#fff !important" class='d-none d-sm-flex'>
+		<section id="explora" style="background:#fff !important" class='d-none d-sm-flex'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
      		<v-flex>
@@ -122,15 +122,26 @@
 				</v-flex>
 			</v-container>
 			<div class="py-5"></div>
-		</section-->
-		<section id="explora_mobile" style="background:#fff !important">
+		</section>
+		<section id="explora_mobile" style="background:#fff !important" class='d-flex d-sm-none'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
      			<v-layout row>
-					 <div class="col-md-12" v-for="(card, index) in cards" :key="index">
-						<img :src="card.src" class="img-fluid" :key="index" />
-					</div> 
-				
+					<v-flex xs6 v-for="(card,index) in cards" :key="index" pl-2 pr-2>
+						<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+										params: { location: null}}">
+								<v-img
+									v-bind:src="card.src"
+									class="white--text align-end"
+									gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+									height="200px"
+								>
+									<v-card-title :class="[$vuetify.breakpoint.smAndDown ? 'body-1' : 'title']" v-text="card.title"></v-card-title>
+								</v-img>
+					
+								
+						</v-card>
+					</v-flex>
 				</v-layout>
 			</v-container>
 			<div class="py-5"></div>
@@ -433,7 +444,7 @@ export default {
 				{ id:3, title: 'Alta Verapaz', src: '../assets/img/departamentos/alta_verapaz.jpg', flex: 3 },
 				{ id:4, title: 'Quiché', src: '../assets/img/departamentos/quiche.jpg', flex: 3 },
 				{ id:5, title: 'Huehuetenango', src: '../assets/img/departamentos/huehuetenango.jpg', flex: 3 },
-				{ id:6, title: 'Escuintla', src: '../assets/img/departamentos/escuintla.jpg', flex: 3 },
+				{ id:6, title: 'Escuintla', src: '../assets/img/departamentos/chimaltenango.jpg', flex: 3 },
 				{ id:7, title: 'San Marcos', src: '../assets/img/departamentos/san_marcos.jpg', flex: 3 },
 				{ id:8, title: 'Jutiapa', src: '../assets/img/departamentos/jutiapa.jpg', flex: 3 },
 				{ id:9, title: 'Baja Verapaz', src: '../assets/img/departamentos/baja_verapaz.jpg', flex: 3 },
