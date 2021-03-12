@@ -129,9 +129,9 @@
 		<section id="explora_mobile" style="background:#fff !important" class='d-flex d-sm-none'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
-     			<v-layout row>
-					<v-flex xs6 v-for="(card,index) in cards" :key="card.id" pl-2 pr-2>
-						<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+     			<v-row>
+					<v-col md="6" class="d-flex flex-column col-md-6" v-for="(card,index) in cards" :key="card.id" pl-2 pr-2>
+						<v-card style="pointer:cursor;" router :to="{ name: 'search', 
 										params: { location: null}}">
 								<v-img
 									v-bind:src="card.src"
@@ -145,8 +145,8 @@
 					
 								
 						</v-card>
-					</v-flex>
-				</v-layout>
+					</v-col>
+				</v-row>
 			</v-container>
 			<div class="py-5"></div>
 		</section>

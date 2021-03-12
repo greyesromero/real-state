@@ -7,7 +7,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
+				:style="{height: $vuetify.breakpoint.smAndUp ? '60%' : '100%'}">
 				<div  class="center-container">
 					<v-container fill-height>
 						<v-layout align-center justify-center>
@@ -27,7 +27,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : '100%'}">
+				:style="{height: $vuetify.breakpoint.smAndUp ? '60%' : '100%'}">
 			
 				<div v-if="errored" class="center-container">
 					<v-container fill-height>
@@ -79,64 +79,6 @@
 									<v-switch color="secondary" class="mt-5" v-model="owner" label="Trato directo con dueño"></v-switch>
 
 									</v-toolbar>
-									<!--v-container fluid>
-										<v-flex xs12>
-											<v-autocomplete
-												v-model="model"
-												:items="itemsLocation"
-												:loading="isLoading"
-												:search-input.sync="busqueda"
-												chips
-												flat
-												clearable
-												hide-details
-												hide-selected
-												outlined
-												rounded
-												color="secondary"
-												
-												item-text="name"
-												item-value="name"
-												label="Selecciona un lugar"
-												solo
-												>
-												<template v-slot:no-data>
-													<v-list-item>
-													<v-list-item-title>
-														Busca tu lugar  
-														<strong>favorito</strong>
-													</v-list-item-title>
-													</v-list-item>
-												</template>
-												<template v-slot:selection="{ attr, on, item, selected }">
-													<v-chip
-													v-bind="attr"
-													:input-value="selected"
-													color="secondary"
-													class="white--text"
-													v-on="on"
-													>
-													<v-icon left>mdi-map-marker</v-icon>
-													<span v-text="item.name"></span>
-													</v-chip>
-												</template>
-												<template v-slot:item="{ item }">
-													<v-list-item-avatar
-													color="secondary"
-													class="headline font-weight-light white--text"
-													>
-													{{ item.name.charAt(0) }}
-													</v-list-item-avatar>
-													<v-list-item-content>
-													<v-list-item-title v-text="item.name"></v-list-item-title>
-													</v-list-item-content>
-													<v-list-item-action>
-													<v-icon>mdi-coin</v-icon>
-													</v-list-item-action>
-												</template>
-											</v-autocomplete>
-										</v-flex>
-									</v-container-->
 									<v-toolbar class="mb-3" style="background-color:transparent!important;box-shadow:none!important;">
 										<v-subheader class="title" style="padding-left:0px!important;">Tipo</v-subheader>
 											
@@ -167,39 +109,7 @@
 											Q{{ range[1] }}
 										</v-layout>
 									</v-container>
-									<!--v-divider class="mx-5 mb-5"></v-divider>
-									<v-subheader class="title">Habitaciones y baños</v-subheader>
-									<v-container fluid grid-list-md fill-height px-5>
-									
-										<v-layout row wrap>
-											<v-flex xs6 md10 d-flex justify-start>
-												<span>Habitaciones</span>
-											</v-flex>
-											<v-flex xs6 md2 d-flex justify-end>
-												<v-text-field 
-												v-model.number="foo" 
-												append-outer-icon="mdi-plus-circle-outline" 
-												@click:append-outer="increment" 
-												prepend-icon="mdi-minus-circle-outline" 
-												@click:prepend="decrement"
-												color="secondary">
-												</v-text-field>
-											</v-flex>
-											<v-flex xs6 md10 d-flex justify-start>
-												<span>Baños</span>
-											</v-flex>
-											<v-flex xs6 md2 d-flex justify-end>
-												<v-text-field 
-												color="secondary"
-												v-model.number="foo2" 
-												append-outer-icon="mdi-plus-circle-outline" 
-												@click:append-outer="increment" 
-												prepend-icon="mdi-minus-circle-outline" 
-												@click:prepend="decrement">
-												</v-text-field>
-											</v-flex>
-										</v-layout>
-									</v-container-->
+								
 									<v-divider class="mx-5 mb-5"></v-divider>
 									<v-subheader class="title">Comodidades</v-subheader>
 								
@@ -468,7 +378,7 @@
 												</v-layout>
 											</v-layout>
 										</v-img>
-								<v-img
+										<v-img
 										class="white--text"
 										height="150px"
 										v-if="visiblePages[selected_property].images.length==0 "
