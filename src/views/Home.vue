@@ -127,21 +127,10 @@
 			<div class="py-5"></div>
 			<v-container class="text-center">
      			<v-layout row>
-					<v-flex xs6 v-for="(card,index) in cards" :key="index" pl-2 pr-2>
-						<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
-										params: { location: null}}">
-								<v-img
-									v-bind:src="card.src"
-									class="white--text align-end"
-									gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-									height="200px"
-								>
-									<v-card-title :class="[$vuetify.breakpoint.smAndDown ? 'body-1' : 'title']" v-text="card.title"></v-card-title>
-								</v-img>
-					
-								
-						</v-card>
-					</v-flex>
+					 <div class="col-md-12" v-for="(card, index) in cards" :key="index">
+						<img :src="card.src" class="img-fluid" :key="index" />
+					</div> 
+				
 				</v-layout>
 			</v-container>
 			<div class="py-5"></div>
