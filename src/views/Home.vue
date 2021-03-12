@@ -66,6 +66,7 @@
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 												params: { location: null}}">
 										<v-img
+											referrerpolicy="no-referrer" 
 											v-bind:src="card.src"
 											class="white--text align-end"
 											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -121,8 +122,8 @@
 				</v-flex>
 			</v-container>
 			<div class="py-5"></div>
-		</section>
-		<section id="explora_mobile" style="background:#fff !important" class='d-flex d-sm-none'>
+		</section-->
+		<section id="explora_mobile" style="background:#fff !important">
 			<div class="py-5"></div>
 			<v-container class="text-center">
      			<v-layout row>
@@ -144,7 +145,7 @@
 				</v-layout>
 			</v-container>
 			<div class="py-5"></div>
-		</section-->
+		</section>
 		<v-divider></v-divider>
 		<section id="features" class="grey lighten-5">
 			<div class="py-10"></div>
