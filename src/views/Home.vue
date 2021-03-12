@@ -56,40 +56,19 @@
 			</v-row>
 		</section>
 		<section id="explora" style="background:#fff !important" class='d-none d-sm-flex'>
-			<v-container>
-					<v-row class="ma-2">
-      					<v-col md="6" xs="12" class="pa-3 d-flex flex-column" :key="card.id" v-for="(card,i) in cards">
-								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
-												params: { location: null}}">
-										<img
-											referrerpolicy="no-referrer" 
-											:src="card.src"
-											:key="i"
-											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-											height="200px"
-										/>
-							
-										
-								</v-card>
-							</v-col>
-						</v-row>
-					</v-container>
 			<div class="py-5"></div>
 			<v-container class="text-center">
-     		<v-flex>
-				<!--v-carousel hide-delimiters>
+     		
+				<v-carousel hide-delimiters>
 					<v-carousel-item>
-						<v-layout row>
-							
-						</v-layout>
-					</v-carousel-item>
-					<v-carousel-item>
-						<v-layout row>
-							<v-flex sm3 v-for="(card,index) in cards.slice(8,16)" :key="index" pl-2 pr-2>
+						<v-row class="ma-2">
+							<v-col md="3" class="pa-3 d-flex flex-column" v-for="(card,index) in cards.slice(0,8)" :key="card.id" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 												params: { location: null}}">
 										<v-img
-											v-bind:src="card.src"
+											referrerpolicy="no-referrer" 
+											:src="card.src"
+											:key="index"
 											class="white--text align-end"
 											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 											height="200px"
@@ -99,16 +78,37 @@
 							
 										
 								</v-card>
-							</v-flex>
-						</v-layout>
+							</v-col>
+						</v-row>
 					</v-carousel-item>
 					<v-carousel-item>
-						<v-layout row>
-							<v-flex sm3 v-for="(card,index) in cards.slice(16,22)" :key="index" pl-2 pr-2>
+						<v-row class="ma-2">
+							<v-col md="3" class="pa-3 d-flex flex-column" v-for="(card,index) in cards.slice(8,16)" :key="card.id" pl-2 pr-2>
+								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
+												params: { location: null}}">
+										<v-img
+											v-bind:src="card.src"
+											class="white--text align-end"
+											:key="index"
+											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+											height="200px"
+										>
+											<v-card-title v-text="card.title"></v-card-title>
+										</v-img>
+							
+										
+								</v-card>
+							</v-col>
+						</v-row>
+					</v-carousel-item>
+					<v-carousel-item>
+						<v-row>
+							<v-col md="3" class="d-flex flex-column" v-for="(card,index) in cards.slice(16,22)" :key="card.id" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 									params: { location: null}}">
 									<v-img
 										v-bind:src="card.src"
+										:key="index"
 										class="white--text align-end"
 										gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 										height="200px"
@@ -118,23 +118,24 @@
 						
 									
 								</v-card>
-							</v-flex>
-						</v-layout>
+							</v-col>
+						</v-row>
 					</v-carousel-item>
-				</v-carousel-->
-				</v-flex>
+				</v-carousel>
+			
 			</v-container>
 			<div class="py-5"></div>
 		</section>
 		<section id="explora_mobile" style="background:#fff !important" class='d-flex d-sm-none'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
-     			<v-layout row>
-					<v-flex xs6 v-for="(card,index) in cards" :key="index" pl-2 pr-2>
+     			<v-row>
+					<v-col md="6" xs="12" class="d-flex flex-column" v-for="(card,index) in cards" :key="card.id" pl-2 pr-2>
 						<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 										params: { location: null}}">
 								<v-img
 									v-bind:src="card.src"
+									:key="index"
 									class="white--text align-end"
 									gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 									height="200px"
@@ -144,8 +145,8 @@
 					
 								
 						</v-card>
-					</v-flex>
-				</v-layout>
+					</v-col>
+				</v-row>
 			</v-container>
 			<div class="py-5"></div>
 		</section>
