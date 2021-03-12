@@ -7,7 +7,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{height: $vuetify.breakpoint.smAndUp ? '60%' : '100%'}">
+				:style="{width: $vuetify.breakpoint.smAndUp ? '60%' : '100%'}">
 				<div  class="center-container">
 					<v-container fill-height>
 						<v-layout align-center justify-center>
@@ -27,7 +27,7 @@
 				fluid 
 				grid-list-md 
 				class="px-2 ma-0" 
-				:style="{height: $vuetify.breakpoint.smAndUp ? '60%' : '100%'}">
+				:style="{width: $vuetify.breakpoint.smAndUp ? '60%' : '100%'}">
 			
 				<div v-if="errored" class="center-container">
 					<v-container fill-height>
@@ -141,8 +141,6 @@
 								:loading="loading"
 								:class="[$vuetify.breakpoint.smAndDown ? 'mx-1 my-1' : 'mx-1 my-1']"
 								class="flex d-flex flex-column"
-								style="cursor:pointer;"
-								router :to="`/detail/`+ property.id "
 								>
 									
 									<v-carousel hide-delimiters
