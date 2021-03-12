@@ -62,7 +62,7 @@
 				<v-carousel hide-delimiters>
 					<v-carousel-item >
 						<v-row>
-							<v-col md="3" class="d-flex flex-column" v-for="(card,index) in cards.slice(0,8)" :key="card.id" pl-2 pr-2>
+							<v-col cols="3" class="d-flex flex-column" v-for="(card,index) in cards.slice(0,8)" :key="card.id" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 												params: { location: null}}">
 										<v-img
@@ -83,7 +83,7 @@
 					</v-carousel-item>
 					<v-carousel-item>
 						<v-row>
-							<v-col md="3" class="d-flex flex-column" v-for="(card,index) in cards.slice(8,16)" :key="card.id" pl-2 pr-2>
+							<v-col cols="3" class="d-flex flex-column" v-for="(card,index) in cards.slice(8,16)" :key="card.id" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 												params: { location: null}}">
 										<v-img
@@ -103,7 +103,7 @@
 					</v-carousel-item>
 					<v-carousel-item>
 						<v-row>
-							<v-col md="3" class=" d-flex flex-column" v-for="(card,index) in cards.slice(16,22)" :key="card.id" pl-2 pr-2>
+							<v-col cols="3" class=" d-flex flex-column" v-for="(card,index) in cards.slice(16,22)" :key="card.id" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 									params: { location: null}}">
 									<v-img
@@ -126,11 +126,13 @@
 			</v-container>
 
 		</section>
+		
 		<section id="explora_mobile" style="background:#fff !important" class='d-flex d-sm-none'>
 			<div class="py-5"></div>
 			<v-container class="text-center">
+	
      			<v-row>
-					<v-col md="6" class="d-flex flex-column col-md-6" v-for="(card,index) in cards" :key="card.id" pl-2 pr-2>
+					<v-col cols="6" class="d-flex flex-column col-md-6" v-for="(card,index) in cards" :key="card.id" pl-2 pr-2>
 						<v-card style="pointer:cursor;" router :to="{ name: 'search', 
 										params: { location: null}}">
 								<v-img
