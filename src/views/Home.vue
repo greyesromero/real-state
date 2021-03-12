@@ -59,14 +59,14 @@
 			<div class="py-5"></div>
 			<v-container class="text-center">
      		<v-flex>
-				<v-carousel hide-delimiters  :height="'1500px'">
+				<v-carousel hide-delimiters>
 					<v-carousel-item>
 						<v-layout row>
-							<v-flex sm3 v-for="(card,index) in cards" :key="index" pl-2 pr-2>
+							<v-flex sm3 v-for="(card,index) in cards.slice(0,8)" :key="index" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
 												params: { location: null}}">
 										<v-img
-											:src="card.src"
+											v-bind:src="card.src"
 											class="white--text align-end"
 											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 											height="200px"
@@ -79,13 +79,13 @@
 							</v-flex>
 						</v-layout>
 					</v-carousel-item>
-					<!--v-carousel-item>
+					<v-carousel-item>
 						<v-layout row>
 							<v-flex sm3 v-for="(card,index) in cards.slice(8,16)" :key="index" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
-												params: { location: {name:card.title}}}">
+												params: { location: null}}">
 										<v-img
-											:src="card.src"
+											v-bind:src="card.src"
 											class="white--text align-end"
 											gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 											height="200px"
@@ -102,9 +102,9 @@
 						<v-layout row>
 							<v-flex sm3 v-for="(card,index) in cards.slice(16,22)" :key="index" pl-2 pr-2>
 								<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
-									params: { location: {name:card.title}}}">
+									params: { location: null}}">
 									<v-img
-										:src="card.src"
+										v-bind:src="card.src"
 										class="white--text align-end"
 										gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 										height="200px"
@@ -116,7 +116,7 @@
 								</v-card>
 							</v-flex>
 						</v-layout>
-					</v-carousel-item-->
+					</v-carousel-item>
 				</v-carousel>
 				</v-flex>
 			</v-container>
@@ -128,9 +128,9 @@
      			<v-layout row>
 					<v-flex xs6 v-for="(card,index) in cards" :key="index" pl-2 pr-2>
 						<v-card style="pointer:cursor;" class="my-5" router :to="{ name: 'search', 
-										params: { location: {name:card.title}}}">
+										params: { location: null}}">
 								<v-img
-									:src="card.src"
+									v-bind:src="card.src"
 									class="white--text align-end"
 									gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 									height="200px"
