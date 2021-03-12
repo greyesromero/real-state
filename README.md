@@ -1,4 +1,4 @@
-# gudker-web
+# hs-front
 
 ## Project setup
 ```
